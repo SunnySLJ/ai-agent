@@ -29,9 +29,24 @@
 ## 当前已实现
 
 - `portfolio/agent-platform/`：Python Agent/RAG core + FastAPI API + Java HTTP tool adapter。
+- `portfolio/agent-eval-dashboard/`：Python eval runner，读取 JSONL 数据集并输出 Agent 评估 JSON/Markdown 报告。
 - `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
 - `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
 - `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service，并通过 `JAVA_TOOL_BASE_URL` 自动接入 Java 工具。
+
+## Agent 评估演示
+
+运行当前离线确定性评估集：
+
+```bash
+cd portfolio/agent-eval-dashboard
+PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli \
+  --dataset ../agent-platform/data/eval_dataset.jsonl \
+  --json-out reports/latest.json \
+  --md-out reports/latest.md
+```
+
+报告会输出通过率、拒答率、工具调用成功率、平均延迟、token 估算和失败分类。
 
 ## Docker Compose 演示
 
