@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-26 22:35 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
+> 审查时间：2026-06-26 22:43 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
 
 ## 原始目标拆解
 
@@ -20,6 +20,7 @@
 | Agent 评估与失败回放 | 已完成 MVP | `portfolio/agent-eval-dashboard/`，20 条 eval case，可输出 JSON/Markdown eval report |
 | AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
 | BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md`、`docs/templates/boss-screening-log.md`、`logs/applications/README.md` |
+| 最终完成门禁 | 已完成脚本版 | `scripts/completion_gate.py`、`tests/test_completion_gate.py`，当前输出仍为 `Complete: no` |
 | GitHub 上传 | 部分完成 | 远端：`https://github.com/SunnySLJ/ai-agent`；`0c3010e` 已在远端，本地未推送提交包含 `.github/workflows/industry-watch.yml`，因 GitHub token 缺少 `workflow` scope 暂未推送 |
 
 ## 已推送的关键里程碑
@@ -47,13 +48,16 @@
 - `7cd1577 feat: automate ai industry watch`
 - `a05a454 docs: update completion audit after model smoke`
 - `7801909 docs: add boss screening log template`
+- `775b4b0 docs: refresh completion audit evidence`
 
 ## 当前验证证据
 
 最近已运行并通过：
 
 - `git diff --check`
-- `python3 -m unittest discover -s tests -v` at repo root，12 tests OK
+- `python3 -m unittest discover -s tests -v` at repo root，15 tests OK
+- `python3 -m unittest tests.test_completion_gate -v`，3 tests OK
+- `python3 scripts/completion_gate.py --root .` returned `Complete: no`，blockers: `git_unpushed_commits`、`github_workflow_scope_missing`、`boss_screening_missing`
 - `PYTHONPATH=../agent-platform/src:src python3 -m unittest discover -s tests -v` at `portfolio/agent-eval-dashboard`，10 tests OK
 - `PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli ...`，输出 `pass_rate=1.000`
 - `PYTHONPATH=../agent-platform/src:src python3 - <<'PY' ... run_retrieval_eval ... PY`，输出 5 cases，hybrid hit_rate=1.000，hybrid MRR=0.900
@@ -97,6 +101,7 @@
 1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
 2. 最新本地提交包含 GitHub Actions workflow，但当前 GitHub OAuth token 缺少 `workflow` scope，远端还没有最新提交。
 3. 学习和求职转化还需要连续日志、AI 行业资讯日志、BOSS 岗位筛选和投递反馈。
+4. `python3 scripts/completion_gate.py --root .` 当前明确返回 `Complete: no`。
 
 下一阶段优先级：
 

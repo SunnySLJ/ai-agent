@@ -65,6 +65,16 @@ python3 scripts/industry_watch.py \
 
 GitHub Actions 会每天 01:00 UTC 自动运行一次，对应北京时间 09:00。脚本只使用 RSS/Atom 等一手来源；单个来源失败会写入日志的“待复核”，不会伪造成已验证资讯。
 
+## 最终完成门禁
+
+检查 GitHub 推送、workflow scope 和 BOSS 20 岗位复核是否都完成：
+
+```bash
+python3 scripts/completion_gate.py --root .
+```
+
+返回 `Complete: yes` 前，不要把长期目标标记为完成。
+
 ## Docker Compose 演示
 
 先校验 Compose 配置：
