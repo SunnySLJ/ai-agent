@@ -14,6 +14,7 @@ from agent_platform.models import (
     ToolCall,
 )
 from agent_platform.retrieval import KeywordRetriever
+from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.tools import BusinessToolRegistry
 
 
@@ -37,6 +38,16 @@ class AgentPlatform:
             knowledge_base=knowledge_base,
             retriever=KeywordRetriever(knowledge_base),
             tools=BusinessToolRegistry(),
+            recorder=EvaluationRecorder(),
+        )
+
+    @classmethod
+    def with_java_tools(cls, base_url: str) -> "AgentPlatform":
+        knowledge_base = KnowledgeBase()
+        return cls(
+            knowledge_base=knowledge_base,
+            retriever=KeywordRetriever(knowledge_base),
+            tools=JavaBusinessToolRegistry(base_url),
             recorder=EvaluationRecorder(),
         )
 

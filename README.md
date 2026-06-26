@@ -26,6 +26,12 @@
 - 一个 Java 业务工具服务 + MCP 工具小项目：能把 Java 后端服务包装成 Agent 可调用工具。
 - 一套面试材料：简历项目描述、自我介绍、BOSS 打招呼话术、技术问答。
 
+## 当前已实现
+
+- `portfolio/agent-platform/`：Python Agent/RAG core + FastAPI API + Java HTTP tool adapter。
+- `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
+- `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
+
 ## 文档地图
 
 - [AGENTS.md](AGENTS.md)：给 Codex/Agent 的执行规则。

@@ -41,6 +41,22 @@ curl -X POST http://127.0.0.1:8080/todos \
 curl http://127.0.0.1:8080/audit-events
 ```
 
+## Python Agent 调用示例
+
+启动本服务后，在另一个终端运行：
+
+```bash
+cd portfolio/agent-platform
+.venv/bin/python - <<'PY'
+from agent_platform.agent import AgentPlatform
+
+platform = AgentPlatform.with_java_tools("http://127.0.0.1:8080")
+response = platform.ask("查询订单 ORD-1001 的状态")
+print(response.answer)
+print(response.trace.tool_calls[0])
+PY
+```
+
 ## 面试讲法
 
 这个项目体现的是 Java 后端工程能力如何迁移到 AI Agent 系统：Python Agent 不直接操作数据库或企业系统，而是通过受控工具 API 调用 Java 业务服务。Java 层负责权限、参数校验、审计、幂等和稳定性。

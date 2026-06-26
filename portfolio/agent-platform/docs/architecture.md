@@ -44,22 +44,22 @@ flowchart LR
 
 ## Current MVP
 
-The MVP is deterministic:
+The default MVP is deterministic:
 
 - no model key,
 - no vector database,
-- no network dependency,
+- no network dependency for `offline_demo()`,
 - standard-library tests,
 - explicit trace and evaluation outputs.
 
-This proves behavior before adding frameworks.
+The optional Java HTTP tool adapter calls the Java Business Tool Service through a real local HTTP boundary, while keeping offline tests deterministic.
 
 ## Upgrade Path
 
 1. Replace keyword retrieval with embeddings and Qdrant/pgvector.
-2. Add FastAPI endpoints for ingestion, question answering, traces, and summaries.
+2. FastAPI endpoints for ingestion, question answering, traces, and summaries. Done.
 3. Add LangGraph for stateful Agent workflows.
 4. Add LlamaIndex for document ingestion and indexing experiments.
-5. Add Java Business Tool Service and connect it through MCP/OpenAPI.
-6. Add Docker Compose for Python + Java + vector database.
-
+5. Java Business Tool Service plus Python HTTP tool adapter. Done.
+6. Add MCP/OpenAPI wrapper.
+7. Add Docker Compose for Python + Java + vector database.
