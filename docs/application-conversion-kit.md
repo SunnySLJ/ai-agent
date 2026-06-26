@@ -128,3 +128,9 @@
 - 哪个关键词命中最多。
 - 哪些问题被 HR/面试官反复追问。
 - 是否需要把项目补强到真实模型、向量库、LangGraph 或线上部署。
+
+## BOSS 复核记录格式
+
+真实岗位复核统一写到 `logs/applications/YYYY-MM-DD-boss-screening.md`，模板见 `docs/templates/boss-screening-log.md`。
+
+记录时不要只写岗位链接，必须把每个岗位拆成可行动字段：搜索词、公司、岗位、薪资、地点、经验、JD 关键词、匹配级别、风险点和下一步。完成 20 个岗位后，把 P0/P1/P2 数量和需要补强的能力同步写进当天 `logs/daily/YYYY-MM-DD.md`。

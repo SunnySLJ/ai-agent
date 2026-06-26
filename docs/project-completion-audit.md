@@ -19,7 +19,7 @@
 | Rerank/混合检索 | 已完成 MVP | `BM25Retriever`、`LocalVectorRetriever`、`HybridRetriever`、`retrieval_eval_dataset.jsonl`、retrieval eval report |
 | Agent 评估与失败回放 | 已完成 MVP | `portfolio/agent-eval-dashboard/`，20 条 eval case，可输出 JSON/Markdown eval report |
 | AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
-| BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md` |
+| BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md`、`docs/templates/boss-screening-log.md`、`logs/applications/README.md` |
 | GitHub 上传 | 部分完成 | 远端：`https://github.com/SunnySLJ/ai-agent`；`0c3010e` 已在远端，本地未推送提交包含 `.github/workflows/industry-watch.yml`，因 GitHub token 缺少 `workflow` scope 暂未推送 |
 
 ## 已推送的关键里程碑

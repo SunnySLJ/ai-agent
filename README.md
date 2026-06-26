@@ -106,6 +106,7 @@ docker compose down
 - [docs/ai-industry-watch.md](docs/ai-industry-watch.md)：每日 AI 行业资讯收集规则。
 - [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md)：完整技术栈路线。
 - [docs/application-conversion-kit.md](docs/application-conversion-kit.md)：把项目转成简历、BOSS 话术和面试讲法。
+- [logs/applications](logs/applications)：BOSS 岗位复核、投递和反馈日志。
 - [docs/project-completion-audit.md](docs/project-completion-audit.md)：当前完成度、证据和剩余缺口。
 - [docs/30-day-sprint.md](docs/30-day-sprint.md)：一个月冲刺计划。
 - [docs/source-map.md](docs/source-map.md)：本地课程资料映射。
