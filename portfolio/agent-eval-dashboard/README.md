@@ -13,6 +13,8 @@ Python-only evaluation runner for the AI Agent portfolio.
 - 按 `answer_with_citation`、`tool_call`、`refusal` 三类预期行为打分。
 - 输出 JSON 和 Markdown 报告，方便复盘失败分类。
 
+当前数据集包含 20 条离线确定性 eval case，覆盖引用回答、工具调用和拒答三类行为。
+
 ## 运行
 
 ```bash
@@ -36,6 +38,12 @@ PYTHONPATH=../agent-platform/src:src python3 -m unittest discover -s tests -v
 - 平均响应时间。
 - 估算 Token 成本。
 - 失败分类计数。
+
+## 当前覆盖
+
+- `answer_with_citation`：9 条。
+- `tool_call`：6 条。
+- `refusal`：5 条。
 
 ## 失败分类
 

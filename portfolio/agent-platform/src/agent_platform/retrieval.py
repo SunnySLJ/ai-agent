@@ -58,6 +58,15 @@ class KeywordRetriever:
             "订单",
             "业务",
             "知识库",
+            "trace",
+            "docker",
+            "compose",
+            "mcp",
+            "openapi",
+            "token",
+            "成本",
+            "来源",
+            "幻觉",
         ]
         lowered = text.lower()
         return [term for term in vocabulary if term in lowered]
@@ -68,4 +77,3 @@ class KeywordRetriever:
 
     def _stop_words(self) -> set[str]:
         return {"the", "and", "for", "with", "how", "what", "can"}
-

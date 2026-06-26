@@ -87,6 +87,48 @@ def seed_demo_documents(platform: AgentPlatform) -> None:
             ),
         )
     )
+    platform.ingest(
+        Document(
+            doc_id="agent-trace-observability",
+            title="Agent Trace Observability",
+            content=(
+                "Agent trace 记录 question、retrieved chunks、tool calls、"
+                "model response、latency、estimated tokens 和 failure category，"
+                "用于回放工具调用、定位问题和优化评估。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="citation-and-refusal",
+            title="Citation and Refusal Policy",
+            content=(
+                "企业知识库答案必须提供引用来源。低证据、实时未知、"
+                "预测性或不在知识库和工具范围内的问题应该拒答，避免幻觉。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="tool-contract-runtime",
+            title="Tool Contract Runtime",
+            content=(
+                "MCP 和 OpenAPI 定义工具名称、参数 schema、错误码和 HTTP 映射。"
+                "Docker Compose 负责一键启动 Python Agent API 和 Java Business Tool Service，"
+                "并通过 JAVA_TOOL_BASE_URL 接入业务工具。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="cost-control",
+            title="Agent Cost Control",
+            content=(
+                "Agent 项目通过 token 预算、检索上下文压缩、缓存、模型路由、"
+                "降级策略和 eval dataset 控制成本。"
+            ),
+        )
+    )
 
 
 def score_response(case: EvalCase, response: AgentResponse) -> EvalResult:
