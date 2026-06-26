@@ -27,6 +27,23 @@ cd portfolio/java-business-tool-service
 mvn spring-boot:run
 ```
 
+## Docker
+
+单服务镜像：
+
+```bash
+cd portfolio/java-business-tool-service
+docker build -t ai-agent-java-business-tool-service .
+docker run --rm -p 8080:8080 ai-agent-java-business-tool-service
+```
+
+和 Python Agent API 一起运行：
+
+```bash
+cd ../..
+docker compose up --build
+```
+
 ## 调用示例
 
 ```bash

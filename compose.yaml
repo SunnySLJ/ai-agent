@@ -1,0 +1,31 @@
+services:
+  java-business-tool-service:
+    build:
+      context: ./portfolio/java-business-tool-service
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8080/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 20s
+
+  agent-platform:
+    build:
+      context: ./portfolio/agent-platform
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - JAVA_TOOL_BASE_URL=http://java-business-tool-service:8080
+    depends_on:
+      java-business-tool-service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 12
+      start_period: 10s

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from dataclasses import asdict, is_dataclass
 from typing import Any
 
@@ -26,7 +27,7 @@ def create_app(platform: AgentPlatform | None = None) -> FastAPI:
         version="0.1.0",
         description="Python-led Agent/RAG platform API",
     )
-    agent = platform or AgentPlatform.offline_demo()
+    agent = platform or _default_platform()
 
     @app.get("/health")
     def health() -> dict[str, str]:
@@ -58,6 +59,13 @@ def create_app(platform: AgentPlatform | None = None) -> FastAPI:
     return app
 
 
+def _default_platform() -> AgentPlatform:
+    java_tool_base_url = os.environ.get("JAVA_TOOL_BASE_URL")
+    if java_tool_base_url:
+        return AgentPlatform.with_java_tools(java_tool_base_url)
+    return AgentPlatform.offline_demo()
+
+
 app = create_app()
 
 
@@ -69,4 +77,3 @@ def to_json(value: Any) -> Any:
     if isinstance(value, dict):
         return {key: to_json(item) for key, item in value.items()}
     return value
-

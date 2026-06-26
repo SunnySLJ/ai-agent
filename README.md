@@ -31,6 +31,38 @@
 - `portfolio/agent-platform/`：Python Agent/RAG core + FastAPI API + Java HTTP tool adapter。
 - `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
 - `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
+- `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service，并通过 `JAVA_TOOL_BASE_URL` 自动接入 Java 工具。
+
+## Docker Compose 演示
+
+先校验 Compose 配置：
+
+```bash
+docker compose -f compose.yaml config
+```
+
+Docker daemon 已启动时运行：
+
+```bash
+docker compose up --build
+```
+
+验证：
+
+```bash
+curl http://127.0.0.1:8000/health
+curl http://127.0.0.1:8080/health
+
+curl -X POST http://127.0.0.1:8000/ask \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"查询订单 ORD-1001 的状态"}'
+```
+
+停止：
+
+```bash
+docker compose down
+```
 
 ## 文档地图
 

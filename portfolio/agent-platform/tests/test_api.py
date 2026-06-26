@@ -1,8 +1,10 @@
 import unittest
+from unittest import mock
 
 from fastapi.testclient import TestClient
 
 from agent_platform.api import create_app
+from test_java_tools import java_like_tool_service
 
 
 class AgentPlatformApiTest(unittest.TestCase):
@@ -74,6 +76,19 @@ class AgentPlatformApiTest(unittest.TestCase):
         self.assertEqual(1, summary["tool_call_count"])
         self.assertIn("get_order_status", tools["tools"])
         self.assertIn("create_todo", tools["tools"])
+
+    def test_create_app_uses_java_tools_when_env_is_set(self):
+        with java_like_tool_service() as base_url:
+            with mock.patch.dict("os.environ", {"JAVA_TOOL_BASE_URL": base_url}):
+                client = TestClient(create_app())
+
+                response = client.post("/ask", json={"question": "查询订单 ORD-2002 的状态"})
+
+        body = response.json()
+        self.assertFalse(body["refused"])
+        self.assertIn("测试专属订单", body["answer"])
+        self.assertEqual("get_order_status", body["trace"]["tool_calls"][0]["name"])
+        self.assertTrue(body["trace"]["tool_calls"][0]["success"])
 
 
 if __name__ == "__main__":

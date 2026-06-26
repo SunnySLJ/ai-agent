@@ -52,6 +52,15 @@ curl http://127.0.0.1:8000/summary
 curl http://127.0.0.1:8000/tools
 ```
 
+## Run With Java Tools From Environment
+
+When `JAVA_TOOL_BASE_URL` is set, `agent_platform.api:create_app()` uses Java-backed tools by default:
+
+```bash
+cd portfolio/agent-platform
+JAVA_TOOL_BASE_URL=http://127.0.0.1:8080 .venv/bin/uvicorn agent_platform.api:app --reload
+```
+
 ## Call Java Business Tools
 
 Terminal 1:
@@ -74,6 +83,21 @@ print(response.answer)
 print(response.trace.tool_calls[0])
 PY
 ```
+
+## Docker
+
+From the repository root:
+
+```bash
+docker compose -f compose.yaml config
+docker compose up --build
+```
+
+The Compose runtime exposes:
+
+- Python Agent API: `http://127.0.0.1:8000`
+- Java Business Tool Service: `http://127.0.0.1:8080`
+- Python container env: `JAVA_TOOL_BASE_URL=http://java-business-tool-service:8080`
 
 ## What Works Now
 

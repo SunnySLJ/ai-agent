@@ -47,6 +47,17 @@ class JavaLikeToolHandler(BaseHTTPRequestHandler):
                 },
             )
             return
+        if self.path == "/orders/ORD-2002":
+            self._send_json(
+                200,
+                {
+                    "orderId": "ORD-2002",
+                    "status": "ready",
+                    "eta": "today",
+                    "summary": "测试专属订单 ORD-2002 当前状态：已备货。",
+                },
+            )
+            return
         if self.path.startswith("/orders/"):
             order_id = self.path.rsplit("/", 1)[-1]
             self._send_json(
