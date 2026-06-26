@@ -10,6 +10,8 @@
 
 本项目采用 **Python AI 主链路 + Java 企业业务工具层** 的混合工程路线。不要把它理解成纯 Python，也不要改成 Python + TypeScript 替代 Java。
 
+最终技术栈决策见 [docs/decisions/0001-python-java-hybrid.md](docs/decisions/0001-python-java-hybrid.md)，后续所有 feature、学习计划和求职表达都按这个边界推进。
+
 - Python 负责 Agent/RAG/评估/API：LLM 调用、Prompt、Function Calling、文档解析、切分、Embedding、检索、重排、引用、拒答、trace、eval、FastAPI、后续 LangGraph/LlamaIndex。
 - Java 负责企业业务工具服务：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、稳定部署和原有 Java 后端经验迁移。
 - MCP/OpenAPI 负责工具边界：把 Java 服务安全暴露给 Python Agent 调用。

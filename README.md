@@ -87,6 +87,7 @@ docker compose down
 
 - [AGENTS.md](AGENTS.md)：给 Codex/Agent 的执行规则。
 - [CLAUDE.md](CLAUDE.md)：给 Claude 的执行规则。
+- [docs/decisions/0001-python-java-hybrid.md](docs/decisions/0001-python-java-hybrid.md)：最终技术栈决策，明确 Python + Java 混合路线。
 - [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)：杭州岗位画像。
 - [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md)：完整技术栈路线。
 - [docs/application-conversion-kit.md](docs/application-conversion-kit.md)：把项目转成简历、BOSS 话术和面试讲法。

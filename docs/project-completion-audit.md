@@ -8,7 +8,7 @@
 |---|---|---|
 | 在 `work/ai-agent` 下创建完整项目 | 已完成 | `README.md`、`AGENTS.md`、`CLAUDE.md`、`agent.md`、`docs/`、`portfolio/`、`specs/` |
 | 不改动父级 `../../agent/` 资料 | 已遵守 | 新增与修改集中在 `work/ai-agent/` |
-| 技术路线改为 Python + Java 结合 | 已完成 | `AGENTS.md`、`CLAUDE.md`、`docs/tech-stack-roadmap.md`、`portfolio/agent-platform/`、`portfolio/java-business-tool-service/` |
+| 技术路线改为 Python + Java 结合 | 已完成 | `docs/decisions/0001-python-java-hybrid.md`、`AGENTS.md`、`CLAUDE.md`、`docs/tech-stack-roadmap.md`、`portfolio/agent-platform/`、`portfolio/java-business-tool-service/` |
 | 主项目体现 AI Agent/RAG 能力 | 已完成 MVP | `portfolio/agent-platform/`，包含关键词检索、Qdrant 向量检索、引用、拒答、工具调用、trace、summary、FastAPI |
 | 真实模型接口能力 | 已完成接口适配 | `OpenAICompatibleChatClient`、`OPENAI_*` env wiring、fake endpoint tests；未用真实有效 key smoke |
 | Java 保留业务工具层价值 | 已完成 MVP | `portfolio/java-business-tool-service/`，包含订单、工单、待办、审计、幂等和错误码 |
