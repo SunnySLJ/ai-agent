@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-26 22:43 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
+> 审查时间：2026-06-26 22:47 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
 
 ## 原始目标拆解
 
@@ -43,12 +43,7 @@
 
 ## 本地未推送提交
 
-这些提交已经在本地 `main`，但还未进入远端 `origin/main`：
-
-- `7cd1577 feat: automate ai industry watch`
-- `a05a454 docs: update completion audit after model smoke`
-- `7801909 docs: add boss screening log template`
-- `775b4b0 docs: refresh completion audit evidence`
+以 `python3 scripts/completion_gate.py --root .` 的 `Unpushed Commits` 输出为准，避免人工维护提交列表再次过期。
 
 ## 当前验证证据
 
@@ -57,7 +52,7 @@
 - `git diff --check`
 - `python3 -m unittest discover -s tests -v` at repo root，15 tests OK
 - `python3 -m unittest tests.test_completion_gate -v`，3 tests OK
-- `python3 scripts/completion_gate.py --root .` returned `Complete: no`，blockers: `git_unpushed_commits`、`github_workflow_scope_missing`、`boss_screening_missing`
+- `python3 scripts/completion_gate.py --root .` returned `Complete: no`，动态列出未推送提交，blockers: `git_unpushed_commits`、`github_workflow_scope_missing`、`boss_screening_missing`
 - `PYTHONPATH=../agent-platform/src:src python3 -m unittest discover -s tests -v` at `portfolio/agent-eval-dashboard`，10 tests OK
 - `PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli ...`，输出 `pass_rate=1.000`
 - `PYTHONPATH=../agent-platform/src:src python3 - <<'PY' ... run_retrieval_eval ... PY`，输出 5 cases，hybrid hit_rate=1.000，hybrid MRR=0.900

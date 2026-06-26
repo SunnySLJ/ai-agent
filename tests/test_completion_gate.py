@@ -12,11 +12,17 @@ class CompletionGateTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             (root / "logs/applications").mkdir(parents=True)
+
+            def command_runner(command: list[str]) -> str:
+                if command[:3] == ["git", "rev-list", "--left-right"]:
+                    return "0\t4\n"
+                if command[:3] == ["git", "log", "--oneline"]:
+                    return "abcd123 feat: local work\n"
+                return "Token scopes: 'repo'\n"
+
             result = evaluate_completion_gate(
                 root,
-                command_runner=lambda command: "0\t4\n"
-                if command[:3] == ["git", "rev-list", "--left-right"]
-                else "Token scopes: 'repo'\n",
+                command_runner=command_runner,
             )
 
         blocker_ids = {blocker["id"] for blocker in result["blockers"]}
@@ -24,6 +30,7 @@ class CompletionGateTest(unittest.TestCase):
         self.assertIn("git_unpushed_commits", blocker_ids)
         self.assertIn("github_workflow_scope_missing", blocker_ids)
         self.assertIn("boss_screening_missing", blocker_ids)
+        self.assertEqual(["abcd123 feat: local work"], result["unpushed_commits"])
 
     def test_accepts_boss_log_with_twenty_reviewed_rows_and_clean_push_state(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -65,12 +72,14 @@ class CompletionGateTest(unittest.TestCase):
                 "git_ahead": 0,
                 "git_behind": 0,
                 "workflow_scope": False,
+                "unpushed_commits": ["abcd123 feat: local work"],
             }
         )
 
         self.assertIn("Final Completion Gate", markdown)
         self.assertIn("boss_screening_missing", markdown)
         self.assertIn("缺少 BOSS 复核。", markdown)
+        self.assertIn("abcd123 feat: local work", markdown)
 
 
 if __name__ == "__main__":

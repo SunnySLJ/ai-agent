@@ -20,6 +20,7 @@ def evaluate_completion_gate(
     blockers: list[dict[str, str]] = []
 
     git_ahead, git_behind = _git_ahead_behind(run)
+    unpushed_commits = _git_unpushed_commits(run) if git_ahead > 0 else []
     if git_ahead > 0:
         blockers.append(
             {
@@ -59,6 +60,7 @@ def evaluate_completion_gate(
         "boss_reviewed_rows": boss_reviewed_rows,
         "git_ahead": git_ahead,
         "git_behind": git_behind,
+        "unpushed_commits": unpushed_commits,
         "workflow_scope": workflow_scope,
     }
 
@@ -73,9 +75,22 @@ def render_markdown(result: dict[str, object]) -> str:
         f"- GitHub workflow scope: {'yes' if result['workflow_scope'] else 'no'}",
         f"- BOSS reviewed rows: {result['boss_reviewed_rows']}",
         "",
-        "## Blockers",
+        "## Unpushed Commits",
         "",
     ]
+    unpushed_commits = result.get("unpushed_commits", [])
+    if unpushed_commits:
+        for commit in unpushed_commits:
+            lines.append(f"- {commit}")
+    else:
+        lines.append("- None.")
+    lines.extend(
+        [
+            "",
+            "## Blockers",
+            "",
+        ]
+    )
     blockers = result["blockers"]
     if blockers:
         for blocker in blockers:
@@ -109,6 +124,14 @@ def _git_ahead_behind(run: CommandRunner) -> tuple[int, int]:
         return 0, 0
     behind, ahead = int(parts[0]), int(parts[1])
     return ahead, behind
+
+
+def _git_unpushed_commits(run: CommandRunner) -> list[str]:
+    try:
+        output = run(["git", "log", "--oneline", "origin/main..main"])
+    except Exception:
+        return []
+    return [line.strip() for line in output.splitlines() if line.strip()]
 
 
 def _has_workflow_scope(run: CommandRunner) -> bool:
