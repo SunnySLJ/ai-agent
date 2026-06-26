@@ -9,6 +9,8 @@
 - 默认时间：每天北京时间上午。
 - 输出路径：`logs/industry/YYYY-MM-DD.md`。
 - 模板：`docs/templates/industry-news-log.md`。
+- 手动运行：`python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`。
+- 自动运行：`.github/workflows/industry-watch.yml` 每天 01:00 UTC 触发，对应北京时间 09:00。
 - 周复盘：每周把 7 天资讯压缩成 3-5 条趋势判断，并更新 `docs/30-day-sprint.md`、`docs/portfolio-projects.md` 或面试材料。
 
 ## 关注范围
@@ -50,4 +52,4 @@
 
 ## 完成口径
 
-当前阶段只要求建立每日行业情报机制和日志格式。只有在项目内出现可运行脚本、定时任务或外部自动化配置，并且有运行证据时，才能说“自动定时采集已完成”。
+当前已经具备可运行脚本、来源配置、GitHub Actions 定时任务和本地运行日志。后续优化重点是提升来源稳定性、增加去重质量和每周趋势汇总，不把单个来源抓取失败视为整体失败；失败来源必须写入日志的“待复核”。

@@ -4,7 +4,7 @@
 
 每天默认投入 3-4 小时。如果当天工作忙，最小版本是 45 分钟学习 + 30 分钟作品集 + 10 分钟日志。
 
-每天默认增加 20 分钟 AI 行业资讯收集，按 `docs/ai-industry-watch.md` 写入 `logs/industry/YYYY-MM-DD.md`。行业资讯不单独算进度，只有转化为学习任务、作品集 backlog、岗位关键词或面试表达时才算有效输入。
+每天默认增加 20 分钟 AI 行业资讯处理：先使用 `scripts/industry_watch.py` / GitHub Actions 定时采集写入 `logs/industry/YYYY-MM-DD.md`，再人工筛选并转化。行业资讯不单独算进度，只有转化为学习任务、作品集 backlog、岗位关键词或面试表达时才算有效输入。
 
 ## 第 1 周：建立 AI 应用基本盘
 

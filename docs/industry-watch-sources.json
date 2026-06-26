@@ -1,0 +1,46 @@
+{
+  "sources": [
+    {
+      "name": "OpenAI News",
+      "url": "https://openai.com/news/rss.xml",
+      "credibility": "high",
+      "keywords": ["agent", "rag", "model", "api", "tool", "function calling"],
+      "impact": ["学习", "面试"]
+    },
+    {
+      "name": "LangChain Releases",
+      "url": "https://github.com/langchain-ai/langchain/releases.atom",
+      "credibility": "high",
+      "keywords": ["agent", "rag", "retrieval", "tool", "langgraph", "mcp"],
+      "impact": ["代码", "面试"]
+    },
+    {
+      "name": "LlamaIndex Releases",
+      "url": "https://github.com/run-llama/llama_index/releases.atom",
+      "credibility": "high",
+      "keywords": ["rag", "retrieval", "agent", "workflow", "llamaindex"],
+      "impact": ["代码", "面试"]
+    },
+    {
+      "name": "Qdrant Releases",
+      "url": "https://github.com/qdrant/qdrant/releases.atom",
+      "credibility": "high",
+      "keywords": ["vector", "retrieval", "embedding", "qdrant", "rag"],
+      "impact": ["代码", "面试"]
+    },
+    {
+      "name": "Spring AI Releases",
+      "url": "https://github.com/spring-projects/spring-ai/releases.atom",
+      "credibility": "high",
+      "keywords": ["spring ai", "java", "model", "rag", "tool"],
+      "impact": ["学习", "面试"]
+    },
+    {
+      "name": "MCP Python SDK Releases",
+      "url": "https://github.com/modelcontextprotocol/python-sdk/releases.atom",
+      "credibility": "high",
+      "keywords": ["mcp", "tool", "openapi", "agent"],
+      "impact": ["代码", "面试"]
+    }
+  ]
+}

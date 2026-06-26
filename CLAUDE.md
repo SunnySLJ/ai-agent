@@ -40,6 +40,7 @@ Claude 在本项目中必须按这个选型回答和规划：
 ## 行业资讯收集要求
 
 - 默认每天北京时间上午做一次 AI 行业情报收集。
+- 自动采集入口是 `.github/workflows/industry-watch.yml`；手动复跑命令是 `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`。
 - 只收集与岗位和项目有关的资讯：Agent/RAG、模型 API、MCP、向量库、评估、企业 AI 应用、杭州/国内岗位趋势。
 - 输出必须包含来源、日期、摘要、可信度、对本项目的影响、下一步动作。
 - 如果缺少联网能力、登录态或来源不可验证，必须明确写成“未验证/待复核”，不要编造最新动态。

@@ -1,0 +1,35 @@
+name: AI Industry Watch
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Collect daily AI industry watch
+        run: |
+          python scripts/industry_watch.py \
+            --sources docs/industry-watch-sources.json \
+            --out-dir logs/industry \
+            --max-items 8
+      - name: Commit updated industry watch log
+        run: |
+          if [ -z "$(git status --porcelain -- logs/industry)" ]; then
+            echo "No industry watch changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add logs/industry
+          git commit -m "chore: update ai industry watch"
+          git push

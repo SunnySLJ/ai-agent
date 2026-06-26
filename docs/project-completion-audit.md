@@ -18,7 +18,7 @@
 | Qdrant 向量库 | 已完成 MVP | `QdrantVectorIndex`、`HashingEmbeddingModel`、`QDRANT_*` env wiring、fake Qdrant tests、Compose Qdrant service |
 | Rerank/混合检索 | 已完成 MVP | `BM25Retriever`、`LocalVectorRetriever`、`HybridRetriever`、`retrieval_eval_dataset.jsonl`、retrieval eval report |
 | Agent 评估与失败回放 | 已完成 MVP | `portfolio/agent-eval-dashboard/`，20 条 eval case，可输出 JSON/Markdown eval report |
-| AI 行业资讯日常收集机制 | 已建立要求 | `docs/ai-industry-watch.md`、`docs/templates/industry-news-log.md`、`logs/industry/README.md`；自动定时采集未实现 |
+| AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
 | BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md` |
 | GitHub 上传 | 已完成 | 远端：`https://github.com/SunnySLJ/ai-agent`，当前 `main` 已推送 |
 
@@ -54,6 +54,9 @@
 - `python3 -m json.tool mcp-tools.json`
 - `docker compose -f compose.yaml config`
 - `OpenAICompatibleChatClient` real smoke against default OpenAI-compatible endpoint returned HTTP 401 `invalid_api_key`; error detail is now redacted by regression test
+- `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
+- `python3 -m json.tool docs/industry-watch-sources.json`
+- `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
 - `docker compose -f compose.yaml up --build -d`
 - `docker compose -f compose.yaml ps` 显示 `agent-platform` 和 `java-business-tool-service` 均为 `healthy`
 - `curl http://127.0.0.1:8000/health` 返回 `{"status":"ok"}`
@@ -72,7 +75,6 @@
 |---|---|---|
 | BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招 | 登录 BOSS，按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位并记录反馈 |
 | 真实模型外部 smoke | 已有 OpenAI-compatible client，当前环境 key 已尝试但返回 401 invalid_api_key | 配置有效 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL` 后重跑一次 `/ask` |
-| AI 行业资讯自动定时采集 | 已建立每日收集规则，但还没有脚本、cron 或 GitHub Actions 运行证据 | 后续 feature 增加新闻源配置、采集脚本、去重摘要和定时运行证明 |
 | 日常学习与投递日志 | 已有第一条工程日志，但还没有连续执行证据 | 持续写 `logs/daily/YYYY-MM-DD.md`，并补 BOSS 岗位筛选记录 |
 
 ## 完成判断
@@ -80,11 +82,11 @@
 不能把长期 goal 标记为 complete。理由：
 
 1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
-2. 作品集当前是 MVP 级，可以面试展示，但还没做真实模型外部 smoke，也还没有 AI 行业资讯自动定时采集运行证据。
+2. 作品集当前是 MVP 级，可以面试展示，但还没做有效模型 key 下的真实模型成功 smoke。
 3. 学习和求职转化还需要连续日志、AI 行业资讯日志、BOSS 岗位筛选和投递反馈。
 
 下一阶段优先级：
 
 1. 用有效 key 做一次 OpenAI-compatible 外部 smoke。
 2. 做一次 BOSS 登录态岗位筛选并把结果写进 `logs/daily/`。
-3. 增加 AI 行业资讯自动采集脚本或定时运行配置。
+3. 连续运行 AI 行业资讯日志并做每周趋势复盘。

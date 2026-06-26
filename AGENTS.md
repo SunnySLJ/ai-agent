@@ -24,7 +24,7 @@
 3. 如果涉及岗位判断，先查 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)，再结合最新招聘结果修正。
 4. 如果涉及技术取舍，按 [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md) 的优先级执行。
 5. 如果涉及作品集，按 [docs/portfolio-projects.md](docs/portfolio-projects.md) 的交付标准推进。
-6. 每天按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 收集 AI 行业资讯，写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
+6. 每天按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 定时收集 AI 行业资讯：自动入口是 `.github/workflows/industry-watch.yml`，手动入口是 `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`；输出写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
 7. 每次学习后更新 `logs/daily/`，沉淀今天学了什么、做了什么、明天要补什么。
 
 ## Agent 可调用的本地资料

@@ -53,6 +53,18 @@ PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli \
 
 报告会输出通过率、拒答率、工具调用成功率、平均延迟、token 估算和失败分类。
 
+## AI 行业资讯自动采集
+
+手动运行每日行业资讯采集：
+
+```bash
+python3 scripts/industry_watch.py \
+  --sources docs/industry-watch-sources.json \
+  --out-dir logs/industry
+```
+
+GitHub Actions 会每天 01:00 UTC 自动运行一次，对应北京时间 09:00。脚本只使用 RSS/Atom 等一手来源；单个来源失败会写入日志的“待复核”，不会伪造成已验证资讯。
+
 ## Docker Compose 演示
 
 先校验 Compose 配置：

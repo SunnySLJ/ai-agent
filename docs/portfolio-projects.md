@@ -79,6 +79,7 @@
 ### 必备功能
 
 - 每日一篇 `logs/industry/YYYY-MM-DD.md`。
+- `scripts/industry_watch.py` 支持手动采集，`.github/workflows/industry-watch.yml` 每天北京时间 09:00 定时运行。
 - 记录来源、日期、可信度、摘要、项目影响和下一步动作。
 - 只保留和 Agent/RAG、模型 API、MCP、向量库、评估、企业 AI 应用、杭州/国内岗位趋势有关的内容。
 - 每周复盘一次，更新 30 天计划、作品集 backlog 或面试材料。
