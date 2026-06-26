@@ -2,23 +2,23 @@
 
 ## 自我介绍 60 秒
 
-我有 5 年 Java 后端开发经验，主要做业务系统、接口设计、数据库和服务化工程。最近我把方向聚焦到 AI Agent 和 RAG 应用工程，重点不是做模型训练，而是把大模型能力接进真实业务系统。我系统学习并实践了 LLM API、RAG 检索、工具调用、Agent 工作流、Memory、评估和 Docker 部署，正在做一个基于 Spring Boot/Spring AI 的企业知识库 Agent，支持文档入库、向量检索、带引用回答、工具调用和评估回放。我希望找的是 Java 后端结合 AI 应用落地的岗位。
+我有 5 年 Java 后端开发经验，主要做业务系统、接口设计、数据库和服务化工程。最近我把方向聚焦到 AI Agent 和 RAG 应用工程，重点不是做模型训练，而是把大模型能力接进真实业务系统。我的技术路线是 Python 负责 Agent/RAG/评估主链路，Java 负责业务系统和工具 API。我正在做一个企业知识库 Agent Platform，支持文档入库、检索引用、工具调用、拒答、trace 和评估回放，希望找的是 AI 应用落地和后端工程结合的岗位。
 
 ## BOSS 打招呼短句
 
-我有 5 年 Java 后端经验，最近重点转向 AI Agent/RAG 应用工程，做过企业知识库 Agent 方向的项目实践，熟悉 Spring Boot、RAG、工具调用、评估和服务化落地。看到贵司岗位涉及大模型应用/Agent/知识库方向，想进一步沟通一下岗位匹配度。
+我有 5 年 Java 后端经验，最近重点转向 AI Agent/RAG 应用工程，技术路线是 Python 做 Agent/RAG/评估，Java 做业务工具服务和系统集成。做过企业知识库 Agent 方向的项目实践，熟悉 RAG、工具调用、trace、评估和服务化落地。看到贵司岗位涉及大模型应用/Agent/知识库方向，想进一步沟通一下岗位匹配度。
 
 更多版本见 [templates/boss-message.md](templates/boss-message.md)。
 
 ## 项目介绍 3 分钟
 
-我做的主项目是企业知识库 Agent，目标是解决企业内部文档散落、客服和运营重复问答的问题。
+我做的主项目是企业知识库 Agent Platform，目标是解决企业内部文档散落、客服和运营重复问答的问题。
 
-整体链路是：用户提问后，系统先做查询改写和权限过滤，再从向量库召回相关文档块，必要时做重排，然后把上下文、引用来源和工具列表交给模型生成答案。如果问题涉及订单、工单这类实时数据，Agent 会调用后端工具接口。最终答案必须带来源引用，如果置信度不足就拒答。
+整体架构是 Python + Java 混合：Python 负责 Agent/RAG 主链路，用户提问后先检索知识库，必要时重排，再把上下文、引用来源和工具列表交给模型生成答案；Java 负责企业业务工具服务，比如订单、工单、待办、权限、审计和幂等。如果问题涉及实时业务数据，Python Agent 会通过 MCP/OpenAPI 调 Java 工具接口。最终答案必须带来源引用，如果置信度不足就拒答。
 
 工程上我重点处理了四类问题：第一是 RAG 幻觉，所以做了引用来源和低置信度拒答；第二是工具误调用，所以每个工具都有参数 schema、权限校验和审计日志；第三是问题定位，所以记录 question、retrievedChunks、toolCalls、modelResponse、latency 和 tokens；第四是效果优化，所以构造了评估样本，对 TopK、切分策略和 Prompt 进行对比。
 
-这个项目体现的是我的 Java 后端优势：不是只调模型，而是把模型能力变成一个可部署、可观测、可评估的业务系统。
+这个项目体现的是我的迁移路线：Python 用来快速落地 Agent/RAG/评估，Java 用来承接企业业务系统和稳定工程化，不是只调模型，而是把模型能力变成一个可部署、可观测、可评估、能接业务系统的 Agent 平台。
 
 ## 高频问题
 
@@ -36,7 +36,7 @@
 
 ### Java 做 AI Agent 有优势吗？
 
-有。Python 生态更快，但企业系统大量在 Java。Java 适合做稳定的业务服务、权限、审计、事务、数据集成和部署。我的路线是 Java 负责生产系统和工具服务，必要时接入 Python 算法服务或 LangGraph 服务。
+有。Python 更适合 Agent/RAG/评估和快速实验，Java 更适合企业业务系统、权限、审计、事务、数据集成和部署。我的路线不是二选一，而是 Python 做 AI 主链路，Java 做业务工具层。
 
 ### 如何控制成本？
 
@@ -45,7 +45,11 @@
 ## 简历关键词
 
 - Java 后端
-- Spring Boot / Spring AI
+- Python
+- FastAPI
+- LangGraph
+- LlamaIndex
+- Spring Boot
 - RAG
 - Vector Database
 - Tool Calling
@@ -56,4 +60,3 @@
 - Evaluation
 - Trace / Observability
 - Docker
-

@@ -1,0 +1,4 @@
+{"id":"eval-001","question":"Python 和 Java 在 Agent RAG 项目里怎么分工?","expected_behavior":"answer_with_citation","tags":["architecture","hybrid-stack"]}
+{"id":"eval-002","question":"帮我查询订单 ORD-1001 的状态","expected_behavior":"tool_call","tags":["tool-calling","java-business-api"]}
+{"id":"eval-003","question":"明天杭州天气怎么样?","expected_behavior":"refusal","tags":["refusal","grounding"]}
+{"id":"eval-004","question":"RAG 评估记录什么?","expected_behavior":"answer_with_citation","tags":["evaluation","rag"]}

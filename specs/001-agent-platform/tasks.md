@@ -1,0 +1,15 @@
+# Feature 001 Tasks
+
+- [x] T01 [DOC] Replace Java-first docs with Python-led hybrid architecture. [AC5]
+- [x] T02 [BE] Create Python package skeleton under `portfolio/agent-platform`. [AC1-AC4]
+- [x] T03 [BE] Write failing tests for cited answer, refusal, tool call, and eval summary. [AC1-AC4]
+- [x] T04 [BE] Implement dataclass models. [AC1-AC4]
+- [x] T05 [BE] Implement in-memory knowledge base. [AC1]
+- [x] T06 [BE] Implement keyword retriever. [AC1-AC2]
+- [x] T07 [BE] Implement business tool registry. [AC3]
+- [x] T08 [BE] Implement evaluation recorder. [AC4]
+- [x] T09 [BE] Implement AgentPlatform orchestration. [AC1-AC4]
+- [x] T10 [DOC] Add architecture notes and README run commands. [AC5]
+- [x] T11 [DOC] Update portfolio docs and tech stack roadmap. [AC5]
+- [x] T12 [BE] Run unittest verification. [AC1-AC4]
+- [x] T13 [DOC] Update GitHub with verified hybrid architecture. [AC1-AC5]

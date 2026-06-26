@@ -8,7 +8,7 @@
 
 - 不移动、不重命名、不改写 `../../agent/` 课程资料。
 - 所有学习计划必须从杭州 AI Agent/RAG/大模型应用岗位倒推。
-- 默认岗位方向是 Java 后端 + AI Agent/RAG 应用工程师，不是纯算法研究岗。
+- 默认岗位方向是 Python Agent/RAG + Java 后端业务集成工程师，不是纯算法研究岗。
 - 文档必须服务求职和作品集，不写空泛鸡血内容。
 - 目标薪资先按杭州 20K 左右设计，能力目标向 20-40K 区间靠近。
 - 所有新增项目资料放在本目录内，不污染父级课程目录。
@@ -39,6 +39,13 @@
 - OpenClaw / Claude Code / Harness：`../../agent/part20-agent-openclaw` 到 `../../agent/part25-agent-openclaw-special`
 - 综合案例：`../../agent/part22-agent-workspace`
 
+## 技术选型边界
+
+- Python 负责 AI 主链路：Agent 编排、RAG、文档解析、评估、trace、未来 LangGraph/LlamaIndex/FastAPI 适配。
+- Java 负责业务后端：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务和稳定部署。
+- MCP 负责工具接入：把 Java 业务能力安全暴露给 Python Agent。
+- 不再把主 RAG/Agent 链路写成全 Java；Spring AI 作为 Java 侧补充能力，不是第一个月主路径。
+
 ## 每日闭环
 
 每天最少完成：
@@ -65,4 +72,3 @@
 - 能写进简历的项目结果。
 - 能反驳追问的技术取舍理由。
 - 能用数据或日志证明的 Agent/RAG 效果。
-

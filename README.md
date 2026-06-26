@@ -5,7 +5,7 @@
 当前定位：
 - 城市：杭州
 - 目标薪资：先冲 20K 左右，再看 20-40K 区间
-- 背景：5 年 Java 工程师，不转纯算法岗，走 Java 后端 + AI 应用工程化路线
+- 背景：5 年 Java 工程师，不转纯算法岗，走 Python Agent/RAG + Java 业务后端的混合工程路线
 - 时间窗口：2026-06-27 到 2026-07-26 第一轮冲刺
 - 长线目标：35 岁前形成 AI Agent 工程能力、作品集、行业判断和可复用方法论
 
@@ -21,9 +21,9 @@
 
 一个月后必须能拿出去讲清楚：
 
-- 一个 Java AI Agent/RAG 主项目：企业知识库 + 工具调用 + 可评估链路。
+- 一个 Python AI Agent/RAG 主项目：企业知识库 + 工具调用 + 可评估链路。
 - 一个 Agent 评估与观测小项目：能解释命中率、召回率、幻觉、trace、回放。
-- 一个 MCP/工具服务小项目：能把 Java 后端服务包装成 Agent 可调用工具。
+- 一个 Java 业务工具服务 + MCP 工具小项目：能把 Java 后端服务包装成 Agent 可调用工具。
 - 一套面试材料：简历项目描述、自我介绍、BOSS 打招呼话术、技术问答。
 
 ## 文档地图
@@ -37,4 +37,3 @@
 - [docs/portfolio-projects.md](docs/portfolio-projects.md)：作品集拆解。
 - [docs/interview-kit.md](docs/interview-kit.md)：面试与求职材料。
 - [docs/5-year-growth-map.md](docs/5-year-growth-map.md)：30 到 35 岁成长路线。
-

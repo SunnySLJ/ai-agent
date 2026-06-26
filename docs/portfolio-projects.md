@@ -2,17 +2,17 @@
 
 一个月内不要做很多 Demo。做一个主项目，再做两个辅助项目，让面试官看到完整工程闭环。
 
-## 主项目：Java 企业知识库 Agent
+## 主项目：Python 企业知识库 Agent Platform
 
-路径：`portfolio/java-agent-rag-service/`
+路径：`portfolio/agent-platform/`
 
 ### 一句话
 
-基于 Spring Boot/Spring AI 的企业知识库 Agent，支持文档入库、RAG 检索、工具调用、带引用回答、评估回放和 Docker 部署。
+基于 Python 的企业知识库 Agent Platform，支持文档入库、RAG 检索、工具调用、带引用回答、拒答、评估回放，后续接 FastAPI、LangGraph、LlamaIndex 和真实模型。
 
 ### 必备功能
 
-- 文档上传和解析：Markdown/PDF 优先。
+- 文档上传和解析：Markdown/PDF 优先，第一版先跑 Markdown/plain text。
 - 文档切分和向量化。
 - 向量检索和关键词混合检索。
 - 回答必须带来源引用。
@@ -21,10 +21,11 @@
 - Trace 日志：question、retrievedChunks、toolCalls、modelResponse、latency、tokens。
 - Eval 样本：至少 20 条问答。
 - Docker Compose 一键启动说明。
+- Java 业务工具 API 集成说明。
 
 ### 简历写法
 
-负责设计并实现企业知识库 Agent 原型，基于 Spring Boot/Spring AI 完成文档解析、向量化入库、RAG 检索生成、工具调用和日志追踪；通过构造评估样本对切分策略、TopK 和提示词进行对比，支持答案来源引用、低置信度拒答和失败样本回放。
+负责设计并实现企业知识库 Agent Platform，Python 侧完成 RAG 检索、工具调用、引用回答、低置信度拒答、trace 和评估回放；Java 侧作为业务工具服务承接订单、工单等企业系统接口，通过 MCP/OpenAPI 暴露给 Agent 调用。
 
 ## 辅助项目 1：Agent 评估 Dashboard
 
@@ -45,13 +46,13 @@
 
 多数候选人只会做 Demo。你能讲评估和回放，就更像能做生产系统的人。
 
-## 辅助项目 2：MCP Tool Server
+## 辅助项目 2：Java Business Tool Service + MCP Tool Server
 
-路径：`portfolio/mcp-tool-server/`
+路径：`portfolio/java-business-tool-service/`、`portfolio/mcp-tool-server/`
 
 ### 一句话
 
-把 Java 后端能力包装成 Agent 可调用工具服务，模拟订单、工单、知识库查询。
+用 Spring Boot 模拟订单、工单、待办等企业业务接口，再通过 MCP/OpenAPI 包装成 Python Agent 可调用工具。
 
 ### 必备功能
 
@@ -64,15 +65,14 @@
 
 ### 面试价值
 
-证明你不是只会聊天接口，而是能把企业内部系统接入 Agent。
+证明你不是只会聊天接口，而是能把企业内部系统安全接入 Agent。
 
 ## 展示顺序
 
 面试时按这个顺序讲：
 
 1. 业务问题：企业知识散落、客服和运营重复问答。
-2. 系统架构：文档入库、向量检索、LLM 生成、工具调用、日志评估。
+2. 系统架构：Python Agent/RAG、Java 业务工具服务、MCP/OpenAPI 工具接入、日志评估。
 3. 工程难点：幻觉、权限、超时、工具误调用、成本。
 4. 解决方案：引用来源、拒答、参数校验、trace、eval dataset。
 5. 结果：可回放、可优化、可部署、可扩展。
-

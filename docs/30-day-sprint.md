@@ -6,7 +6,7 @@
 
 ## 第 1 周：建立 AI 应用基本盘
 
-目标：能从 Java 后端视角讲清楚 LLM API、Prompt、流式输出、工具调用和最小 Agent。
+目标：能从 Python Agent/RAG 视角讲清楚 LLM API、Prompt、流式输出、工具调用和最小 Agent，同时知道 Java 在业务工具层的位置。
 
 ### Day 1：岗位倒推和环境准备
 
@@ -20,7 +20,7 @@
 
 - 学：`../../agent/part01-agent-api/大模型在线API接入基础入门实战.ipynb`
 - 做：整理 OpenAI 兼容 API、国内模型 API、流式输出处理方式
-- 产出：`portfolio/java-agent-rag-service/notes-llm-api.md`
+- 产出：`portfolio/agent-platform/notes-llm-api.md`
 - 面试表达：一次 LLM 调用从请求到响应有哪些工程风险？
 
 ### Day 3：Prompt 与结构化输出
@@ -46,10 +46,10 @@
 
 ### Day 6：Java 路线选型
 
-- 学：Spring AI RAG 文档：<https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html>
-- 做：确定主项目技术栈：Spring Boot + Spring AI + PostgreSQL/pgvector 或 Qdrant
-- 产出：`portfolio/java-agent-rag-service/architecture.md`
-- 面试表达：为什么你选择 Spring AI 而不是只用 Python？
+- 学：Python Agent/RAG 架构，并阅读 Spring AI RAG 文档作为 Java 侧对比：<https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html>
+- 做：确定主项目技术栈：Python Agent/RAG + Java Business Tool API + MCP/OpenAPI
+- 产出：`portfolio/agent-platform/docs/architecture.md`
+- 面试表达：为什么 Agent/RAG 用 Python、业务工具层保留 Java？
 
 ### Day 7：周复盘
 
@@ -176,7 +176,7 @@
 
 ### Day 26：面试题强化
 
-- 重点：RAG、Agent、Spring AI、向量库、MCP、部署、评估
+- 重点：Python RAG、Agent、FastAPI、LangGraph、向量库、MCP、Java 工具服务、部署、评估
 
 ### Day 27：项目演示脚本
 
@@ -200,4 +200,3 @@
 - 完成简历项目描述
 - 完成面试自我介绍
 - 完成下个月成长计划
-

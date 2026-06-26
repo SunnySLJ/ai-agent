@@ -6,7 +6,7 @@
 
 ## 大模型应用岗位
 
-您好，我是 Java 后端开发背景，最近系统补齐了大模型 API、RAG、向量检索、Function Calling、Agent 工作流和评估回放，正在做 Spring Boot/Spring AI 企业知识库 Agent 项目。看到贵司岗位偏大模型应用落地，想了解一下具体业务场景。
+您好，我是 Java 后端开发背景，最近系统补齐了大模型 API、RAG、向量检索、Function Calling、Agent 工作流和评估回放，正在做 Python Agent/RAG + Java 业务工具服务的企业知识库 Agent Platform。看到贵司岗位偏大模型应用落地，想了解一下具体业务场景。
 
 ## RAG/知识库岗位
 
@@ -15,4 +15,3 @@
 ## Java AI 后端岗位
 
 您好，我长期做 Java 后端，熟悉 Spring Boot、数据库、接口、权限、日志和部署。最近在做 AI Agent/RAG 应用工程，把大模型能力接入后端业务系统。看到岗位需要 Java + AI 应用落地，想进一步沟通。
-
