@@ -6,6 +6,9 @@ from agent_platform.models import ToolCall
 
 
 class BusinessToolRegistry:
+    def names(self) -> list[str]:
+        return ["get_order_status", "get_ticket_status", "create_todo"]
+
     def invoke(self, question: str) -> list[ToolCall]:
         calls: list[ToolCall] = []
         order_match = re.search(r"ORD-\d+", question)
@@ -45,4 +48,3 @@ class BusinessToolRegistry:
             result=f"未找到订单 {order_id}。",
             success=False,
         )
-

@@ -16,14 +16,40 @@ The current MVP is offline and deterministic. It does not require model keys.
 
 ```bash
 cd portfolio/agent-platform
-PYTHONPATH=src /Users/mac/.local/bin/python3.11 -m unittest discover -s tests -v
+/Users/mac/.local/bin/python3.11 -m venv .venv
+.venv/bin/python -m pip install -e .
+.venv/bin/python -m unittest discover -s tests -v
 ```
 
 Expected:
 
 ```text
-Ran 4 tests
+Ran 9 tests
 OK
+```
+
+## Run API
+
+```bash
+cd portfolio/agent-platform
+.venv/bin/uvicorn agent_platform.api:app --reload
+```
+
+Useful requests:
+
+```bash
+curl http://127.0.0.1:8000/health
+
+curl -X POST http://127.0.0.1:8000/documents \
+  -H 'Content-Type: application/json' \
+  -d '{"doc_id":"hybrid","title":"Hybrid Agent Architecture","content":"Python owns Agent RAG orchestration while Java exposes business tool APIs."}'
+
+curl -X POST http://127.0.0.1:8000/ask \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"Python 和 Java 怎么分工?"}'
+
+curl http://127.0.0.1:8000/summary
+curl http://127.0.0.1:8000/tools
 ```
 
 ## What Works Now
@@ -35,6 +61,7 @@ OK
 - Call deterministic business tools.
 - Record traces.
 - Summarize evaluation metrics.
+- Expose a FastAPI API for health, document ingestion, question answering, summary, and tool listing.
 
 ## Next Adapters
 
@@ -47,4 +74,3 @@ OK
 ## Interview Pitch
 
 This project shows a pragmatic hybrid architecture. Python handles fast-moving Agent/RAG/evaluation work, while Java handles stable enterprise business systems and tool APIs. The value is not a chat demo; it is a testable Agent platform with citations, refusals, tool traces, and evaluation metrics.
-

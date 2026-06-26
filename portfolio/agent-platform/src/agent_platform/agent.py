@@ -69,6 +69,9 @@ class AgentPlatform:
     def summary(self) -> EvaluationSummary:
         return self._recorder.summary()
 
+    def available_tools(self) -> list[str]:
+        return self._tools.names()
+
     def _compose(
         self,
         question: str,
@@ -110,4 +113,3 @@ class AgentPlatform:
     ) -> int:
         chars = len(question) + len(answer) + sum(len(chunk.snippet) for chunk in chunks)
         return max(1, chars // 4)
-
