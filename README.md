@@ -14,9 +14,10 @@
 
 1. 打开 [docs/30-day-sprint.md](docs/30-day-sprint.md)，执行当天任务。
 2. 按 [docs/source-map.md](docs/source-map.md) 只学当天需要的 `../../agent/` 资料。
-3. 每天写一份 `logs/daily/YYYY-MM-DD.md`，模板在 [docs/templates/daily-log.md](docs/templates/daily-log.md)。
-4. 每周至少推进一个作品集交付，路径见 [portfolio](portfolio)。
-5. 每 3 天用 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md) 刷一次 BOSS 直聘关键词，修正学习重点。
+3. 按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 每天定时收集 AI 行业资讯，写入 `logs/industry/YYYY-MM-DD.md`。
+4. 每天写一份 `logs/daily/YYYY-MM-DD.md`，模板在 [docs/templates/daily-log.md](docs/templates/daily-log.md)。
+5. 每周至少推进一个作品集交付，路径见 [portfolio](portfolio)。
+6. 每 3 天用 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md) 刷一次 BOSS 直聘关键词，修正学习重点。
 
 ## 成果标准
 
@@ -26,6 +27,7 @@
 - 一个 Agent 评估与观测小项目：能解释命中率、召回率、幻觉、trace、回放。
 - 一个 Java 业务工具服务 + MCP 工具小项目：能把 Java 后端服务包装成 Agent 可调用工具。
 - 一套面试材料：简历项目描述、自我介绍、BOSS 打招呼话术、技术问答。
+- 一套 AI 行业情报日志：每天把最新资讯转成学习重点、作品集 backlog 和面试谈资。
 
 ## 当前已实现
 
@@ -89,6 +91,7 @@ docker compose down
 - [CLAUDE.md](CLAUDE.md)：给 Claude 的执行规则。
 - [docs/decisions/0001-python-java-hybrid.md](docs/decisions/0001-python-java-hybrid.md)：最终技术栈决策，明确 Python + Java 混合路线。
 - [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)：杭州岗位画像。
+- [docs/ai-industry-watch.md](docs/ai-industry-watch.md)：每日 AI 行业资讯收集规则。
 - [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md)：完整技术栈路线。
 - [docs/application-conversion-kit.md](docs/application-conversion-kit.md)：把项目转成简历、BOSS 话术和面试讲法。
 - [docs/project-completion-audit.md](docs/project-completion-audit.md)：当前完成度、证据和剩余缺口。

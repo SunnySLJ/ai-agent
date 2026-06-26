@@ -14,7 +14,7 @@ from agent_platform.models import (
     RetrievedChunk,
     ToolCall,
 )
-from agent_platform.retrieval import KeywordRetriever
+from agent_platform.retrieval import HybridRetriever, KeywordRetriever
 from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.tools import BusinessToolRegistry
 from agent_platform.vector_store import QdrantRetriever, QdrantVectorIndex
@@ -53,7 +53,7 @@ class AgentPlatform:
         knowledge_base = KnowledgeBase()
         return cls(
             knowledge_base=knowledge_base,
-            retriever=KeywordRetriever(knowledge_base),
+            retriever=HybridRetriever.from_knowledge_base(knowledge_base),
             tools=BusinessToolRegistry(),
             recorder=EvaluationRecorder(),
             answer_generator=answer_generator,
@@ -68,7 +68,7 @@ class AgentPlatform:
         knowledge_base = KnowledgeBase()
         return cls(
             knowledge_base=knowledge_base,
-            retriever=KeywordRetriever(knowledge_base),
+            retriever=HybridRetriever.from_knowledge_base(knowledge_base),
             tools=JavaBusinessToolRegistry(base_url),
             recorder=EvaluationRecorder(),
             answer_generator=answer_generator,

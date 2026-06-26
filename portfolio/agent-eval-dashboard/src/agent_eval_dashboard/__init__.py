@@ -9,6 +9,14 @@ from agent_eval_dashboard.runner import (
     score_response,
     write_report_files,
 )
+from agent_eval_dashboard.retrieval_eval import (
+    RetrievalEvalCase,
+    RetrievalModeResult,
+    load_retrieval_dataset,
+    render_retrieval_markdown,
+    run_retrieval_eval,
+    write_retrieval_report_files,
+)
 
 __all__ = [
     "EvalCase",
@@ -18,4 +26,10 @@ __all__ = [
     "run_eval",
     "score_response",
     "write_report_files",
+    "RetrievalEvalCase",
+    "RetrievalModeResult",
+    "load_retrieval_dataset",
+    "render_retrieval_markdown",
+    "run_retrieval_eval",
+    "write_retrieval_report_files",
 ]

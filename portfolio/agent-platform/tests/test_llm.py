@@ -13,6 +13,8 @@ from agent_platform.models import RetrievedChunk, ToolCall
 class ChatCompletionHandler(BaseHTTPRequestHandler):
     requests: list[dict[str, object]] = []
     response_content = "模型回答：基于证据生成。"
+    status_code = 200
+    error_body: dict[str, object] | None = None
 
     def do_POST(self):  # noqa: N802
         length = int(self.headers.get("Content-Length", "0"))
@@ -24,6 +26,16 @@ class ChatCompletionHandler(BaseHTTPRequestHandler):
                 "payload": payload,
             }
         )
+        if self.__class__.status_code >= 400:
+            body = self.__class__.error_body or {"error": {"message": "failed"}}
+            encoded = json.dumps(body).encode("utf-8")
+            self.send_response(self.__class__.status_code)
+            self.send_header("Content-Type", "application/json")
+            self.send_header("Content-Length", str(len(encoded)))
+            self.end_headers()
+            self.wfile.write(encoded)
+            return
+
         body = {
             "choices": [
                 {
@@ -45,9 +57,16 @@ class ChatCompletionHandler(BaseHTTPRequestHandler):
 
 
 @contextmanager
-def chat_completion_service(content: str = "模型回答：基于证据生成。"):
+def chat_completion_service(
+    content: str = "模型回答：基于证据生成。",
+    *,
+    status_code: int = 200,
+    error_body: dict[str, object] | None = None,
+):
     ChatCompletionHandler.requests = []
     ChatCompletionHandler.response_content = content
+    ChatCompletionHandler.status_code = status_code
+    ChatCompletionHandler.error_body = error_body
     server = ThreadingHTTPServer(("127.0.0.1", 0), ChatCompletionHandler)
     thread = Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -101,6 +120,40 @@ class OpenAICompatibleChatClientTest(unittest.TestCase):
         self.assertIn("Python 和 Java 怎么分工?", user_content)
         self.assertIn("Hybrid", user_content)
         self.assertIn("get_order_status", user_content)
+
+    def test_http_error_redacts_api_keys_from_provider_detail(self):
+        with chat_completion_service(
+            status_code=401,
+            error_body={
+                "error": {
+                    "message": "Incorrect API key provided: sk-testSECRET1234567890.",
+                }
+            },
+        ) as base_url:
+            client = OpenAICompatibleChatClient(
+                base_url=base_url,
+                api_key="sk-testSECRET1234567890",
+                model="test-model",
+            )
+
+            with self.assertRaisesRegex(Exception, "HTTP 401") as raised:
+                client.generate_answer(
+                    question="Python 和 Java 怎么分工?",
+                    chunks=[
+                        RetrievedChunk(
+                            chunk_id="chunk-1",
+                            doc_id="doc-1",
+                            title="Hybrid",
+                            snippet="Python handles Agent orchestration.",
+                            score=1.0,
+                        )
+                    ],
+                    tool_calls=[],
+                )
+
+        message = str(raised.exception)
+        self.assertIn("[REDACTED_API_KEY]", message)
+        self.assertNotIn("sk-testSECRET1234567890", message)
 
 
 if __name__ == "__main__":

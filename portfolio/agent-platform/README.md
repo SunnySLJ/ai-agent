@@ -10,7 +10,7 @@ This is the main portfolio project for the AI Agent career track. It uses Python
 - Java: business tools such as order, ticket, todo, permissions, audit, idempotency.
 - MCP/OpenAPI: integration boundary between the Python Agent and Java business systems.
 
-The default MVP is offline and deterministic. It does not require model keys. An optional Java HTTP tool adapter can call the Java Business Tool Service for real cross-stack tool execution.
+The default MVP is offline and deterministic. It does not require model keys. Offline retrieval now uses deterministic hybrid retrieval: BM25-style lexical scoring plus local hashing-vector candidates and a lightweight reranker. Optional adapters can call the Java Business Tool Service, OpenAI-compatible chat APIs, and Qdrant.
 
 ## Run Tests
 
@@ -77,7 +77,7 @@ For local or domestic OpenAI-compatible providers, replace `OPENAI_BASE_URL` and
 
 ## Run With Qdrant Vector Retrieval
 
-The default retriever is deterministic keyword retrieval. Set `QDRANT_BASE_URL` to store chunks in Qdrant and retrieve citations through vector query:
+The default offline retriever is deterministic hybrid retrieval. Set `QDRANT_BASE_URL` to store chunks in Qdrant and retrieve citations through vector query:
 
 ```bash
 cd portfolio/agent-platform
@@ -132,7 +132,7 @@ The Compose runtime exposes:
 ## What Works Now
 
 - Ingest documents.
-- Retrieve evidence with keyword scoring.
+- Retrieve offline evidence through hybrid BM25 + local dense retrieval with lightweight rerank.
 - Return answers with citations.
 - Refuse when evidence is missing.
 - Call deterministic business tools.
@@ -148,7 +148,7 @@ The Compose runtime exposes:
 - LangGraph workflow adapter.
 - LlamaIndex or LangChain retriever adapter.
 - MCP tool server wrapper.
-- Rerank and hybrid retrieval adapter.
+- External embedding and rerank model adapters.
 
 ## Interview Pitch
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import urllib.error
 import urllib.request
 from collections.abc import Sequence
@@ -65,7 +66,9 @@ class OpenAICompatibleChatClient:
                 body = json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as exc:
             detail = exc.read().decode("utf-8", errors="replace")
-            raise LlmClientError(f"LLM request failed with HTTP {exc.code}: {detail}") from exc
+            raise LlmClientError(
+                f"LLM request failed with HTTP {exc.code}: {self._redact_secrets(detail)}"
+            ) from exc
         except urllib.error.URLError as exc:
             raise LlmClientError(f"LLM request failed: {exc.reason}") from exc
 
@@ -76,6 +79,17 @@ class OpenAICompatibleChatClient:
         if not isinstance(content, str) or not content.strip():
             raise LlmClientError("LLM response content was empty")
         return content.strip()
+
+    def _redact_secrets(self, detail: str) -> str:
+        redacted = detail.replace(self._api_key, "[REDACTED_API_KEY]")
+        redacted = re.sub(r"sk-[A-Za-z0-9_*.-]+", "[REDACTED_API_KEY]", redacted)
+        redacted = re.sub(
+            r"Bearer\s+[A-Za-z0-9._~+/=-]+",
+            "Bearer [REDACTED_API_KEY]",
+            redacted,
+            flags=re.IGNORECASE,
+        )
+        return redacted
 
     def _build_user_message(
         self,

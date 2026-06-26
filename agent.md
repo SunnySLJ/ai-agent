@@ -22,7 +22,17 @@
 1. 先完成 Python Agent Platform：可运行、可测试、能解释 RAG/工具调用/评估链路。
 2. 再完成 Java Business Tool Service：证明企业业务系统如何成为 Agent 工具。
 3. 再做 Python Agent 到 Java 工具服务的 HTTP/MCP/OpenAPI 集成。
-4. 最后打磨简历、BOSS 话术、项目讲解和失败复盘。
+4. 每天定时收集 AI 行业最新资讯，沉淀到 `logs/industry/YYYY-MM-DD.md`，并把影响转成学习任务、作品集 backlog 或面试表达。
+5. 最后打磨简历、BOSS 话术、项目讲解和失败复盘。
+
+## 每日行业情报
+
+默认每天北京时间上午收集一次 AI 行业资讯，稳定入口见 [docs/ai-industry-watch.md](docs/ai-industry-watch.md)。
+
+- 重点只看会影响求职和作品集的内容：Agent/RAG、模型 API、MCP、向量库、评估、企业落地、杭州/国内岗位变化。
+- 每条资讯必须写清来源、日期、可信度、对项目的影响和下一步动作。
+- 不把资讯收集写成泛泛新闻摘要；必须能转化为代码 feature、学习任务、面试素材或岗位关键词。
+- 没有真实自动化脚本前，只能说“已建立每日收集要求”，不能说“已完成自动定时采集系统”。
 
 ## 不要做的事
 

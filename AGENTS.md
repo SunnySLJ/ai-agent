@@ -24,7 +24,8 @@
 3. 如果涉及岗位判断，先查 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)，再结合最新招聘结果修正。
 4. 如果涉及技术取舍，按 [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md) 的优先级执行。
 5. 如果涉及作品集，按 [docs/portfolio-projects.md](docs/portfolio-projects.md) 的交付标准推进。
-6. 每次学习后更新 `logs/daily/`，沉淀今天学了什么、做了什么、明天要补什么。
+6. 每天按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 收集 AI 行业资讯，写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
+7. 每次学习后更新 `logs/daily/`，沉淀今天学了什么、做了什么、明天要补什么。
 
 ## Agent 可调用的本地资料
 
@@ -54,6 +55,7 @@
 每天最少完成：
 
 - 45 分钟岗位相关学习。
+- 20 分钟 AI 行业资讯收集，只记录可影响求职或作品集的内容。
 - 60 分钟作品集编码或文档沉淀。
 - 15 分钟面试表达训练。
 - 10 分钟日志复盘。
@@ -61,6 +63,7 @@
 每天日志必须回答：
 
 - 今天对应哪个岗位能力？
+- 今天哪条 AI 行业资讯会影响学习、作品集或岗位关键词？
 - 今天读了 `agent/` 哪个资料？
 - 今天产出了什么可展示内容？
 - 今天有哪些概念还讲不清楚？

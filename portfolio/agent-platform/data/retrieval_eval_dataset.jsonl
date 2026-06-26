@@ -1,0 +1,5 @@
+{"id":"retrieval-001","query":"RAG 评估 hit rate 和 MRR 怎么看?","expected_doc_id":"rag-evaluation","tags":["evaluation","retrieval"]}
+{"id":"retrieval-002","query":"Python 和 Java 在 Agent 项目里如何分工?","expected_doc_id":"hybrid-agent-architecture","tags":["hybrid-stack"]}
+{"id":"retrieval-003","query":"Agent trace 里记录哪些工具调用信息?","expected_doc_id":"agent-trace-observability","tags":["trace","tool-calling"]}
+{"id":"retrieval-004","query":"MCP 和 OpenAPI 怎么定义工具契约?","expected_doc_id":"tool-contract-runtime","tags":["mcp","openapi"]}
+{"id":"retrieval-005","query":"企业知识库为什么要拒答低证据问题?","expected_doc_id":"citation-and-refusal","tags":["refusal","safety"]}
