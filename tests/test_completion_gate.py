@@ -31,6 +31,11 @@ class CompletionGateTest(unittest.TestCase):
         self.assertIn("github_workflow_scope_missing", blocker_ids)
         self.assertIn("boss_screening_missing", blocker_ids)
         self.assertEqual(["abcd123 feat: local work"], result["unpushed_commits"])
+        self.assertIn(
+            "gh auth refresh -h github.com -s workflow",
+            result["next_actions"],
+        )
+        self.assertIn("git push origin main", result["next_actions"])
 
     def test_accepts_boss_log_with_twenty_reviewed_rows_and_clean_push_state(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -73,6 +78,10 @@ class CompletionGateTest(unittest.TestCase):
                 "git_behind": 0,
                 "workflow_scope": False,
                 "unpushed_commits": ["abcd123 feat: local work"],
+                "next_actions": [
+                    "gh auth refresh -h github.com -s workflow",
+                    "git push origin main",
+                ],
             }
         )
 
@@ -80,6 +89,7 @@ class CompletionGateTest(unittest.TestCase):
         self.assertIn("boss_screening_missing", markdown)
         self.assertIn("缺少 BOSS 复核。", markdown)
         self.assertIn("abcd123 feat: local work", markdown)
+        self.assertIn("gh auth refresh -h github.com -s workflow", markdown)
 
 
 if __name__ == "__main__":

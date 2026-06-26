@@ -53,6 +53,11 @@ def evaluate_completion_gate(
                 "message": f"BOSS 登录态岗位复核只有 {boss_reviewed_rows} 条，需要至少 20 条。",
             }
         )
+    next_actions = _next_actions(
+        git_ahead=git_ahead,
+        workflow_scope=workflow_scope,
+        boss_reviewed_rows=boss_reviewed_rows,
+    )
 
     return {
         "complete": not blockers,
@@ -62,6 +67,7 @@ def evaluate_completion_gate(
         "git_behind": git_behind,
         "unpushed_commits": unpushed_commits,
         "workflow_scope": workflow_scope,
+        "next_actions": next_actions,
     }
 
 
@@ -82,6 +88,19 @@ def render_markdown(result: dict[str, object]) -> str:
     if unpushed_commits:
         for commit in unpushed_commits:
             lines.append(f"- {commit}")
+    else:
+        lines.append("- None.")
+    lines.extend(
+        [
+            "",
+            "## Next Actions",
+            "",
+        ]
+    )
+    next_actions = result.get("next_actions", [])
+    if next_actions:
+        for action in next_actions:
+            lines.append(f"- `{action}`")
     else:
         lines.append("- None.")
     lines.extend(
@@ -140,6 +159,22 @@ def _has_workflow_scope(run: CommandRunner) -> bool:
     except Exception:
         return False
     return "workflow" in output
+
+
+def _next_actions(
+    *,
+    git_ahead: int,
+    workflow_scope: bool,
+    boss_reviewed_rows: int,
+) -> list[str]:
+    actions: list[str] = []
+    if not workflow_scope:
+        actions.append("gh auth refresh -h github.com -s workflow")
+    if git_ahead > 0:
+        actions.append("git push origin main")
+    if boss_reviewed_rows < 20:
+        actions.append("同意启动 Chrome 后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个 BOSS 登录态岗位")
+    return actions
 
 
 def _count_boss_screening_rows(project_root: Path) -> int:

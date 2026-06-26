@@ -67,13 +67,13 @@ GitHub Actions 会每天 01:00 UTC 自动运行一次，对应北京时间 09:00
 
 ## 最终完成门禁
 
-检查 GitHub 推送、workflow scope 和 BOSS 20 岗位复核是否都完成：
+检查 GitHub 推送、workflow scope 和 BOSS 20 岗位复核是否都完成，并输出下一步动作：
 
 ```bash
 python3 scripts/completion_gate.py --root .
 ```
 
-返回 `Complete: yes` 前，不要把长期目标标记为完成。
+返回 `Complete: yes` 前，不要把长期目标标记为完成；如果返回 `Complete: no`，按 `Next Actions` 顺序处理。
 
 ## Docker Compose 演示
 
