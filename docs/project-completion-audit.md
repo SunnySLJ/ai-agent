@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-26 22:26 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
+> 审查时间：2026-06-26 22:35 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
 
 ## 原始目标拆解
 
@@ -36,14 +36,24 @@
 - `51115a5 docs: add project completion audit`
 - `5276d3f feat: expand agent eval dataset`
 - `180227c feat: add openai compatible llm adapter`
-- 本轮新增：`feat: add qdrant vector retrieval`
+- `3804246 feat: add qdrant vector retrieval`
+- `f879def docs: lock python java hybrid decision`
+- `0c3010e feat: add hybrid retrieval and industry watch`
+
+## 本地未推送提交
+
+这些提交已经在本地 `main`，但还未进入远端 `origin/main`：
+
+- `7cd1577 feat: automate ai industry watch`
+- `a05a454 docs: update completion audit after model smoke`
+- `7801909 docs: add boss screening log template`
 
 ## 当前验证证据
 
 最近已运行并通过：
 
 - `git diff --check`
-- `python3 -m unittest discover -s tests -v` at repo root，6 tests OK
+- `python3 -m unittest discover -s tests -v` at repo root，12 tests OK
 - `PYTHONPATH=../agent-platform/src:src python3 -m unittest discover -s tests -v` at `portfolio/agent-eval-dashboard`，10 tests OK
 - `PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli ...`，输出 `pass_rate=1.000`
 - `PYTHONPATH=../agent-platform/src:src python3 - <<'PY' ... run_retrieval_eval ... PY`，输出 5 cases，hybrid hit_rate=1.000，hybrid MRR=0.900

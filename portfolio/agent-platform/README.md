@@ -24,7 +24,7 @@ cd portfolio/agent-platform
 Expected:
 
 ```text
-Ran 26 tests
+Ran 29 tests
 OK
 ```
 
