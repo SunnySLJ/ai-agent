@@ -16,6 +16,8 @@
 
 你的优势是 5 年 Java 工程经验。正确打法是把 Java 后端、服务化、数据库、接口、权限、日志、部署这些能力迁移到 AI Agent/RAG 系统，而不是和算法硕博拼模型训练。
 
+求职转化材料见 [AI Agent 求职转化包](application-conversion-kit.md)。
+
 ## BOSS 直聘搜索入口
 
 建议每 3 天刷一次：

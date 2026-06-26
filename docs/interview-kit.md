@@ -9,6 +9,7 @@
 我有 5 年 Java 后端经验，最近重点转向 AI Agent/RAG 应用工程，技术路线是 Python 做 Agent/RAG/评估，Java 做业务工具服务和系统集成。做过企业知识库 Agent 方向的项目实践，熟悉 RAG、工具调用、trace、评估和服务化落地。看到贵司岗位涉及大模型应用/Agent/知识库方向，想进一步沟通一下岗位匹配度。
 
 更多版本见 [templates/boss-message.md](templates/boss-message.md)。
+完整求职转化包见 [application-conversion-kit.md](application-conversion-kit.md)。
 
 ## 项目介绍 3 分钟
 
@@ -19,6 +20,8 @@
 工程上我重点处理了四类问题：第一是 RAG 幻觉，所以做了引用来源和低置信度拒答；第二是工具误调用，所以每个工具都有参数 schema、权限校验和审计日志；第三是问题定位，所以记录 question、retrievedChunks、toolCalls、modelResponse、latency 和 tokens；第四是效果优化，所以构造了评估样本，对 TopK、切分策略和 Prompt 进行对比。
 
 这个项目体现的是我的迁移路线：Python 用来快速落地 Agent/RAG/评估，Java 用来承接企业业务系统和稳定工程化，不是只调模型，而是把模型能力变成一个可部署、可观测、可评估、能接业务系统的 Agent 平台。
+
+当前仓库可展示的证据包括：Python Agent API、Java Business Tool Service、OpenAPI/MCP 工具契约、Docker Compose runtime、Agent Eval Dashboard。
 
 ## 高频问题
 
