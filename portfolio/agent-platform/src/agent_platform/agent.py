@@ -17,6 +17,7 @@ from agent_platform.models import (
 from agent_platform.retrieval import KeywordRetriever
 from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.tools import BusinessToolRegistry
+from agent_platform.vector_store import QdrantRetriever, QdrantVectorIndex
 
 
 class AnswerGenerator(Protocol):
@@ -73,8 +74,27 @@ class AgentPlatform:
             answer_generator=answer_generator,
         )
 
+    @classmethod
+    def with_qdrant(
+        cls,
+        index: QdrantVectorIndex,
+        tools=None,
+        answer_generator: AnswerGenerator | None = None,
+    ) -> "AgentPlatform":
+        knowledge_base = KnowledgeBase()
+        return cls(
+            knowledge_base=knowledge_base,
+            retriever=QdrantRetriever(index),
+            tools=tools or BusinessToolRegistry(),
+            recorder=EvaluationRecorder(),
+            answer_generator=answer_generator,
+        )
+
     def ingest(self, document: Document) -> None:
         self._knowledge_base.ingest(document)
+        index_chunks = getattr(self._retriever, "index_chunks", None)
+        if index_chunks:
+            index_chunks(self._knowledge_base.chunks())
 
     def ask(self, question: str) -> AgentResponse:
         started = time.perf_counter()

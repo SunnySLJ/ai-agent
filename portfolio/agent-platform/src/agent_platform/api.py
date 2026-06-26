@@ -8,8 +8,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 from agent_platform.agent import AgentPlatform
+from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.llm import OpenAICompatibleChatClient
 from agent_platform.models import Document
+from agent_platform.tools import BusinessToolRegistry
+from agent_platform.vector_store import QdrantVectorIndex
 
 
 class DocumentPayload(BaseModel):
@@ -62,7 +65,23 @@ def create_app(platform: AgentPlatform | None = None) -> FastAPI:
 
 def _default_platform() -> AgentPlatform:
     java_tool_base_url = os.environ.get("JAVA_TOOL_BASE_URL")
+    qdrant_base_url = os.environ.get("QDRANT_BASE_URL")
     answer_generator = _answer_generator_from_env()
+    if qdrant_base_url:
+        tools = (
+            JavaBusinessToolRegistry(java_tool_base_url)
+            if java_tool_base_url
+            else BusinessToolRegistry()
+        )
+        return AgentPlatform.with_qdrant(
+            QdrantVectorIndex(
+                base_url=qdrant_base_url,
+                collection_name=os.environ.get("QDRANT_COLLECTION", "agent_docs"),
+                vector_size=int(os.environ.get("QDRANT_VECTOR_SIZE", "64")),
+            ),
+            tools=tools,
+            answer_generator=answer_generator,
+        )
     if java_tool_base_url:
         return AgentPlatform.with_java_tools(java_tool_base_url, answer_generator)
     return AgentPlatform.offline_demo(answer_generator)

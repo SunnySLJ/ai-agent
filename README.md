@@ -33,8 +33,9 @@
 - `portfolio/agent-eval-dashboard/`：Python eval runner，读取 JSONL 数据集并输出 Agent 评估 JSON/Markdown 报告。
 - `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
 - `OpenAICompatibleChatClient`：可选接入 OpenAI-compatible Chat Completion，默认仍保持离线确定性。
+- `QdrantVectorIndex`：可选接入 Qdrant 向量库，支持 deterministic embedding、chunk upsert、vector query 和 citation。
 - `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
-- `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service，并通过 `JAVA_TOOL_BASE_URL` 自动接入 Java 工具。
+- `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service + Qdrant，并通过环境变量自动接入 Java 工具和向量库。
 
 ## Agent 评估演示
 
@@ -69,6 +70,7 @@ docker compose up --build
 ```bash
 curl http://127.0.0.1:8000/health
 curl http://127.0.0.1:8080/health
+curl http://127.0.0.1:6333/healthz
 
 curl -X POST http://127.0.0.1:8000/ask \
   -H 'Content-Type: application/json' \

@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from agent_platform.api import create_app
 from test_java_tools import java_like_tool_service
 from test_llm import chat_completion_service
+from test_vector_store import FakeQdrantHandler, fake_qdrant_service
 
 
 class AgentPlatformApiTest(unittest.TestCase):
@@ -125,6 +126,35 @@ class AgentPlatformApiTest(unittest.TestCase):
         self.assertFalse(body["refused"])
         self.assertEqual("模型回答：API 环境变量已接入。", body["answer"])
         self.assertEqual("Hybrid", body["citations"][0]["title"])
+
+    def test_create_app_uses_qdrant_when_env_is_set(self):
+        with fake_qdrant_service() as base_url:
+            with mock.patch.dict(
+                "os.environ",
+                {
+                    "QDRANT_BASE_URL": base_url,
+                    "QDRANT_COLLECTION": "agent_docs",
+                },
+                clear=True,
+            ):
+                client = TestClient(create_app())
+                client.post(
+                    "/documents",
+                    json={
+                        "doc_id": "vector-rag",
+                        "title": "Vector RAG",
+                        "content": "Qdrant stores embeddings for Agent RAG retrieval with citations.",
+                    },
+                )
+
+                response = client.post("/ask", json={"question": "Agent RAG 为什么需要 Qdrant 向量库?"})
+
+        body = response.json()
+        self.assertFalse(body["refused"])
+        self.assertEqual("Vector RAG", body["citations"][0]["title"])
+        self.assertIn("Qdrant", body["answer"])
+        self.assertGreaterEqual(len(FakeQdrantHandler.upsert_requests), 1)
+        self.assertGreaterEqual(len(FakeQdrantHandler.query_requests), 1)
 
 
 if __name__ == "__main__":

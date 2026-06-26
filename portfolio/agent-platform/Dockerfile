@@ -10,7 +10,7 @@ COPY pyproject.toml ./
 COPY src ./src
 COPY data ./data
 
-RUN python -m pip install --no-cache-dir .
+RUN python -m pip install --timeout 120 --retries 10 --no-cache-dir .
 
 EXPOSE 8000
 

@@ -15,6 +15,14 @@ class DockerArtifactsTest(unittest.TestCase):
         self.assertIn("uvicorn", content)
         self.assertIn("agent_platform.api:app", content)
 
+    def test_python_dockerfile_uses_pip_retry_settings(self):
+        dockerfile = ROOT / "portfolio/agent-platform/Dockerfile"
+
+        content = dockerfile.read_text(encoding="utf-8")
+
+        self.assertIn("--timeout", content)
+        self.assertIn("--retries", content)
+
     def test_java_dockerfile_builds_and_runs_spring_boot_jar(self):
         dockerfile = ROOT / "portfolio/java-business-tool-service/Dockerfile"
 
@@ -38,6 +46,18 @@ class DockerArtifactsTest(unittest.TestCase):
         self.assertIn("depends_on:", content)
         self.assertIn("condition: service_healthy", content)
         self.assertIn("healthcheck:", content)
+
+    def test_compose_wires_python_to_qdrant_vector_database(self):
+        compose = ROOT / "compose.yaml"
+
+        content = compose.read_text(encoding="utf-8")
+
+        self.assertIn("qdrant:", content)
+        self.assertIn("qdrant/qdrant", content)
+        self.assertIn("QDRANT_BASE_URL=http://qdrant:6333", content)
+        self.assertIn("QDRANT_COLLECTION=agent_docs", content)
+        self.assertIn('"6333:6333"', content)
+        self.assertIn("qdrant:\n        condition: service_started", content)
 
     def test_dockerignore_files_exclude_build_artifacts(self):
         python_ignore = (ROOT / "portfolio/agent-platform/.dockerignore").read_text(

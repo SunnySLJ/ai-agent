@@ -24,7 +24,7 @@ cd portfolio/agent-platform
 Expected:
 
 ```text
-Ran 22 tests
+Ran 26 tests
 OK
 ```
 
@@ -75,6 +75,19 @@ OPENAI_MODEL=gpt-4o-mini \
 
 For local or domestic OpenAI-compatible providers, replace `OPENAI_BASE_URL` and `OPENAI_MODEL`. The Agent still refuses before calling the model when there is no retrieved evidence or successful tool result.
 
+## Run With Qdrant Vector Retrieval
+
+The default retriever is deterministic keyword retrieval. Set `QDRANT_BASE_URL` to store chunks in Qdrant and retrieve citations through vector query:
+
+```bash
+cd portfolio/agent-platform
+QDRANT_BASE_URL=http://127.0.0.1:6333 \
+QDRANT_COLLECTION=agent_docs \
+.venv/bin/uvicorn agent_platform.api:app --reload
+```
+
+The local embedding path uses `HashingEmbeddingModel`, so tests and demos do not require paid embedding keys. A production upgrade can replace it with a provider embedding model without changing the Qdrant boundary.
+
 ## Call Java Business Tools
 
 Terminal 1:
@@ -111,7 +124,10 @@ The Compose runtime exposes:
 
 - Python Agent API: `http://127.0.0.1:8000`
 - Java Business Tool Service: `http://127.0.0.1:8080`
+- Qdrant HTTP API: `http://127.0.0.1:6333`
 - Python container env: `JAVA_TOOL_BASE_URL=http://java-business-tool-service:8080`
+- Python container env: `QDRANT_BASE_URL=http://qdrant:6333`
+- Python container env: `QDRANT_COLLECTION=agent_docs`
 
 ## What Works Now
 
@@ -122,6 +138,7 @@ The Compose runtime exposes:
 - Call deterministic business tools.
 - Call Java Business Tool Service over HTTP.
 - Optionally call an OpenAI-compatible chat completion API.
+- Optionally store and retrieve document chunks through Qdrant vector search.
 - Record traces.
 - Summarize evaluation metrics.
 - Expose a FastAPI API for health, document ingestion, question answering, summary, and tool listing.
@@ -131,7 +148,7 @@ The Compose runtime exposes:
 - LangGraph workflow adapter.
 - LlamaIndex or LangChain retriever adapter.
 - MCP tool server wrapper.
-- Vector database adapter.
+- Rerank and hybrid retrieval adapter.
 
 ## Interview Pitch
 

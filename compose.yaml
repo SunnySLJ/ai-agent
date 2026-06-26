@@ -1,4 +1,9 @@
 services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+
   java-business-tool-service:
     build:
       context: ./portfolio/java-business-tool-service
@@ -20,9 +25,13 @@ services:
       - "8000:8000"
     environment:
       - JAVA_TOOL_BASE_URL=http://java-business-tool-service:8080
+      - QDRANT_BASE_URL=http://qdrant:6333
+      - QDRANT_COLLECTION=agent_docs
     depends_on:
       java-business-tool-service:
         condition: service_healthy
+      qdrant:
+        condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health || exit 1"]
       interval: 10s
