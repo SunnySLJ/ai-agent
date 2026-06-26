@@ -41,10 +41,11 @@
 
 ## 技术选型边界
 
-- Python 负责 AI 主链路：Agent 编排、RAG、文档解析、评估、trace、未来 LangGraph/LlamaIndex/FastAPI 适配。
-- Java 负责业务后端：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务和稳定部署。
-- MCP 负责工具接入：把 Java 业务能力安全暴露给 Python Agent。
-- 不再把主 RAG/Agent 链路写成全 Java；Spring AI 作为 Java 侧补充能力，不是第一个月主路径。
+- Python 负责 AI 主链路：LLM API、Prompt、Function Calling、Agent 编排、RAG、文档解析、Embedding、向量检索、评估、trace、FastAPI、后续 LangGraph/LlamaIndex。
+- Java 负责业务工具层：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、限流、日志和稳定部署。
+- MCP/OpenAPI/HTTP tool client 负责工具接入：把 Java 业务能力安全暴露给 Python Agent。
+- 第一个月不把主 RAG/Agent 链路写成全 Java；Spring AI 只作为 Java 侧补充能力和面试对比材料。
+- 新 feature 默认先判断是否属于 AI 链路；属于 AI 链路就优先落在 `portfolio/agent-platform/` 的 Python 侧，只有业务系统能力才落在 Java 服务。
 
 ## 每日闭环
 

@@ -44,10 +44,10 @@
 - 产出：主项目架构草图
 - 面试表达：Agent 和普通 ChatBot 的区别是什么？
 
-### Day 6：Java 路线选型
+### Day 6：Python-first 技术选型
 
-- 学：Python Agent/RAG 架构，并阅读 Spring AI RAG 文档作为 Java 侧对比：<https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html>
-- 做：确定主项目技术栈：Python Agent/RAG + Java Business Tool API + MCP/OpenAPI
+- 学：Python Agent/RAG/FastAPI 架构，并阅读 Spring AI RAG 文档作为 Java 侧对比：<https://docs.spring.io/spring-ai/reference/api/retrieval-augmented-generation.html>
+- 做：确定主项目技术栈：Python Agent/RAG/FastAPI + Java Business Tool API + MCP/OpenAPI
 - 产出：`portfolio/agent-platform/docs/architecture.md`
 - 面试表达：为什么 Agent/RAG 用 Python、业务工具层保留 Java？
 
@@ -77,7 +77,7 @@
 ### Day 10：Embedding 与向量库
 
 - 学：`../../agent/part05-agent-rag/Part 4. 大模型RAG嵌入向量数据库实战`
-- 做：选 pgvector 或 Qdrant，并写入设计理由
+- 做：优先选 Qdrant 做 Python RAG 演示；如果强调 Java/PostgreSQL 业务系统，再对比 pgvector
 - 产出：向量库接入说明
 
 ### Day 11：检索生成
@@ -126,10 +126,10 @@
 - 做：设计上下文压缩和隔离策略
 - 产出：Context 策略文档
 
-### Day 18：MCP 工具服务
+### Day 18：Python Agent 调 Java 工具服务
 
 - 学：MCP 官方入口：<https://modelcontextprotocol.io/docs/getting-started/intro>
-- 做：设计 Java 工具服务暴露方式
+- 做：先实现 Python HTTP tool client 调 Java Business Tool Service，再设计 MCP/OpenAPI 包装方式
 - 产出：`portfolio/mcp-tool-server/README.md` 完成版
 
 ### Day 19：多智能体与任务编排
@@ -176,7 +176,7 @@
 
 ### Day 26：面试题强化
 
-- 重点：Python RAG、Agent、FastAPI、LangGraph、向量库、MCP、Java 工具服务、部署、评估
+- 重点：Python RAG、Agent、FastAPI、LangGraph、LlamaIndex、向量库、MCP、Java 工具服务、部署、评估
 
 ### Day 27：项目演示脚本
 

@@ -6,10 +6,11 @@
 
 杭州 20K 左右最适合你的入口，不是纯算法工程师，而是：
 
-- Java AI 应用开发工程师
 - AI Agent 开发工程师
 - 大模型应用工程师
 - RAG/知识库工程师
+- Python AI 应用开发工程师
+- Java AI 应用开发工程师
 - AI 平台后端工程师
 - 智能客服/文档审核/企业知识库 Agent 工程师
 
@@ -21,6 +22,9 @@
 
 - AI Agent 杭州：<https://www.zhipin.com/web/geek/job?query=AI%20Agent&city=101210100>
 - 大模型应用 杭州：<https://www.zhipin.com/web/geek/job?query=%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BA%94%E7%94%A8&city=101210100>
+- Python RAG 杭州：<https://www.zhipin.com/web/geek/job?query=Python%20RAG&city=101210100>
+- FastAPI 大模型 杭州：<https://www.zhipin.com/web/geek/job?query=FastAPI%20%E5%A4%A7%E6%A8%A1%E5%9E%8B&city=101210100>
+- LangGraph 杭州：<https://www.zhipin.com/web/geek/job?query=LangGraph&city=101210100>
 - RAG Java 杭州：<https://www.zhipin.com/web/geek/job?query=RAG%20Java&city=101210100>
 - LangChain 杭州：<https://www.zhipin.com/web/geek/job?query=LangChain&city=101210100>
 - Spring AI 杭州：<https://www.zhipin.com/web/geek/job?query=Spring%20AI&city=101210100>
@@ -36,6 +40,7 @@
 - Agent 工作流：计划、工具选择、执行、失败重试、上下文压缩。
 - Memory：短期上下文、长期记忆、用户画像、会话状态。
 - 评估：检索命中率、答案准确率、幻觉检查、日志追踪、回放。
+- Python AI 工程：FastAPI、异步接口、流式输出、RAG 脚本、评估脚本、工具调用编排。
 - Java 服务化：Spring Boot 接口设计、鉴权、限流、异步任务、消息队列；Spring AI 作为 Java 侧补充了解。
 - 部署：Docker、Compose、K8s 入门、日志和监控。
 
@@ -56,13 +61,13 @@
 
 第一优先级：
 
-- JD 写明 Java/Spring Boot + 大模型应用。
+- JD 写明 Python/FastAPI/LangChain/LangGraph/RAG + 大模型应用，同时接受后端工程经验。
 - 业务是知识库、客服、文档、搜索、办公自动化、数据分析。
 - 要求 3-5 年后端经验，AI 经验可通过项目证明。
 
 第二优先级：
 
-- Python/LangChain 为主，但接受 Java 后端或工程化经验。
+- Java/Spring Boot + 大模型应用，或 Java 后端需要接入 AI 能力。
 - 公司正在从 Demo 转生产，需要后端稳定性和系统集成。
 
 暂缓：
