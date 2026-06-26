@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-26 17:13 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
+> 审查时间：2026-06-26 22:26 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
 
 ## 原始目标拆解
 
@@ -10,7 +10,7 @@
 | 不改动父级 `../../agent/` 资料 | 已遵守 | 新增与修改集中在 `work/ai-agent/` |
 | 技术路线改为 Python + Java 结合 | 已完成 | `docs/decisions/0001-python-java-hybrid.md`、`AGENTS.md`、`CLAUDE.md`、`docs/tech-stack-roadmap.md`、`portfolio/agent-platform/`、`portfolio/java-business-tool-service/` |
 | 主项目体现 AI Agent/RAG 能力 | 已完成 MVP | `portfolio/agent-platform/`，包含混合检索、Qdrant 向量检索、引用、拒答、工具调用、trace、summary、FastAPI |
-| 真实模型接口能力 | 已完成接口适配 | `OpenAICompatibleChatClient`、`OPENAI_*` env wiring、fake endpoint tests；真实 smoke 已尝试但当前 key 返回 401 invalid_api_key |
+| 真实模型接口能力 | 已完成 | `OpenAICompatibleChatClient`、`OPENAI_*` env wiring、fake endpoint tests；`/ask` 已通过 OpenAI-compatible 远端 gateway 真实模型 smoke |
 | Java 保留业务工具层价值 | 已完成 MVP | `portfolio/java-business-tool-service/`，包含订单、工单、待办、审计、幂等和错误码 |
 | Python Agent 调 Java 工具 | 已完成 | `AgentPlatform.with_java_tools()`、`JavaBusinessToolRegistry`、004 feature 测试 |
 | MCP/OpenAPI 工具契约 | 已完成 | `portfolio/mcp-tool-server/openapi.json`、`mcp-tools.json`、`docs/api-handoff.md` |
@@ -20,7 +20,7 @@
 | Agent 评估与失败回放 | 已完成 MVP | `portfolio/agent-eval-dashboard/`，20 条 eval case，可输出 JSON/Markdown eval report |
 | AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
 | BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md` |
-| GitHub 上传 | 已完成 | 远端：`https://github.com/SunnySLJ/ai-agent`，当前 `main` 已推送 |
+| GitHub 上传 | 部分完成 | 远端：`https://github.com/SunnySLJ/ai-agent`；`0c3010e` 已在远端，本地未推送提交包含 `.github/workflows/industry-watch.yml`，因 GitHub token 缺少 `workflow` scope 暂未推送 |
 
 ## 已推送的关键里程碑
 
@@ -54,6 +54,9 @@
 - `python3 -m json.tool mcp-tools.json`
 - `docker compose -f compose.yaml config`
 - `OpenAICompatibleChatClient` real smoke against default OpenAI-compatible endpoint returned HTTP 401 `invalid_api_key`; error detail is now redacted by regression test
+- `PYTHONPATH=portfolio/agent-platform/src python3 - <<'PY' ... OpenAICompatibleChatClient(base_url='https://api.dreamfilm.xin/v1', model='gpt-5.5') ... PY` returned `SMOKE_STATUS=success_remote_gateway`
+- `cd portfolio/agent-platform && PYTHONPATH=src .venv/bin/python - <<'PY' ... TestClient(create_app()).post('/ask') ... PY` returned `API_SMOKE_STATUS=success` with one citation
+- BOSS 登录态复核已尝试启动 Chrome 路径；Chrome 当前未运行，Codex Chrome Extension 在默认 profile 已安装并启用，继续前需要用户同意启动 Chrome
 - `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
 - `python3 -m json.tool docs/industry-watch-sources.json`
 - `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
@@ -74,7 +77,7 @@
 | 缺口 | 为什么重要 | 下一步 |
 |---|---|---|
 | BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招 | 登录 BOSS，按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位并记录反馈 |
-| 真实模型外部 smoke | 已有 OpenAI-compatible client，当前环境 key 已尝试但返回 401 invalid_api_key | 配置有效 `OPENAI_API_KEY`、`OPENAI_BASE_URL`、`OPENAI_MODEL` 后重跑一次 `/ask` |
+| 最新提交推送到 GitHub | 最新行业资讯自动化包含 workflow 文件，远端还没有这次提交 | 给 GitHub CLI token 增加 `workflow` scope 后执行 `git push origin main` |
 | 日常学习与投递日志 | 已有第一条工程日志，但还没有连续执行证据 | 持续写 `logs/daily/YYYY-MM-DD.md`，并补 BOSS 岗位筛选记录 |
 
 ## 完成判断
@@ -82,11 +85,11 @@
 不能把长期 goal 标记为 complete。理由：
 
 1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
-2. 作品集当前是 MVP 级，可以面试展示，但还没做有效模型 key 下的真实模型成功 smoke。
+2. 最新本地提交包含 GitHub Actions workflow，但当前 GitHub OAuth token 缺少 `workflow` scope，远端还没有最新提交。
 3. 学习和求职转化还需要连续日志、AI 行业资讯日志、BOSS 岗位筛选和投递反馈。
 
 下一阶段优先级：
 
-1. 用有效 key 做一次 OpenAI-compatible 外部 smoke。
-2. 做一次 BOSS 登录态岗位筛选并把结果写进 `logs/daily/`。
+1. 给 GitHub CLI token 增加 `workflow` scope，然后推送本地未推送提交。
+2. 用户同意启动 Chrome 后，做一次 BOSS 登录态岗位筛选并把结果写进 `logs/daily/`。
 3. 连续运行 AI 行业资讯日志并做每周趋势复盘。
