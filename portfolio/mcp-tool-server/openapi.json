@@ -1,0 +1,462 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Java Business Tool Service",
+    "version": "0.1.0",
+    "description": "OpenAPI contract for Java business tools exposed to the Python Agent Platform."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8080",
+      "description": "Local Java Business Tool Service"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "health",
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service is healthy.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "example": {
+                  "status": "ok"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tools": {
+      "get": {
+        "operationId": "listTools",
+        "summary": "List Agent-callable business tools",
+        "responses": {
+          "200": {
+            "description": "Tool metadata and required parameters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ToolListResponse"
+                },
+                "example": {
+                  "tools": [
+                    {
+                      "name": "get_order_status",
+                      "description": "Query order status by orderId.",
+                      "requiredParameters": ["orderId"]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/orders/{orderId}": {
+      "get": {
+        "operationId": "getOrderStatus",
+        "summary": "Query order status",
+        "parameters": [
+          {
+            "name": "orderId",
+            "in": "path",
+            "required": true,
+            "description": "Business order id.",
+            "schema": {
+              "type": "string",
+              "example": "ORD-1001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order status response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OrderResponse"
+                },
+                "example": {
+                  "orderId": "ORD-1001",
+                  "status": "shipped",
+                  "eta": "tomorrow",
+                  "summary": "订单 ORD-1001 当前状态：已发货，预计明日送达。"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Order was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": "ORDER_NOT_FOUND",
+                  "message": "Order ORD-404 was not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tickets/{ticketId}": {
+      "get": {
+        "operationId": "getTicketStatus",
+        "summary": "Query ticket status",
+        "parameters": [
+          {
+            "name": "ticketId",
+            "in": "path",
+            "required": true,
+            "description": "Business ticket id.",
+            "schema": {
+              "type": "string",
+              "example": "TCK-1001"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ticket status response.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketResponse"
+                },
+                "example": {
+                  "ticketId": "TCK-1001",
+                  "status": "processing",
+                  "owner": "support-team",
+                  "summary": "工单 TCK-1001 当前状态：处理中。"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Ticket was not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": "TICKET_NOT_FOUND",
+                  "message": "Ticket TCK-404 was not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/todos": {
+      "post": {
+        "operationId": "createTodo",
+        "summary": "Create an idempotent todo item",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTodoRequest"
+              },
+              "example": {
+                "title": "Follow up customer",
+                "idempotencyKey": "idem-1"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created or reused todo item.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoResponse"
+                },
+                "example": {
+                  "todoId": "TODO-1",
+                  "title": "Follow up customer",
+                  "status": "created"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Request body validation failed.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "code": "VALIDATION_ERROR",
+                  "message": "title and idempotencyKey are required"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/audit-events": {
+      "get": {
+        "operationId": "listAuditEvents",
+        "summary": "List business tool audit events",
+        "responses": {
+          "200": {
+            "description": "Recorded tool audit events.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditEventsResponse"
+                },
+                "example": {
+                  "events": [
+                    {
+                      "eventId": "AUD-1",
+                      "toolName": "get_order_status",
+                      "targetId": "ORD-1001",
+                      "success": true,
+                      "createdAt": "2026-06-26T08:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "HealthResponse": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "Health status.",
+            "example": "ok"
+          }
+        }
+      },
+      "ToolListResponse": {
+        "type": "object",
+        "required": ["tools"],
+        "properties": {
+          "tools": {
+            "type": "array",
+            "description": "Agent-callable tool metadata list.",
+            "example": [
+              {
+                "name": "get_order_status",
+                "description": "Query order status by orderId.",
+                "requiredParameters": ["orderId"]
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/ToolMetadata"
+            }
+          }
+        }
+      },
+      "ToolMetadata": {
+        "type": "object",
+        "required": ["name", "description", "requiredParameters"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Tool name exposed to Agent callers.",
+            "example": "get_order_status"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable tool description.",
+            "example": "Query order status by orderId."
+          },
+          "requiredParameters": {
+            "type": "array",
+            "description": "Required parameter names for this tool.",
+            "example": ["orderId"],
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "OrderResponse": {
+        "type": "object",
+        "required": ["orderId", "status", "eta", "summary"],
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Business order id.",
+            "example": "ORD-1001"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current order fulfillment status.",
+            "example": "shipped"
+          },
+          "eta": {
+            "type": "string",
+            "description": "Expected arrival or fulfillment time.",
+            "example": "tomorrow"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Localized answer-ready summary for Agent responses.",
+            "example": "订单 ORD-1001 当前状态：已发货，预计明日送达。"
+          }
+        }
+      },
+      "TicketResponse": {
+        "type": "object",
+        "required": ["ticketId", "status", "owner", "summary"],
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "Business ticket id.",
+            "example": "TCK-1001"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current ticket handling status.",
+            "example": "processing"
+          },
+          "owner": {
+            "type": "string",
+            "description": "Team or user currently responsible for the ticket.",
+            "example": "support-team"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Localized answer-ready summary for Agent responses.",
+            "example": "工单 TCK-1001 当前状态：处理中。"
+          }
+        }
+      },
+      "CreateTodoRequest": {
+        "type": "object",
+        "required": ["title", "idempotencyKey"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Todo title to create.",
+            "example": "Follow up customer"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "description": "Client-generated key used to avoid duplicate todo creation.",
+            "example": "idem-1"
+          }
+        }
+      },
+      "TodoResponse": {
+        "type": "object",
+        "required": ["todoId", "title", "status"],
+        "properties": {
+          "todoId": {
+            "type": "string",
+            "description": "Created todo id.",
+            "example": "TODO-1"
+          },
+          "title": {
+            "type": "string",
+            "description": "Todo title.",
+            "example": "Follow up customer"
+          },
+          "status": {
+            "type": "string",
+            "description": "Todo creation status.",
+            "example": "created"
+          }
+        }
+      },
+      "AuditEventsResponse": {
+        "type": "object",
+        "required": ["events"],
+        "properties": {
+          "events": {
+            "type": "array",
+            "description": "Audit events recorded for tool calls.",
+            "example": [
+              {
+                "eventId": "AUD-1",
+                "toolName": "get_order_status",
+                "targetId": "ORD-1001",
+                "success": true,
+                "createdAt": "2026-06-26T08:00:00Z"
+              }
+            ],
+            "items": {
+              "$ref": "#/components/schemas/AuditEvent"
+            }
+          }
+        }
+      },
+      "AuditEvent": {
+        "type": "object",
+        "required": ["eventId", "toolName", "targetId", "success", "createdAt"],
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "description": "Audit event id.",
+            "example": "AUD-1"
+          },
+          "toolName": {
+            "type": "string",
+            "description": "Tool name that was called.",
+            "example": "get_order_status"
+          },
+          "targetId": {
+            "type": "string",
+            "description": "Business id or result id targeted by the tool call.",
+            "example": "ORD-1001"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Whether the tool call succeeded.",
+            "example": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Event creation timestamp.",
+            "example": "2026-06-26T08:00:00Z"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["code", "message"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Stable machine-readable error code.",
+            "example": "ORDER_NOT_FOUND"
+          },
+          "message": {
+            "type": "string",
+            "description": "Human-readable error message.",
+            "example": "Order ORD-404 was not found"
+          }
+        }
+      }
+    }
+  }
+}

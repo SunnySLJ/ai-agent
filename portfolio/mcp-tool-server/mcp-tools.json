@@ -1,0 +1,82 @@
+{
+  "protocolReference": "https://modelcontextprotocol.io/specification/2025-06-18/server/tools",
+  "serverInfo": {
+    "name": "ai-agent-java-business-tools",
+    "version": "0.1.0"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "tools": [
+    {
+      "name": "get_order_status",
+      "description": "Query order status by orderId from the Java Business Tool Service.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "orderId": {
+            "type": "string",
+            "description": "Business order id.",
+            "examples": ["ORD-1001"]
+          }
+        },
+        "required": ["orderId"],
+        "additionalProperties": false
+      },
+      "http": {
+        "method": "GET",
+        "path": "/orders/{orderId}",
+        "operationId": "getOrderStatus"
+      }
+    },
+    {
+      "name": "get_ticket_status",
+      "description": "Query ticket status by ticketId from the Java Business Tool Service.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "ticketId": {
+            "type": "string",
+            "description": "Business ticket id.",
+            "examples": ["TCK-1001"]
+          }
+        },
+        "required": ["ticketId"],
+        "additionalProperties": false
+      },
+      "http": {
+        "method": "GET",
+        "path": "/tickets/{ticketId}",
+        "operationId": "getTicketStatus"
+      }
+    },
+    {
+      "name": "create_todo",
+      "description": "Create an idempotent todo item in the Java Business Tool Service.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Todo title to create.",
+            "examples": ["Follow up customer"]
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "description": "Client-generated key used to avoid duplicate todo creation.",
+            "examples": ["agent-1a2b3c4d"]
+          }
+        },
+        "required": ["title", "idempotencyKey"],
+        "additionalProperties": false
+      },
+      "http": {
+        "method": "POST",
+        "path": "/todos",
+        "operationId": "createTodo"
+      }
+    }
+  ]
+}
