@@ -6,12 +6,40 @@
 
 ## 第一阶段交付
 
-- 订单查询接口。
-- 工单查询接口。
-- 待办创建接口。
-- 工具参数 schema。
-- 审计日志字段。
-- 错误码和幂等键说明。
+- `GET /tools`：工具清单和参数 schema。
+- `GET /orders/{orderId}`：订单查询，示例 `ORD-1001`。
+- `GET /tickets/{ticketId}`：工单查询，示例 `TCK-1001`。
+- `POST /todos`：带 idempotency key 的待办创建。
+- `GET /audit-events`：工具调用审计日志。
+- 结构化错误码：例如 `ORDER_NOT_FOUND`。
+
+## 运行测试
+
+```bash
+cd portfolio/java-business-tool-service
+mvn test
+```
+
+## 本地启动
+
+```bash
+cd portfolio/java-business-tool-service
+mvn spring-boot:run
+```
+
+## 调用示例
+
+```bash
+curl http://127.0.0.1:8080/tools
+curl http://127.0.0.1:8080/orders/ORD-1001
+curl http://127.0.0.1:8080/tickets/TCK-1001
+
+curl -X POST http://127.0.0.1:8080/todos \
+  -H 'Content-Type: application/json' \
+  -d '{"title":"Follow up customer","idempotencyKey":"idem-1"}'
+
+curl http://127.0.0.1:8080/audit-events
+```
 
 ## 面试讲法
 
