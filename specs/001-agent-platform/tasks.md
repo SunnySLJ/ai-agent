@@ -1,6 +1,6 @@
 # Feature 001 Tasks
 
-- [x] T01 [DOC] Replace Java-first docs with Python-led hybrid architecture. [AC5]
+- [x] T01 [DOC] Replace Java-first docs with Python + Java hybrid architecture. [AC5]
 - [x] T02 [BE] Create Python package skeleton under `portfolio/agent-platform`. [AC1-AC4]
 - [x] T03 [BE] Write failing tests for cited answer, refusal, tool call, and eval summary. [AC1-AC4]
 - [x] T04 [BE] Implement dataclass models. [AC1-AC4]

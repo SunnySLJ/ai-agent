@@ -1,4 +1,4 @@
-# AI Agent Engineer Career
+# AI Agent: Python + Java Hybrid Career Project
 
 这个项目的目标很直接：用 1 个月把 5 年 Java 后端经验转成可面试、可展示、可持续成长的 AI Agent/RAG 应用工程师能力。
 
@@ -6,6 +6,7 @@
 - 城市：杭州
 - 目标薪资：先冲 20K 左右，再看 20-40K 区间
 - 背景：5 年 Java 工程师，不转纯算法岗，走 Python Agent/RAG + Java 业务后端的混合工程路线
+- 技术边界：不是纯 Python，也不是 Python + TypeScript 替代 Java；Python 做 AI 主链路，Java 做企业业务工具层
 - 时间窗口：2026-06-27 到 2026-07-26 第一轮冲刺
 - 长线目标：35 岁前形成 AI Agent 工程能力、作品集、行业判断和可复用方法论
 
@@ -31,6 +32,7 @@
 - `portfolio/agent-platform/`：Python Agent/RAG core + FastAPI API + Java HTTP tool adapter。
 - `portfolio/agent-eval-dashboard/`：Python eval runner，读取 JSONL 数据集并输出 Agent 评估 JSON/Markdown 报告。
 - `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
+- `OpenAICompatibleChatClient`：可选接入 OpenAI-compatible Chat Completion，默认仍保持离线确定性。
 - `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
 - `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service，并通过 `JAVA_TOOL_BASE_URL` 自动接入 Java 工具。
 

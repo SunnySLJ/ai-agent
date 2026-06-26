@@ -1,6 +1,6 @@
 # Agent Platform
 
-Python-led AI Agent/RAG portfolio project.
+Python AI Agent/RAG core for a Python + Java hybrid portfolio project.
 
 This is the main portfolio project for the AI Agent career track. It uses Python for the AI layer and keeps Java as a separate business tool/API layer.
 
@@ -24,7 +24,7 @@ cd portfolio/agent-platform
 Expected:
 
 ```text
-Ran 17 tests
+Ran 22 tests
 OK
 ```
 
@@ -60,6 +60,20 @@ When `JAVA_TOOL_BASE_URL` is set, `agent_platform.api:create_app()` uses Java-ba
 cd portfolio/agent-platform
 JAVA_TOOL_BASE_URL=http://127.0.0.1:8080 .venv/bin/uvicorn agent_platform.api:app --reload
 ```
+
+## Run With OpenAI-Compatible LLM
+
+The default app is offline and deterministic. Set `OPENAI_API_KEY` to enable a real OpenAI-compatible chat completion endpoint:
+
+```bash
+cd portfolio/agent-platform
+OPENAI_API_KEY=your-key \
+OPENAI_BASE_URL=https://api.openai.com/v1 \
+OPENAI_MODEL=gpt-4o-mini \
+.venv/bin/uvicorn agent_platform.api:app --reload
+```
+
+For local or domestic OpenAI-compatible providers, replace `OPENAI_BASE_URL` and `OPENAI_MODEL`. The Agent still refuses before calling the model when there is no retrieved evidence or successful tool result.
 
 ## Call Java Business Tools
 
@@ -107,6 +121,7 @@ The Compose runtime exposes:
 - Refuse when evidence is missing.
 - Call deterministic business tools.
 - Call Java Business Tool Service over HTTP.
+- Optionally call an OpenAI-compatible chat completion API.
 - Record traces.
 - Summarize evaluation metrics.
 - Expose a FastAPI API for health, document ingestion, question answering, summary, and tool listing.
@@ -116,7 +131,7 @@ The Compose runtime exposes:
 - LangGraph workflow adapter.
 - LlamaIndex or LangChain retriever adapter.
 - MCP tool server wrapper.
-- Docker Compose for Python API + Java tool service.
+- Vector database adapter.
 
 ## Interview Pitch
 

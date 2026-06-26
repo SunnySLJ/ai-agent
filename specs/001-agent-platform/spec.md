@@ -1,4 +1,4 @@
-# Feature 001: Python-led Hybrid Agent Platform
+# Feature 001: Python + Java Hybrid Agent Platform
 
 ## Why
 
@@ -65,4 +65,3 @@ Then it reports total runs, refusals, tool calls, tool success count, and averag
 Given the user needs to explain the project in interviews,
 When reading the docs,
 Then the project clearly explains why Python owns the AI layer and Java owns the business/tool layer.
-

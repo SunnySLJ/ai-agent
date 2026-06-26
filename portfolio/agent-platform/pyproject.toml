@@ -1,7 +1,7 @@
 [project]
 name = "agent-platform"
 version = "0.1.0"
-description = "Python-led AI Agent/RAG portfolio core"
+description = "Python AI Agent/RAG core for Java business tool integration"
 requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115,<1.0",

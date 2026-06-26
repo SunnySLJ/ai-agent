@@ -1,6 +1,6 @@
 # Agent Platform Architecture
 
-## Why Python First
+## Why Python Owns The AI Layer
 
 Python is the better first implementation language for the AI layer because most practical Agent/RAG work happens around fast experiments:
 
@@ -15,7 +15,7 @@ Python is the better first implementation language for the AI layer because most
 
 The first month should optimize for learning speed, interview demos, and the ability to explain Agent/RAG internals. Python fits that better than forcing every AI concern into Java.
 
-## Why Keep Java
+## Why Java Owns The Business Tool Layer
 
 Java remains the user's advantage. Enterprise AI Agents need to call real systems:
 
@@ -54,6 +54,8 @@ The default MVP is deterministic:
 
 The optional Java HTTP tool adapter calls the Java Business Tool Service through a real local HTTP boundary, while keeping offline tests deterministic.
 
+The optional OpenAI-compatible chat client can generate final answers from retrieved evidence and Java tool results. It is disabled unless `OPENAI_API_KEY` is configured, so tests and demos still work without a model key.
+
 ## Upgrade Path
 
 1. Replace keyword retrieval with embeddings and Qdrant/pgvector.
@@ -61,5 +63,6 @@ The optional Java HTTP tool adapter calls the Java Business Tool Service through
 3. Add LangGraph for stateful Agent workflows.
 4. Add LlamaIndex for document ingestion and indexing experiments.
 5. Java Business Tool Service plus Python HTTP tool adapter. Done.
-6. Add MCP/OpenAPI wrapper.
-7. Add Docker Compose for Python + Java + vector database.
+6. MCP/OpenAPI wrapper. Done.
+7. Docker Compose for Python + Java runtime. Done.
+8. Add vector database and rerank path.

@@ -5,9 +5,17 @@ from fastapi.testclient import TestClient
 
 from agent_platform.api import create_app
 from test_java_tools import java_like_tool_service
+from test_llm import chat_completion_service
 
 
 class AgentPlatformApiTest(unittest.TestCase):
+    def setUp(self):
+        self.env_patcher = mock.patch.dict("os.environ", {}, clear=True)
+        self.env_patcher.start()
+
+    def tearDown(self):
+        self.env_patcher.stop()
+
     def test_health_returns_ok(self):
         client = TestClient(create_app())
 
@@ -89,6 +97,34 @@ class AgentPlatformApiTest(unittest.TestCase):
         self.assertIn("测试专属订单", body["answer"])
         self.assertEqual("get_order_status", body["trace"]["tool_calls"][0]["name"])
         self.assertTrue(body["trace"]["tool_calls"][0]["success"])
+
+    def test_create_app_uses_openai_compatible_llm_when_env_is_set(self):
+        with chat_completion_service("模型回答：API 环境变量已接入。") as base_url:
+            with mock.patch.dict(
+                "os.environ",
+                {
+                    "OPENAI_API_KEY": "test-key",
+                    "OPENAI_BASE_URL": base_url,
+                    "OPENAI_MODEL": "test-model",
+                },
+                clear=True,
+            ):
+                client = TestClient(create_app())
+                client.post(
+                    "/documents",
+                    json={
+                        "doc_id": "hybrid",
+                        "title": "Hybrid",
+                        "content": "Python handles Agent RAG and Java handles tools.",
+                    },
+                )
+
+                response = client.post("/ask", json={"question": "Python 和 Java 怎么分工?"})
+
+        body = response.json()
+        self.assertFalse(body["refused"])
+        self.assertEqual("模型回答：API 环境变量已接入。", body["answer"])
+        self.assertEqual("Hybrid", body["citations"][0]["title"])
 
 
 if __name__ == "__main__":

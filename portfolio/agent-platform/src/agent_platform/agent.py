@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import time
+from typing import Protocol
 
 from agent_platform.evaluation import EvaluationRecorder
 from agent_platform.knowledge_base import KnowledgeBase
@@ -18,37 +19,58 @@ from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.tools import BusinessToolRegistry
 
 
+class AnswerGenerator(Protocol):
+    def generate_answer(
+        self,
+        question: str,
+        chunks: list[RetrievedChunk],
+        tool_calls: list[ToolCall],
+    ) -> str:
+        ...
+
+
 class AgentPlatform:
     def __init__(
         self,
         knowledge_base: KnowledgeBase,
         retriever: KeywordRetriever,
-        tools: BusinessToolRegistry,
+        tools,
         recorder: EvaluationRecorder,
+        answer_generator: AnswerGenerator | None = None,
     ) -> None:
         self._knowledge_base = knowledge_base
         self._retriever = retriever
         self._tools = tools
         self._recorder = recorder
+        self._answer_generator = answer_generator
 
     @classmethod
-    def offline_demo(cls) -> "AgentPlatform":
+    def offline_demo(
+        cls,
+        answer_generator: AnswerGenerator | None = None,
+    ) -> "AgentPlatform":
         knowledge_base = KnowledgeBase()
         return cls(
             knowledge_base=knowledge_base,
             retriever=KeywordRetriever(knowledge_base),
             tools=BusinessToolRegistry(),
             recorder=EvaluationRecorder(),
+            answer_generator=answer_generator,
         )
 
     @classmethod
-    def with_java_tools(cls, base_url: str) -> "AgentPlatform":
+    def with_java_tools(
+        cls,
+        base_url: str,
+        answer_generator: AnswerGenerator | None = None,
+    ) -> "AgentPlatform":
         knowledge_base = KnowledgeBase()
         return cls(
             knowledge_base=knowledge_base,
             retriever=KeywordRetriever(knowledge_base),
             tools=JavaBusinessToolRegistry(base_url),
             recorder=EvaluationRecorder(),
+            answer_generator=answer_generator,
         )
 
     def ingest(self, document: Document) -> None:
@@ -102,6 +124,12 @@ class AgentPlatform:
         if successful_tools:
             parts.append("工具结果：" + " ".join(call.result for call in successful_tools))
         confidence = max([chunk.score for chunk in chunks] or [0.8])
+        if self._answer_generator:
+            return (
+                self._answer_generator.generate_answer(question, chunks, successful_tools),
+                False,
+                confidence,
+            )
         return "\n".join(parts), False, confidence
 
     def _citations(self, chunks: list[RetrievedChunk]) -> list[Citation]:

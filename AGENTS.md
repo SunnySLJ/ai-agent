@@ -9,6 +9,7 @@
 - 不移动、不重命名、不改写 `../../agent/` 课程资料。
 - 所有学习计划必须从杭州 AI Agent/RAG/大模型应用岗位倒推。
 - 默认岗位方向是 Python Agent/RAG + Java 后端业务集成工程师，不是纯算法研究岗。
+- 技术路线必须保留 Java 业务工具层；TypeScript 可以作为以后前端展示补充，但不能替代 Java 在本项目里的位置。
 - 文档必须服务求职和作品集，不写空泛鸡血内容。
 - 目标薪资先按杭州 20K 左右设计，能力目标向 20-40K 区间靠近。
 - 所有新增项目资料放在本目录内，不污染父级课程目录。
@@ -42,7 +43,7 @@
 ## 技术选型边界
 
 - Python 负责 AI 主链路：LLM API、Prompt、Function Calling、Agent 编排、RAG、文档解析、Embedding、向量检索、评估、trace、FastAPI、后续 LangGraph/LlamaIndex。
-- Java 负责业务工具层：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、限流、日志和稳定部署。
+- Java 负责企业业务工具层：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、限流、日志和稳定部署。
 - MCP/OpenAPI/HTTP tool client 负责工具接入：把 Java 业务能力安全暴露给 Python Agent。
 - 第一个月不把主 RAG/Agent 链路写成全 Java；Spring AI 只作为 Java 侧补充能力和面试对比材料。
 - 新 feature 默认先判断是否属于 AI 链路；属于 AI 链路就优先落在 `portfolio/agent-platform/` 的 Python 侧，只有业务系统能力才落在 Java 服务。

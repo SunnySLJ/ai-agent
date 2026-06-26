@@ -4,6 +4,15 @@ from agent_platform.agent import AgentPlatform
 from agent_platform.models import Document
 
 
+class FakeAnswerGenerator:
+    def __init__(self) -> None:
+        self.calls = []
+
+    def generate_answer(self, question, chunks, tool_calls):
+        self.calls.append((question, chunks, tool_calls))
+        return "模型回答：这是由 LLM 生成的答案。"
+
+
 class AgentPlatformTest(unittest.TestCase):
     def test_answers_with_citation_when_relevant_document_exists(self):
         platform = AgentPlatform.offline_demo()
@@ -22,6 +31,34 @@ class AgentPlatformTest(unittest.TestCase):
         self.assertGreaterEqual(len(response.citations), 1)
         self.assertEqual("Spring AI and RAG", response.citations[0].title)
         self.assertGreaterEqual(len(response.trace.retrieved_chunks), 1)
+
+    def test_uses_answer_generator_when_evidence_exists(self):
+        generator = FakeAnswerGenerator()
+        platform = AgentPlatform.offline_demo(answer_generator=generator)
+        platform.ingest(
+            Document(
+                doc_id="hybrid",
+                title="Hybrid Agent Architecture",
+                content="Python owns Agent RAG orchestration while Java exposes business tools.",
+            )
+        )
+
+        response = platform.ask("Python 和 Java 怎么分工?")
+
+        self.assertFalse(response.refused)
+        self.assertEqual("模型回答：这是由 LLM 生成的答案。", response.answer)
+        self.assertEqual(1, len(generator.calls))
+        self.assertGreaterEqual(len(response.citations), 1)
+        self.assertEqual(response.answer, response.trace.model_response)
+
+    def test_does_not_call_answer_generator_when_evidence_is_missing(self):
+        generator = FakeAnswerGenerator()
+        platform = AgentPlatform.offline_demo(answer_generator=generator)
+
+        response = platform.ask("明天杭州天气怎么样?")
+
+        self.assertTrue(response.refused)
+        self.assertEqual([], generator.calls)
 
     def test_refuses_when_evidence_is_missing(self):
         platform = AgentPlatform.offline_demo()
@@ -75,4 +112,3 @@ class AgentPlatformTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

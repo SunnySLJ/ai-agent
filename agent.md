@@ -8,7 +8,7 @@
 
 ## 技术路线结论
 
-本项目采用 **Python 主导 AI 链路 + Java 承接业务工具层**。
+本项目采用 **Python AI 主链路 + Java 企业业务工具层** 的混合工程路线。不要把它理解成纯 Python，也不要改成 Python + TypeScript 替代 Java。
 
 - Python 负责 Agent/RAG/评估/API：LLM 调用、Prompt、Function Calling、文档解析、切分、Embedding、检索、重排、引用、拒答、trace、eval、FastAPI、后续 LangGraph/LlamaIndex。
 - Java 负责企业业务工具服务：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、稳定部署和原有 Java 后端经验迁移。
