@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-27 13:28 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，GitHub 同步与每日资讯自动化已经打通；完整目标尚不能标记为全部完成，因为还缺一次真实 BOSS 登录态岗位复核。
+> 审查时间：2026-06-27 13:38 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，GitHub 同步与每日资讯自动化已经打通；完整目标尚不能标记为全部完成，因为还缺一次真实 BOSS 登录态岗位复核。
 
 ## 原始目标拆解
 
@@ -75,7 +75,7 @@
 - `OpenAICompatibleChatClient` real smoke against default OpenAI-compatible endpoint returned HTTP 401 `invalid_api_key`; error detail is now redacted by regression test
 - `PYTHONPATH=portfolio/agent-platform/src python3 - <<'PY' ... OpenAICompatibleChatClient(base_url='https://api.dreamfilm.xin/v1', model='gpt-5.5') ... PY` returned `SMOKE_STATUS=success_remote_gateway`
 - `cd portfolio/agent-platform && PYTHONPATH=src .venv/bin/python - <<'PY' ... TestClient(create_app()).post('/ask') ... PY` returned `API_SMOKE_STATUS=success` with one citation
-- BOSS 登录态复核在用户同意后已重试 Chrome 路径；Chrome 已运行，Codex Chrome Extension 在默认 profile 已安装并启用，native host manifest 正常；用户报告已修好并再次允许后，已打开默认 Profile 新窗口并等待 2 秒重试，browser-client 仍返回 `Browser is not available: extension`，需要从 Codex 插件 UI 继续修复 Chrome 插件后再试
+- BOSS 登录态复核在用户修复 Chrome 插件后已重新连接成功；普通网页 `https://example.com/` 可正常打开。BOSS 域名会加载 `static.zhipin.com` 脚本但自动化标签页最终保持空白，当前无法通过自动新开页面读取岗位列表。
 - `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
 - `python3 -m json.tool docs/industry-watch-sources.json`
 - `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
@@ -98,8 +98,8 @@
 
 | 缺口 | 为什么重要 | 下一步 |
 |---|---|---|
-| BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招；当前 Chrome 插件通信失败，无法安全接管登录态页面 | 修复/重装 Codex Chrome 插件后，登录 BOSS，按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位并记录反馈 |
-| BOSS 岗位筛选日志 | 已有 daily log 和行业资讯日志，但还没有 BOSS 20 条岗位复核证据 | 修复 Chrome 插件通信后，补 `logs/applications/YYYY-MM-DD-boss-screening.md` |
+| BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招；当前自动化打开 BOSS 结果页会变成空白 | 在 Chrome 默认 Profile 手动打开 BOSS 搜索结果并确认岗位列表可见后，接管现有标签页并按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位 |
+| BOSS 岗位筛选日志 | 已有 daily log 和行业资讯日志，但还没有 BOSS 20 条岗位复核证据 | 补 `logs/applications/YYYY-MM-DD-boss-screening.md` |
 
 ## 完成判断
 
@@ -107,10 +107,10 @@
 
 1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
 2. 学习和求职转化已经有 daily log 与 AI 行业资讯日志，但还需要 BOSS 岗位筛选和投递反馈。
-3. Chrome、Codex Chrome Extension 与 native host 本地检查均通过；用户报告已修好并允许重开默认 Profile 窗口后，browser-client 仍返回 `Browser is not available: extension`，当前无法安全接管 BOSS 登录态页面。
+3. Chrome、Codex Chrome Extension 与 native host 已可用；但 BOSS 页面在自动化新标签中最终为空白，当前需要用户先手动打开可见岗位列表，再由 agent 接管现有标签页做只读记录。
 4. `python3 scripts/completion_gate.py --root .` 当前明确返回 `Complete: no`。
 
 下一阶段优先级：
 
-1. 修复 Codex Chrome 插件通信后，做一次 BOSS 登录态岗位筛选并把结果写进 `logs/applications/` 和 `logs/daily/`。
+1. 用户在 Chrome 默认 Profile 手动打开 BOSS 搜索结果页并确认岗位列表可见后，做一次 BOSS 登录态岗位筛选并把结果写进 `logs/applications/` 和 `logs/daily/`。
 2. 连续运行 AI 行业资讯日志并做每周趋势复盘。
