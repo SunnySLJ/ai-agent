@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-27 13:23 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，GitHub 同步与每日资讯自动化已经打通；完整目标尚不能标记为全部完成，因为还缺一次真实 BOSS 登录态岗位复核。
+> 审查时间：2026-06-27 13:28 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，GitHub 同步与每日资讯自动化已经打通；完整目标尚不能标记为全部完成，因为还缺一次真实 BOSS 登录态岗位复核。
 
 ## 原始目标拆解
 
@@ -75,7 +75,7 @@
 - `OpenAICompatibleChatClient` real smoke against default OpenAI-compatible endpoint returned HTTP 401 `invalid_api_key`; error detail is now redacted by regression test
 - `PYTHONPATH=portfolio/agent-platform/src python3 - <<'PY' ... OpenAICompatibleChatClient(base_url='https://api.dreamfilm.xin/v1', model='gpt-5.5') ... PY` returned `SMOKE_STATUS=success_remote_gateway`
 - `cd portfolio/agent-platform && PYTHONPATH=src .venv/bin/python - <<'PY' ... TestClient(create_app()).post('/ask') ... PY` returned `API_SMOKE_STATUS=success` with one citation
-- BOSS 登录态复核在用户同意后已重试 Chrome 路径；Chrome 已运行，Codex Chrome Extension 在默认 profile 已安装并启用，native host manifest 正常；用户再次允许后已打开默认 Profile 新窗口并等待 2 秒重试，browser-client 仍返回 `Browser is not available: extension`，需要从 Codex 插件 UI 重装/修复 Chrome 插件后继续
+- BOSS 登录态复核在用户同意后已重试 Chrome 路径；Chrome 已运行，Codex Chrome Extension 在默认 profile 已安装并启用，native host manifest 正常；用户报告已修好并再次允许后，已打开默认 Profile 新窗口并等待 2 秒重试，browser-client 仍返回 `Browser is not available: extension`，需要从 Codex 插件 UI 继续修复 Chrome 插件后再试
 - `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
 - `python3 -m json.tool docs/industry-watch-sources.json`
 - `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
@@ -107,7 +107,7 @@
 
 1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
 2. 学习和求职转化已经有 daily log 与 AI 行业资讯日志，但还需要 BOSS 岗位筛选和投递反馈。
-3. Chrome、Codex Chrome Extension 与 native host 本地检查均通过；用户允许重开默认 Profile 窗口后，browser-client 仍返回 `Browser is not available: extension`，当前无法安全接管 BOSS 登录态页面。
+3. Chrome、Codex Chrome Extension 与 native host 本地检查均通过；用户报告已修好并允许重开默认 Profile 窗口后，browser-client 仍返回 `Browser is not available: extension`，当前无法安全接管 BOSS 登录态页面。
 4. `python3 scripts/completion_gate.py --root .` 当前明确返回 `Complete: no`。
 
 下一阶段优先级：
