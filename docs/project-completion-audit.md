@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-26 22:51 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
+> 审查时间：2026-06-27 11:45 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，但完整目标尚不能标记为全部完成。
 
 ## 原始目标拆解
 
@@ -65,10 +65,13 @@
 - `OpenAICompatibleChatClient` real smoke against default OpenAI-compatible endpoint returned HTTP 401 `invalid_api_key`; error detail is now redacted by regression test
 - `PYTHONPATH=portfolio/agent-platform/src python3 - <<'PY' ... OpenAICompatibleChatClient(base_url='https://api.dreamfilm.xin/v1', model='gpt-5.5') ... PY` returned `SMOKE_STATUS=success_remote_gateway`
 - `cd portfolio/agent-platform && PYTHONPATH=src .venv/bin/python - <<'PY' ... TestClient(create_app()).post('/ask') ... PY` returned `API_SMOKE_STATUS=success` with one citation
-- BOSS 登录态复核已尝试启动 Chrome 路径；Chrome 当前未运行，Codex Chrome Extension 在默认 profile 已安装并启用，继续前需要用户同意启动 Chrome
+- BOSS 登录态复核在用户同意后已重试 Chrome 路径；Chrome 已运行，Codex Chrome Extension 在默认 profile 已安装并启用，native host manifest 正常，但 browser-client 仍返回 `Browser is not available: extension`，需要从 Codex 插件 UI 重装/修复 Chrome 插件后继续
 - `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
 - `python3 -m json.tool docs/industry-watch-sources.json`
 - `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
+- `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-27 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-27.md`
+- `python3 -m unittest discover -s tests -v`，15 tests OK
+- `python3 scripts/completion_gate.py --root .` returned `Complete: no`，blockers 仍为 `git_unpushed_commits`、`github_workflow_scope_missing`、`boss_screening_missing`
 - `docker compose -f compose.yaml up --build -d`
 - `docker compose -f compose.yaml ps` 显示 `agent-platform` 和 `java-business-tool-service` 均为 `healthy`
 - `curl http://127.0.0.1:8000/health` 返回 `{"status":"ok"}`
@@ -85,7 +88,7 @@
 
 | 缺口 | 为什么重要 | 下一步 |
 |---|---|---|
-| BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招 | 登录 BOSS，按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位并记录反馈 |
+| BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招；当前 Chrome 插件通信失败，无法安全接管登录态页面 | 修复/重装 Codex Chrome 插件后，登录 BOSS，按 `docs/application-conversion-kit.md` 的入口筛 20 个岗位并记录反馈 |
 | 最新提交推送到 GitHub | 最新行业资讯自动化包含 workflow 文件，远端还没有这次提交 | 给 GitHub CLI token 增加 `workflow` scope 后执行 `git push origin main` |
 | 日常学习与投递日志 | 已有第一条工程日志，但还没有连续执行证据 | 持续写 `logs/daily/YYYY-MM-DD.md`，并补 BOSS 岗位筛选记录 |
 
@@ -101,5 +104,5 @@
 下一阶段优先级：
 
 1. 给 GitHub CLI token 增加 `workflow` scope，然后推送本地未推送提交。
-2. 用户同意启动 Chrome 后，做一次 BOSS 登录态岗位筛选并把结果写进 `logs/daily/`。
+2. 修复 Codex Chrome 插件通信后，做一次 BOSS 登录态岗位筛选并把结果写进 `logs/applications/` 和 `logs/daily/`。
 3. 连续运行 AI 行业资讯日志并做每周趋势复盘。

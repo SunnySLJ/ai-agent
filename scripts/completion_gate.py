@@ -173,7 +173,7 @@ def _next_actions(
     if git_ahead > 0:
         actions.append("git push origin main")
     if boss_reviewed_rows < 20:
-        actions.append("同意启动 Chrome 后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个 BOSS 登录态岗位")
+        actions.append("Chrome 扩展可用且 BOSS 已登录后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个 BOSS 登录态岗位")
     return actions
 
 

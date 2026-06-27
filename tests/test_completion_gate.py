@@ -36,6 +36,10 @@ class CompletionGateTest(unittest.TestCase):
             result["next_actions"],
         )
         self.assertIn("git push origin main", result["next_actions"])
+        self.assertIn(
+            "Chrome 扩展可用且 BOSS 已登录后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个 BOSS 登录态岗位",
+            result["next_actions"],
+        )
 
     def test_accepts_boss_log_with_twenty_reviewed_rows_and_clean_push_state(self):
         with tempfile.TemporaryDirectory() as tmpdir:
