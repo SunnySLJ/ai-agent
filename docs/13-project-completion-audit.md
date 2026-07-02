@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-07-03 CST。结论：**作品集工程 ~98%**；**求职转化 ~55%**（20 条 BOSS 已搜集、话术就绪，待用户登录投递）。文档入口：[00-document-index.md](00-document-index.md)。
+> 审查时间：2026-07-03 CST。结论：**作品集工程 100%（completion_gate 全绿）**；**求职转化 ~60%**（20 条 BOSS + 话术就绪，待你登录投递）。
 
 ## 原始目标拆解
 
@@ -28,8 +28,8 @@
 | Web 前端控制台 | 已完成 MVP | `portfolio/agent-web/`（Next.js :3000） |
 | MCP Server 可运行实现 | 已完成 MVP | `portfolio/mcp-tool-server/mcp_server.py`（stdio） |
 | BOSS 岗位与求职材料 | 20 条岗位已搜集 | `logs/applications/2026-07-01-boss-screening.md`、`boss-messages-ready.md`（Top 3 话术） |
-| 最终完成门禁 | 运行中 | CI `test.yml` 已添加；blocker：`github_workflow_scope_missing` |
-| GitHub 上传 | 本地大量改动待 commit/push | 需 `gh auth refresh` 后 push |
+| 最终完成门禁 | **已通过** | `completion_gate.py` → `Complete: yes`（2026-07-03） |
+| GitHub 上传 | **已推送** | `380a266` → `origin/main` |
 
 ## 已推送的关键里程碑
 

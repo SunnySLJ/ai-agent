@@ -217,7 +217,7 @@ POST /ask { question, session_id? }
 | 022 | TraceId + Resilience | ⏳ P1 |
 | — | CI test workflow | ✅ `.github/workflows/test.yml` |
 | — | Application Conversion | ⏳ Top 3 待投递 |
-| — | Completion Gate | ⏳ blocker: workflow scope |
+| — | Completion Gate | ✅ **Complete: yes** |
 
 ---
 
