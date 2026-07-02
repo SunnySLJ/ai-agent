@@ -18,7 +18,7 @@
 | Memory | `../../agent/part08-agent-memory` | 短期和长期记忆设计 |
 | Context Engineering | `../../agent/part09-agent-context` | 上下文隔离、压缩、选择 |
 | FastAPI 基础 | `../../agent/part10-agent` | Python AI 服务形态；笔记见 `portfolio/agent-platform/notes-fastapi.md` |
-| 文档切分 / Qdrant / RAG 链路 | `portfolio/agent-platform/docs/` | Day 9–11 产出见 chunking、notes-qdrant、rag-pipeline |
+| RAG 文档产出 | `portfolio/agent-platform/docs/` | chunking、rag-pipeline、answer-strategy；`notes-qdrant.md` |
 | Agent 设计与部署 | `../../agent/part11-agent-design` | 架构设计、接口设计、上线 |
 | Docker/K8s | `../../agent/part12-agent-docker` | 作品集部署说明 |
 | Agent 评估 | `../../agent/part13-agent-score` | **P0 必学**：评估集、指标、RAGAS |

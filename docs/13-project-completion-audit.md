@@ -107,7 +107,7 @@
 
 | 缺口 | 为什么重要 | 下一步 |
 |---|---|---|
-| 实际投递与面试反馈 | 验证简历与话术 | 用 `boss-messages-ready.md` 投 Top 3，记录回复 |
+| 实际投递与面试反馈 | 用户选择跳过 | 材料保留：`boss-messages-ready.md` |
 | 连续 daily log | 学习轨迹 | ✅ 已补 06-26 至 07-03 |
 | CI test workflow | 工程化门禁 | ✅ `.github/workflows/test.yml` 已添加 |
 | GitHub workflow scope | completion gate blocker | `gh auth refresh -h github.com -s workflow` |
@@ -122,6 +122,5 @@
 
 下一阶段优先级：
 
-1. 用户登录 BOSS 投递 Top 3，更新 `logs/applications/2026-07-02-applications.md`。
-2. 本机 `gh auth refresh -h github.com -s workflow` 后 push 全部本地改动。
-3. Day 9 文档切分策略；P1 官方 LangGraph / Rerank。
+1. 按 [02-30-day-sprint.md](02-30-day-sprint.md) Day 13 整理 eval 数据集说明。
+2. P1：官方 LangGraph / Rerank。

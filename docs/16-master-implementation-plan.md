@@ -204,6 +204,7 @@ POST /ask { question, session_id? }
 | — | 递归切分 `chunking.py` | ✅ Day 9 |
 | — | Qdrant 接入说明 | ✅ Day 10 `notes-qdrant.md` |
 | — | RAG 检索时序图 | ✅ Day 11 `rag-pipeline.md` |
+| — | 回答策略（引用+拒答） | ✅ Day 12 `answer-strategy.md` |
 
 ### Phase C：Agent 编排（第 3 周）
 
@@ -314,8 +315,9 @@ POST /ask { question, session_id? }
 
 1. 登录 BOSS 投递 Top 3（`boss-messages-ready.md`）
 2. `gh auth refresh -h github.com -s workflow` → commit → push
-3. Day 8–9：文档解析/切分策略
+3. Day 12–13：回答策略、eval 数据集说明
 4. P1：官方 LangGraph、Rerank
+5. ~~BOSS 投递~~（用户跳过，材料保留备用）
 
 ### 第 2 周重点
 
