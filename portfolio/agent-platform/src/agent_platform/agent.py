@@ -20,6 +20,7 @@ from agent_platform.models import (
 from agent_platform.retrieval import HybridRetriever, KeywordRetriever
 from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.approval import ApprovalStore
+from agent_platform.chunking import ChunkingStrategy
 from agent_platform.safety import check_prompt_safety
 from agent_platform.session import SessionStore
 from agent_platform.streaming import format_sse, iter_text_deltas, to_json
@@ -71,8 +72,9 @@ class AgentPlatform:
         approval_store: ApprovalStore | None = None,
         human_in_the_loop: bool = True,
         embedding_model: EmbeddingModel | None = None,
+        chunking_strategy: ChunkingStrategy = ChunkingStrategy.RECURSIVE,
     ) -> "AgentPlatform":
-        knowledge_base = KnowledgeBase()
+        knowledge_base = KnowledgeBase(chunking_strategy=chunking_strategy)
         return cls(
             knowledge_base=knowledge_base,
             retriever=HybridRetriever.from_knowledge_base(
@@ -96,8 +98,9 @@ class AgentPlatform:
         approval_store: ApprovalStore | None = None,
         human_in_the_loop: bool = True,
         embedding_model: EmbeddingModel | None = None,
+        chunking_strategy: ChunkingStrategy = ChunkingStrategy.RECURSIVE,
     ) -> "AgentPlatform":
-        knowledge_base = KnowledgeBase()
+        knowledge_base = KnowledgeBase(chunking_strategy=chunking_strategy)
         return cls(
             knowledge_base=knowledge_base,
             retriever=HybridRetriever.from_knowledge_base(
@@ -121,8 +124,9 @@ class AgentPlatform:
         session_store: SessionStore | None = None,
         approval_store: ApprovalStore | None = None,
         human_in_the_loop: bool = True,
+        chunking_strategy: ChunkingStrategy = ChunkingStrategy.RECURSIVE,
     ) -> "AgentPlatform":
-        knowledge_base = KnowledgeBase()
+        knowledge_base = KnowledgeBase(chunking_strategy=chunking_strategy)
         return cls(
             knowledge_base=knowledge_base,
             retriever=QdrantRetriever(index),

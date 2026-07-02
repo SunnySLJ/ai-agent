@@ -201,6 +201,9 @@ POST /ask { question, session_id? }
 | 017 | Real Embedding Adapter | ✅ |
 | 018 | Rerank Enhancement | ⏳ P1 |
 | — | 文档解析策略表 | ✅ `document-parsing-strategy.md` |
+| — | 递归切分 `chunking.py` | ✅ Day 9 |
+| — | Qdrant 接入说明 | ✅ Day 10 `notes-qdrant.md` |
+| — | RAG 检索时序图 | ✅ Day 11 `rag-pipeline.md` |
 
 ### Phase C：Agent 编排（第 3 周）
 

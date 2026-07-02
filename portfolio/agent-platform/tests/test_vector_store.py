@@ -5,6 +5,7 @@ from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from agent_platform.agent import AgentPlatform
+from agent_platform.chunking import ChunkingStrategy
 from agent_platform.embeddings import HashingEmbeddingModel
 from agent_platform.models import Document
 from agent_platform.vector_store import QdrantVectorIndex
@@ -100,7 +101,10 @@ class VectorStoreTest(unittest.TestCase):
     def test_qdrant_vector_index_creates_collection_upserts_and_queries_chunks(self):
         with fake_qdrant_service() as base_url:
             index = QdrantVectorIndex(base_url=base_url, collection_name="agent_docs", vector_size=8)
-            platform = AgentPlatform.with_qdrant(index)
+            platform = AgentPlatform.with_qdrant(
+                index,
+                chunking_strategy=ChunkingStrategy.PARAGRAPH,
+            )
             platform.ingest(
                 Document(
                     doc_id="vector-rag",
@@ -125,7 +129,10 @@ class VectorStoreTest(unittest.TestCase):
         with fake_qdrant_service() as base_url:
             FakeQdrantHandler.scores = [0.0, -0.2, 0.41]
             index = QdrantVectorIndex(base_url=base_url, collection_name="agent_docs", vector_size=8)
-            platform = AgentPlatform.with_qdrant(index)
+            platform = AgentPlatform.with_qdrant(
+                index,
+                chunking_strategy=ChunkingStrategy.PARAGRAPH,
+            )
             platform.ingest(
                 Document(
                     doc_id="vector-rag",

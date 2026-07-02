@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 
+from agent_platform.chunking import ChunkingStrategy, split_document
 from agent_platform.models import Document
 
 
@@ -15,8 +15,17 @@ class DocumentChunk:
 
 
 class KnowledgeBase:
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        *,
+        chunking_strategy: ChunkingStrategy = ChunkingStrategy.RECURSIVE,
+        max_chunk_chars: int = 480,
+        chunk_overlap: int = 40,
+    ) -> None:
         self._chunks: list[DocumentChunk] = []
+        self._chunking_strategy = chunking_strategy
+        self._max_chunk_chars = max_chunk_chars
+        self._chunk_overlap = chunk_overlap
 
     def ingest(self, document: Document) -> None:
         self._chunks = [chunk for chunk in self._chunks if chunk.doc_id != document.doc_id]
@@ -34,9 +43,10 @@ class KnowledgeBase:
         return list(self._chunks)
 
     def _split(self, content: str) -> list[str]:
-        normalized = content.strip()
-        if not normalized:
-            return []
-        parts = [part.strip() for part in re.split(r"\n{2,}|(?<=[.!?。])\s+", normalized)]
-        return [part for part in parts if part] or [normalized]
+        return split_document(
+            content,
+            strategy=self._chunking_strategy,
+            max_chars=self._max_chunk_chars,
+            overlap=self._chunk_overlap,
+        )
 
