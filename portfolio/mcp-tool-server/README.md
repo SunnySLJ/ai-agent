@@ -2,14 +2,16 @@
 
 辅助作品集项目。
 
-目标：把 Java 后端业务能力整理成 Agent 可调用的工具契约。当前交付的是 OpenAPI 3.0.3 + MCP `tools/list` 风格 manifest，不声明完整 MCP runtime。
+目标：把 Java 后端业务能力整理成 Agent 可调用的工具契约，并提供可运行的 MCP stdio Server。
 
 ## 交付物
 
 - `openapi.json`：Java Business Tool Service 的 OpenAPI 合约。
 - `mcp-tools.json`：MCP-ready 工具定义，包含 `name`、`description`、`inputSchema` 和本项目的 HTTP 映射。
+- `mcp_server.py`：可运行的 MCP JSON-RPC stdio server，支持 `initialize`、`tools/list`、`tools/call`。
 - `docs/api-handoff.md`：接口联调说明、代码路径、流程图、字段表、错误码和验证命令。
 - `tests/test_contract_artifacts.py`：合同测试，校验 OpenAPI 与 MCP-ready manifest 对齐。
+- `tests/test_mcp_server_runtime.py`：运行时测试，校验 MCP server 能代理 Java HTTP 工具。
 
 ## 工具
 
@@ -24,6 +26,22 @@ cd portfolio/mcp-tool-server
 python3 -m unittest discover -s tests -v
 python3 -m json.tool openapi.json >/tmp/ai-agent-openapi.json
 python3 -m json.tool mcp-tools.json >/tmp/ai-agent-mcp-tools.json
+```
+
+## MCP stdio Server
+
+Java 业务工具服务启动后，可通过 stdio 运行 MCP server：
+
+```bash
+export JAVA_TOOL_BASE_URL=http://127.0.0.1:8080
+cd portfolio/mcp-tool-server
+python3 mcp_server.py
+```
+
+示例请求（stdin 一行 JSON）：
+
+```json
+{"jsonrpc":"2.0","id":1,"method":"tools/call","params":{"name":"get_order_status","arguments":{"orderId":"ORD-1001"}}}
 ```
 
 ## 面试讲法

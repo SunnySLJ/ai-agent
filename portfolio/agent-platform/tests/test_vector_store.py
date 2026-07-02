@@ -5,8 +5,9 @@ from contextlib import contextmanager
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from agent_platform.agent import AgentPlatform
+from agent_platform.embeddings import HashingEmbeddingModel
 from agent_platform.models import Document
-from agent_platform.vector_store import HashingEmbeddingModel, QdrantVectorIndex
+from agent_platform.vector_store import QdrantVectorIndex
 
 
 class FakeQdrantHandler(BaseHTTPRequestHandler):

@@ -12,12 +12,13 @@
 
 ## 每天怎么用
 
-1. 打开 [docs/30-day-sprint.md](docs/30-day-sprint.md)，执行当天任务。
-2. 按 [docs/source-map.md](docs/source-map.md) 只学当天需要的 `../../agent/` 资料。
-3. 按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 每天定时收集 AI 行业资讯，写入 `logs/industry/YYYY-MM-DD.md`。
-4. 每天写一份 `logs/daily/YYYY-MM-DD.md`，模板在 [docs/templates/daily-log.md](docs/templates/daily-log.md)。
+0. 从 [docs/00-document-index.md](docs/00-document-index.md) 进入，按序号找文档。
+1. 打开 [docs/02-30-day-sprint.md](docs/02-30-day-sprint.md)，执行当天任务。
+2. 按 [docs/07-source-map.md](docs/07-source-map.md) 只学当天需要的 `../../agent/` 资料。
+3. 按 [docs/14-ai-industry-watch.md](docs/14-ai-industry-watch.md) 每天定时收集 AI 行业资讯，写入 `logs/industry/YYYY-MM-DD.md`。
+4. 每天写一份 `logs/daily/YYYY-MM-DD.md`，模板在 [docs/templates/T01-daily-log.md](docs/templates/T01-daily-log.md)。
 5. 每周至少推进一个作品集交付，路径见 [portfolio](portfolio)。
-6. 每 3 天用 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md) 刷一次 BOSS 直聘关键词，修正学习重点。
+6. 每 3 天用 [docs/08-job-market-hangzhou.md](docs/08-job-market-hangzhou.md) 刷一次 BOSS 直聘关键词，修正学习重点。
 
 ## 成果标准
 
@@ -36,8 +37,15 @@
 - `portfolio/java-business-tool-service/`：Spring Boot 业务工具服务，包含订单、工单、待办、审计和结构化错误。
 - `OpenAICompatibleChatClient`：可选接入 OpenAI-compatible Chat Completion，默认仍保持离线确定性。
 - `QdrantVectorIndex`：可选接入 Qdrant 向量库，支持 deterministic embedding、chunk upsert、vector query 和 citation。
+- `safety.py` + `session.py`：Prompt 注入拦截、多轮会话 `session_id` 与 `GET /sessions/{id}`。
+- `approval.py` + `POST /approvals/{id}/confirm`：Human-in-the-loop，写操作（如 `create_todo`）需人工确认后执行。
+- `graph_orchestrator.py`：LangGraph 风格状态机编排（safety → retrieve → tools → compose）。
+- `document_parser.py`：`/documents` 支持 `content_type=application/pdf`（base64 编码）。
+- `POST /ask/stream`：SSE 流式输出，事件类型 `meta` / `token` / `done`。
+- `portfolio/agent-web/`：Next.js Web 控制台（:3000），连接 FastAPI，支持对话、流式、入库、审批和 eval 概览。
+- `embeddings.py`：`OpenAICompatibleEmbeddingModel` 接入 `/embeddings`；设置 `OPENAI_EMBEDDING_MODEL` 后 Qdrant 与混合检索自动切换真实向量。
 - `specs/004-agent-java-tool-integration/`：Python Agent 调 Java 工具服务的集成 feature 文档和 TDD 任务。
-- `compose.yaml`：一键启动 Python Agent API + Java Business Tool Service + Qdrant，并通过环境变量自动接入 Java 工具和向量库。
+- `compose.yaml`：一键启动 Web + Python Agent API + Java Business Tool Service + Qdrant。
 
 ## Agent 评估演示
 
@@ -59,7 +67,7 @@ PYTHONPATH=../agent-platform/src:src python3 -m agent_eval_dashboard.cli \
 
 ```bash
 python3 scripts/industry_watch.py \
-  --sources docs/industry-watch-sources.json \
+  --sources docs/14-industry-watch-sources.json \
   --out-dir logs/industry
 ```
 
@@ -67,7 +75,7 @@ GitHub Actions 会每天 01:00 UTC 自动运行一次，对应北京时间 09:00
 
 ## 最终完成门禁
 
-检查 GitHub 推送、workflow scope 和 BOSS 20 岗位复核是否都完成，并输出下一步动作：
+检查 GitHub 推送、workflow scope 和技能差距复盘是否都完成，并输出下一步动作：
 
 ```bash
 python3 scripts/completion_gate.py --root .
@@ -89,6 +97,8 @@ Docker daemon 已启动时运行：
 docker compose up --build
 ```
 
+访问 Web 控制台：<http://127.0.0.1:3000>
+
 验证：
 
 ```bash
@@ -109,17 +119,21 @@ docker compose down
 
 ## 文档地图
 
+- [docs/00-document-index.md](docs/00-document-index.md)：**文档总索引（按序号，从这里开始）**
 - [AGENTS.md](AGENTS.md)：给 Codex/Agent 的执行规则。
 - [CLAUDE.md](CLAUDE.md)：给 Claude 的执行规则。
+- [docs/03-architecture-overview.md](docs/03-architecture-overview.md)：项目顶层架构定稿。
 - [docs/decisions/0001-python-java-hybrid.md](docs/decisions/0001-python-java-hybrid.md)：最终技术栈决策，明确 Python + Java 混合路线。
-- [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)：杭州岗位画像。
-- [docs/ai-industry-watch.md](docs/ai-industry-watch.md)：每日 AI 行业资讯收集规则。
-- [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md)：完整技术栈路线。
-- [docs/application-conversion-kit.md](docs/application-conversion-kit.md)：把项目转成简历、BOSS 话术和面试讲法。
+- [docs/08-job-market-hangzhou.md](docs/08-job-market-hangzhou.md)：杭州岗位画像。
+- [docs/09-job-skills-matrix.md](docs/09-job-skills-matrix.md)：公开 JD 多源汇总的 90+ 项技能矩阵与缺口分析。
+- [docs/14-ai-industry-watch.md](docs/14-ai-industry-watch.md)：每日 AI 行业资讯收集规则。
+- [docs/05-tech-stack-roadmap.md](docs/05-tech-stack-roadmap.md)：完整技术栈路线。
+- [docs/10-application-conversion-kit.md](docs/10-application-conversion-kit.md)：把项目转成简历、BOSS 话术和面试讲法。
 - [logs/applications](logs/applications)：BOSS 岗位复核、投递和反馈日志。
-- [docs/project-completion-audit.md](docs/project-completion-audit.md)：当前完成度、证据和剩余缺口。
-- [docs/30-day-sprint.md](docs/30-day-sprint.md)：一个月冲刺计划。
-- [docs/source-map.md](docs/source-map.md)：本地课程资料映射。
-- [docs/portfolio-projects.md](docs/portfolio-projects.md)：作品集拆解。
-- [docs/interview-kit.md](docs/interview-kit.md)：面试与求职材料。
-- [docs/5-year-growth-map.md](docs/5-year-growth-map.md)：30 到 35 岁成长路线。
+- [docs/13-project-completion-audit.md](docs/13-project-completion-audit.md)：当前完成度、证据和剩余缺口。
+- [docs/02-30-day-sprint.md](docs/02-30-day-sprint.md)：一个月冲刺计划。
+- [docs/07-source-map.md](docs/07-source-map.md)：本地课程资料映射。
+- [docs/06-portfolio-projects.md](docs/06-portfolio-projects.md)：作品集拆解。
+- [docs/12-interview-kit.md](docs/12-interview-kit.md)：面试与求职材料。
+- [docs/11-resume-and-interview-pack.md](docs/11-resume-and-interview-pack.md)：简历与面试话术包（可直接复制）。
+- [docs/15-5-year-growth-map.md](docs/15-5-year-growth-map.md)：30 到 35 岁成长路线。

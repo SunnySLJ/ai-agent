@@ -1,19 +1,21 @@
 # Application Logs
 
-这里记录真实求职动作，尤其是 BOSS 登录态岗位复核、打招呼、投递和反馈。
+这里记录求职相关动作：技能差距复盘、打招呼、投递和面试反馈。
 
 ## 文件命名
 
-- `YYYY-MM-DD-boss-screening.md`：当天 BOSS 岗位筛选记录。
+- `skills-gap-review.md`：对照 [docs/09-job-skills-matrix.md](../../docs/09-job-skills-matrix.md) 的技能差距复盘（主文件）。
+- `YYYY-MM-DD-skills-gap-review.md`：按日期存档的复盘快照（可选）。
 - `YYYY-MM-DD-application-feedback.md`：当天打招呼、投递、回复和面试反馈。
 
-## 记录要求
+## 技能复盘要求
 
-- 只把登录态下能看到的当前岗位写成“已复核”。
-- 公开搜索入口只能作为线索，不能当成仍在招的证据。
-- 每次至少记录搜索词、公司、岗位、薪资、地点、经验、JD 关键词、匹配级别、风险点和下一步。
-- 筛选 20 个岗位后，把 P0/P1/P2 数量和需要补强的作品集能力同步写入 `logs/daily/`。
+- 数据来源：公开 JD 分析（猎聘、智联、高校就业网、行业报告），**不爬取 BOSS 直聘**。
+- 对照 `docs/09-job-skills-matrix.md` 的 90+ 项技能，标记状态：`作品证据` / `已掌握` / `学习中` / `待补`。
+- 每 2 周更新一次，把 P0 待补项同步到 `docs/02-30-day-sprint.md` 和作品集 backlog。
+- 筛选目标岗位时，BOSS 仅作为搜索入口，手动浏览后记录到 `application-feedback`。
 
 ## 模板
 
-使用 `docs/templates/boss-screening-log.md`。
+- 技能复盘：`docs/templates/T05-skills-gap-review.md`
+- 投递反馈：自行记录在 `YYYY-MM-DD-application-feedback.md`

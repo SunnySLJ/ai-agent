@@ -52,7 +52,7 @@
 
 ## 后续动作
 
-- 更新 `docs/job-market-hangzhou.md`：
-- 更新 `docs/application-conversion-kit.md`：
-- 更新 `docs/interview-kit.md`：
+- 更新 `docs/08-job-market-hangzhou.md`：
+- 更新 `docs/10-application-conversion-kit.md`：
+- 更新 `docs/12-interview-kit.md`：
 - 写入 `logs/daily/YYYY-MM-DD.md`：

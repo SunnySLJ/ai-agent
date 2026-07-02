@@ -6,6 +6,7 @@ import re
 from typing import Any
 from urllib import error, parse, request
 
+from agent_platform.approval import MUTATING_TOOLS
 from agent_platform.models import ToolCall
 
 
@@ -21,20 +22,68 @@ class JavaBusinessToolRegistry:
         return [tool["name"] for tool in payload.get("tools", []) if "name" in tool]
 
     def invoke(self, question: str) -> list[ToolCall]:
-        calls: list[ToolCall] = []
+        return [self.execute(planned) for planned in self.plan(question)]
+
+    def plan(self, question: str) -> list[dict[str, object]]:
+        planned: list[dict[str, object]] = []
         order_match = re.search(r"ORD-\d+", question)
         if order_match:
-            calls.append(self._order_status(order_match.group(0)))
+            planned.append(
+                {
+                    "name": "get_order_status",
+                    "arguments": {"orderId": order_match.group(0)},
+                }
+            )
 
         ticket_match = re.search(r"TCK-\d+", question)
         if ticket_match:
-            calls.append(self._ticket_status(ticket_match.group(0)))
+            planned.append(
+                {
+                    "name": "get_ticket_status",
+                    "arguments": {"ticketId": ticket_match.group(0)},
+                }
+            )
         elif "工单" in question:
-            calls.append(self._ticket_status("TCK-1001"))
+            planned.append(
+                {
+                    "name": "get_ticket_status",
+                    "arguments": {"ticketId": "TCK-1001"},
+                }
+            )
 
         if "待办" in question or "todo" in question.lower():
-            calls.append(self._create_todo(question))
-        return calls
+            planned.append(
+                {
+                    "name": "create_todo",
+                    "arguments": {
+                        "title": question.strip(),
+                        "idempotencyKey": self._idempotency_key(question),
+                    },
+                }
+            )
+        return planned
+
+    def execute(self, planned: dict[str, object]) -> ToolCall:
+        name = str(planned["name"])
+        arguments = {key: str(value) for key, value in planned["arguments"].items()}
+        if name == "get_order_status":
+            return self._order_status(arguments["orderId"])
+        if name == "get_ticket_status":
+            return self._ticket_status(arguments["ticketId"])
+        if name == "create_todo":
+            return self._create_todo_from_arguments(arguments)
+        return ToolCall(
+            name=name,
+            arguments=arguments,
+            result=f"未知工具 {name}",
+            success=False,
+        )
+
+    def requires_approval(self, question: str) -> dict[str, object] | None:
+        for planned in self.plan(question):
+            if planned["name"] in MUTATING_TOOLS:
+                return planned
+        return None
 
     def _order_status(self, order_id: str) -> ToolCall:
         status, payload = self._request_json("GET", f"/orders/{parse.quote(order_id)}")
@@ -69,9 +118,17 @@ class JavaBusinessToolRegistry:
         )
 
     def _create_todo(self, question: str) -> ToolCall:
+        return self._create_todo_from_arguments(
+            {
+                "title": question.strip(),
+                "idempotencyKey": self._idempotency_key(question),
+            }
+        )
+
+    def _create_todo_from_arguments(self, arguments: dict[str, str]) -> ToolCall:
         payload = {
-            "title": question.strip(),
-            "idempotencyKey": self._idempotency_key(question),
+            "title": arguments["title"],
+            "idempotencyKey": arguments["idempotencyKey"],
         }
         status, response = self._request_json("POST", "/todos", payload)
         if status < 400:

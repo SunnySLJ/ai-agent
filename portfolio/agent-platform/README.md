@@ -48,6 +48,10 @@ curl -X POST http://127.0.0.1:8000/ask \
   -H 'Content-Type: application/json' \
   -d '{"question":"Python 和 Java 怎么分工?"}'
 
+curl -N -X POST http://127.0.0.1:8000/ask/stream \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"Python 和 Java 怎么分工?"}'
+
 curl http://127.0.0.1:8000/summary
 curl http://127.0.0.1:8000/tools
 ```
@@ -86,7 +90,17 @@ QDRANT_COLLECTION=agent_docs \
 .venv/bin/uvicorn agent_platform.api:app --reload
 ```
 
-The local embedding path uses `HashingEmbeddingModel`, so tests and demos do not require paid embedding keys. A production upgrade can replace it with a provider embedding model without changing the Qdrant boundary.
+The local embedding path uses `HashingEmbeddingModel` by default, so tests and demos do not require paid embedding keys. Set `OPENAI_EMBEDDING_MODEL` with `OPENAI_API_KEY` to call an OpenAI-compatible `/embeddings` endpoint for Qdrant and hybrid dense retrieval.
+
+```bash
+cd portfolio/agent-platform
+OPENAI_API_KEY=your-key \
+OPENAI_BASE_URL=https://api.openai.com/v1 \
+OPENAI_EMBEDDING_MODEL=text-embedding-3-small \
+OPENAI_EMBEDDING_DIMENSIONS=1536 \
+QDRANT_BASE_URL=http://127.0.0.1:6333 \
+.venv/bin/uvicorn agent_platform.api:app --reload
+```
 
 ## Call Java Business Tools
 
@@ -141,7 +155,7 @@ The Compose runtime exposes:
 - Optionally store and retrieve document chunks through Qdrant vector search.
 - Record traces.
 - Summarize evaluation metrics.
-- Expose a FastAPI API for health, document ingestion, question answering, summary, and tool listing.
+- Expose a FastAPI API for health, document ingestion, question answering, streaming SSE, summary, and tool listing.
 
 ## Next Adapters
 

@@ -12,8 +12,8 @@
 
 ### Day 1：岗位倒推和环境准备
 
-- 读：`docs/job-market-hangzhou.md`
-- 看：`docs/ai-industry-watch.md`
+- 读：`docs/08-job-market-hangzhou.md`
+- 看：`docs/14-ai-industry-watch.md`
 - 刷：BOSS 关键词 `AI Agent`、`大模型应用`、`RAG Java`
 - 学：`../../agent/part01-agent-api`
 - 产出：写第一份 `logs/daily/2026-06-27.md`
@@ -176,7 +176,7 @@
 
 ### Day 25：BOSS 打招呼和投递
 
-- 使用 [docs/templates/boss-message.md](templates/boss-message.md)
+- 使用 [docs/templates/T03-boss-message.md](templates/T03-boss-message.md)
 - 投递：20 个岗位
 - 记录：回复率、约面率
 

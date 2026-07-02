@@ -1,6 +1,6 @@
 # 项目完成度审查
 
-> 审查时间：2026-06-27 13:43 CST。结论：项目已经形成可展示的求职作品集骨架和主要工程闭环，GitHub 同步与每日资讯自动化已经打通；完整目标尚不能标记为全部完成，因为还缺一次真实 BOSS 登录态岗位复核。
+> 审查时间：2026-07-03 CST。结论：**作品集工程 ~98%**；**求职转化 ~55%**（20 条 BOSS 已搜集、话术就绪，待用户登录投递）。文档入口：[00-document-index.md](00-document-index.md)。
 
 ## 原始目标拆解
 
@@ -8,7 +8,7 @@
 |---|---|---|
 | 在 `work/ai-agent` 下创建完整项目 | 已完成 | `README.md`、`AGENTS.md`、`CLAUDE.md`、`agent.md`、`docs/`、`portfolio/`、`specs/` |
 | 不改动父级 `../../agent/` 资料 | 已遵守 | 新增与修改集中在 `work/ai-agent/` |
-| 技术路线改为 Python + Java 结合 | 已完成 | `docs/decisions/0001-python-java-hybrid.md`、`AGENTS.md`、`CLAUDE.md`、`docs/tech-stack-roadmap.md`、`portfolio/agent-platform/`、`portfolio/java-business-tool-service/` |
+| 技术路线改为 Python + Java 结合 | 已完成 | `docs/decisions/0001-python-java-hybrid.md`、`AGENTS.md`、`CLAUDE.md`、`docs/05-tech-stack-roadmap.md`、`portfolio/agent-platform/`、`portfolio/java-business-tool-service/` |
 | 主项目体现 AI Agent/RAG 能力 | 已完成 MVP | `portfolio/agent-platform/`，包含混合检索、Qdrant 向量检索、引用、拒答、工具调用、trace、summary、FastAPI |
 | 真实模型接口能力 | 已完成 | `OpenAICompatibleChatClient`、`OPENAI_*` env wiring、fake endpoint tests；`/ask` 已通过 OpenAI-compatible 远端 gateway 真实模型 smoke |
 | Java 保留业务工具层价值 | 已完成 MVP | `portfolio/java-business-tool-service/`，包含订单、工单、待办、审计、幂等和错误码 |
@@ -18,10 +18,18 @@
 | Qdrant 向量库 | 已完成 MVP | `QdrantVectorIndex`、`HashingEmbeddingModel`、`QDRANT_*` env wiring、fake Qdrant tests、Compose Qdrant service |
 | Rerank/混合检索 | 已完成 MVP | `BM25Retriever`、`LocalVectorRetriever`、`HybridRetriever`、`retrieval_eval_dataset.jsonl`、retrieval eval report |
 | Agent 评估与失败回放 | 已完成 MVP | `portfolio/agent-eval-dashboard/`，20 条 eval case，可输出 JSON/Markdown eval report |
-| AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
-| BOSS 岗位与求职材料 | 已完成文档版 | `docs/job-market-hangzhou.md`、`docs/application-conversion-kit.md`、`docs/interview-kit.md`、`docs/templates/boss-message.md`、`docs/templates/boss-screening-log.md`、`logs/applications/README.md` |
-| 最终完成门禁 | 已完成脚本版 | `scripts/completion_gate.py`、`tests/test_completion_gate.py`，当前输出 `Complete: no`，并列出 `Unpushed Commits` 与 `Next Actions` |
-| GitHub 上传 | 已完成 | 远端：`https://github.com/SunnySLJ/ai-agent`；`815a9dd` 已推送到 `origin/main`，GitHub CLI token 已具备 `workflow` scope |
+| AI 行业资讯日常收集机制 | 已完成 MVP | `scripts/industry_watch.py`、`docs/14-industry-watch-sources.json`、`.github/workflows/industry-watch.yml`、`logs/industry/2026-06-26.md` |
+| Prompt 注入防御 + 多轮会话 | 已完成 | `safety.py`、`session.py`、`GET /sessions/{id}` |
+| Human-in-the-loop | 已完成 MVP | `approval.py`、`POST /approvals/{id}/confirm`，`create_todo` 需审批 |
+| LangGraph 风格编排 | 已完成 MVP | `graph_orchestrator.py`（自研状态机，非官方 LangGraph 包） |
+| SSE 流式输出 | 已完成 | `POST /ask/stream`，事件 `meta` / `token` / `done` |
+| 真实 Embedding | 已完成 | `embeddings.py`、`OpenAICompatibleEmbeddingModel` |
+| PDF 文档解析 | 已完成 MVP | `document_parser.py`，`/documents` 支持 `application/pdf` |
+| Web 前端控制台 | 已完成 MVP | `portfolio/agent-web/`（Next.js :3000） |
+| MCP Server 可运行实现 | 已完成 MVP | `portfolio/mcp-tool-server/mcp_server.py`（stdio） |
+| BOSS 岗位与求职材料 | 20 条岗位已搜集 | `logs/applications/2026-07-01-boss-screening.md`、`boss-messages-ready.md`（Top 3 话术） |
+| 最终完成门禁 | 运行中 | CI `test.yml` 已添加；blocker：`github_workflow_scope_missing` |
+| GitHub 上传 | 本地大量改动待 commit/push | 需 `gh auth refresh` 后 push |
 
 ## 已推送的关键里程碑
 
@@ -78,9 +86,9 @@
 - BOSS 登录态复核在用户修复 Chrome 插件后已重新连接成功；普通网页 `https://example.com/` 可正常打开。BOSS 域名会加载 `static.zhipin.com` 脚本但自动化标签页最终保持空白，当前无法通过自动新开页面读取岗位列表。
 - 用户手动打开 BOSS 搜索页后，Chrome openTabs 能看到 `https://www.zhipin.com/web/geek/jobs?query=AI%20Agent&city=101210100`；但 agent claim 该标签页后，标签页变为 `chrome://newtab/`，未能读取岗位列表。
 - `python3 -m unittest tests.test_industry_watch -v`，6 tests OK
-- `python3 -m json.tool docs/industry-watch-sources.json`
-- `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
-- `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry --date 2026-06-27 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-27.md`
+- `python3 -m json.tool docs/14-industry-watch-sources.json`
+- `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry --date 2026-06-26 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-26.md`
+- `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry --date 2026-06-27 --max-items 8 --max-age-days 30`，生成 `logs/industry/2026-06-27.md`
 - `python3 -m unittest discover -s tests -v`，15 tests OK
 - `python3 scripts/completion_gate.py --root .` returned `Complete: no`，`Git ahead: 0`、`Git behind: 0`、`GitHub workflow scope: yes`、`BOSS reviewed rows: 0`
 - `docker compose -f compose.yaml up --build -d`
@@ -99,19 +107,21 @@
 
 | 缺口 | 为什么重要 | 下一步 |
 |---|---|---|
-| BOSS 登录态岗位复核 | 公开链接只能作为搜索入口，不能证明具体岗位仍在招；当前自动化打开 BOSS 结果页会变成空白，接管用户手动打开的 BOSS 标签页后会退回 `chrome://newtab/` | 由用户手动填写 `logs/applications/2026-06-27-boss-screening.md` 的 20 条岗位，或继续寻找不触发 BOSS 页面清空的只读接管方式 |
-| BOSS 岗位筛选日志 | 已有 daily log 和行业资讯日志，但还没有 BOSS 20 条岗位复核证据 | 补 `logs/applications/YYYY-MM-DD-boss-screening.md` |
+| 实际投递与面试反馈 | 验证简历与话术 | 用 `boss-messages-ready.md` 投 Top 3，记录回复 |
+| 连续 daily log | 学习轨迹 | ✅ 已补 06-26 至 07-03 |
+| CI test workflow | 工程化门禁 | ✅ `.github/workflows/test.yml` 已添加 |
+| GitHub workflow scope | completion gate blocker | `gh auth refresh -h github.com -s workflow` |
 
 ## 完成判断
 
 不能把长期 goal 标记为 complete。理由：
 
-1. 原目标不仅是创建代码和文档，还包括“帮助找岗位”和“一点点成长到能求职”，这需要至少一次真实 BOSS 登录态岗位复核和投递反馈。
-2. 学习和求职转化已经有 daily log 与 AI 行业资讯日志，但还需要 BOSS 岗位筛选和投递反馈。
-3. Chrome、Codex Chrome Extension 与 native host 已可用；但 BOSS 页面在自动化新标签中最终为空白，接管用户手动打开的 BOSS 标签页后会退回 `chrome://newtab/`，当前无法由 agent 直接读取岗位列表。
-4. `python3 scripts/completion_gate.py --root .` 当前明确返回 `Complete: no`。
+1. 作品集工程主链路已打通，CI workflow 已配置。
+2. 求职转化：BOSS 20 条 + Top 3 话术就绪；**投递需用户登录 BOSS**（`boss-messages-ready.md`）。
+3. daily log 已连续至 07-03；completion_gate blocker 仅剩 `github_workflow_scope_missing`。
 
 下一阶段优先级：
 
-1. 用户手动填写 `logs/applications/2026-06-27-boss-screening.md` 的 20 条岗位，或继续排查 BOSS 只读接管方式；完成后把结果写进 `logs/daily/`。
-2. 连续运行 AI 行业资讯日志并做每周趋势复盘。
+1. 用户登录 BOSS 投递 Top 3，更新 `logs/applications/2026-07-02-applications.md`。
+2. 本机 `gh auth refresh -h github.com -s workflow` 后 push 全部本地改动。
+3. Day 9 文档切分策略；P1 官方 LangGraph / Rerank。

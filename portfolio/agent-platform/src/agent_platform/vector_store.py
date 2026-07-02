@@ -1,45 +1,19 @@
 from __future__ import annotations
 
-import hashlib
 import json
-import math
-import re
 import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
 from collections.abc import Sequence
 
+from agent_platform.embeddings import EmbeddingModel, HashingEmbeddingModel
 from agent_platform.knowledge_base import DocumentChunk
 from agent_platform.models import RetrievedChunk
 
 
 class VectorStoreError(RuntimeError):
     pass
-
-
-class HashingEmbeddingModel:
-    def __init__(self, size: int = 64) -> None:
-        if size <= 0:
-            raise ValueError("size must be positive")
-        self.size = size
-
-    def embed(self, text: str) -> list[float]:
-        vector = [0.0] * self.size
-        for token in self._tokens(text):
-            digest = hashlib.sha256(token.encode("utf-8")).digest()
-            index = int.from_bytes(digest[:4], "big") % self.size
-            sign = 1.0 if digest[4] % 2 == 0 else -1.0
-            vector[index] += sign
-        norm = math.sqrt(sum(value * value for value in vector))
-        if norm == 0:
-            return vector
-        return [value / norm for value in vector]
-
-    def _tokens(self, text: str) -> list[str]:
-        ascii_terms = re.findall(r"[a-zA-Z][a-zA-Z0-9+-]*|[A-Z]{2,}", text.lower())
-        cjk_terms = [char for char in text if "\u4e00" <= char <= "\u9fff"]
-        return ascii_terms + cjk_terms
 
 
 class QdrantVectorIndex:
@@ -50,13 +24,13 @@ class QdrantVectorIndex:
         collection_name: str,
         vector_size: int = 64,
         timeout_seconds: float = 30,
-        embedding_model: HashingEmbeddingModel | None = None,
+        embedding_model: EmbeddingModel | None = None,
     ) -> None:
         self._base_url = base_url.rstrip("/")
         self._collection_name = collection_name
-        self._vector_size = vector_size
-        self._timeout_seconds = timeout_seconds
         self._embedding_model = embedding_model or HashingEmbeddingModel(size=vector_size)
+        self._vector_size = vector_size or self._embedding_model.vector_size
+        self._timeout_seconds = timeout_seconds
 
     def ensure_collection(self) -> None:
         self._request(

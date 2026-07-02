@@ -7,7 +7,7 @@ portfolio/agent-platform/data/eval_dataset.jsonl
 portfolio/agent-eval-dashboard/src/agent_eval_dashboard/runner.py
 portfolio/agent-eval-dashboard/tests/test_eval_dashboard.py
 portfolio/agent-eval-dashboard/README.md
-docs/project-completion-audit.md
+docs/13-project-completion-audit.md
 specs/009-eval-dataset-expansion/
 ```
 

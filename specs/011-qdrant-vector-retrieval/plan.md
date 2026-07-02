@@ -10,7 +10,7 @@ portfolio/agent-platform/tests/test_vector_store.py
 portfolio/agent-platform/tests/test_api.py
 portfolio/agent-platform/README.md
 compose.yaml
-docs/project-completion-audit.md
+docs/13-project-completion-audit.md
 logs/daily/2026-06-26.md
 ```
 

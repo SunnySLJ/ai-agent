@@ -57,7 +57,7 @@ def load_dataset(path: str | Path) -> list[EvalCase]:
 
 def run_eval(dataset_path: str | Path, platform: AgentPlatform | None = None) -> dict[str, Any]:
     cases = load_dataset(dataset_path)
-    agent = platform or AgentPlatform.offline_demo()
+    agent = platform or AgentPlatform.offline_demo(human_in_the_loop=False)
     seed_demo_documents(agent)
     results = [score_response(case, agent.ask(case.question)) for case in cases]
     return {

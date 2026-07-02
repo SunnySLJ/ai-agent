@@ -34,13 +34,13 @@ Claude 在本项目中必须按这个选型回答和规划：
 3. 再做 Python Agent：工具调用、计划、执行、记忆、上下文管理、trace。
 4. 再做 Java 工具服务：业务接口、鉴权、审计、幂等、日志、Docker、部署。
 5. 再做 Python Agent 调 Java 工具服务：HTTP client、MCP/OpenAPI 包装、错误处理、审计回放。
-6. 每天定时收集 AI 行业最新资讯，按 `docs/ai-industry-watch.md` 写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
+6. 每天定时收集 AI 行业最新资讯，按 `docs/14-ai-industry-watch.md` 写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
 7. 最后做面试表达：项目亮点、问题复盘、技术取舍、业务价值。
 
 ## 行业资讯收集要求
 
 - 默认每天北京时间上午做一次 AI 行业情报收集。
-- 自动采集入口是 `.github/workflows/industry-watch.yml`；手动复跑命令是 `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`。
+- 自动采集入口是 `.github/workflows/industry-watch.yml`；手动复跑命令是 `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry`。
 - 只收集与岗位和项目有关的资讯：Agent/RAG、模型 API、MCP、向量库、评估、企业 AI 应用、杭州/国内岗位趋势。
 - 输出必须包含来源、日期、摘要、可信度、对本项目的影响、下一步动作。
 - 如果缺少联网能力、登录态或来源不可验证，必须明确写成“未验证/待复核”，不要编造最新动态。

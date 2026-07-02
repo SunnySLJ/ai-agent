@@ -59,6 +59,18 @@ class DockerArtifactsTest(unittest.TestCase):
         self.assertIn('"6333:6333"', content)
         self.assertIn("qdrant:\n        condition: service_started", content)
 
+    def test_compose_includes_agent_web_frontend(self):
+        compose = ROOT / "compose.yaml"
+        dockerfile = ROOT / "portfolio/agent-web/Dockerfile"
+
+        content = compose.read_text(encoding="utf-8")
+
+        self.assertTrue(dockerfile.exists())
+        self.assertIn("agent-web:", content)
+        self.assertIn('"3000:3000"', content)
+        self.assertIn("NEXT_PUBLIC_API_BASE_URL", content)
+        self.assertIn("CORS_ALLOW_ORIGINS", content)
+
     def test_dockerignore_files_exclude_build_artifacts(self):
         python_ignore = (ROOT / "portfolio/agent-platform/.dockerignore").read_text(
             encoding="utf-8"

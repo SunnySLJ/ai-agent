@@ -19,6 +19,7 @@
 
 ## 执行顺序
 
+0. 文档入口：[docs/00-document-index.md](docs/00-document-index.md)
 1. 先完成 Python Agent Platform：可运行、可测试、能解释 RAG/工具调用/评估链路。
 2. 再完成 Java Business Tool Service：证明企业业务系统如何成为 Agent 工具。
 3. 再做 Python Agent 到 Java 工具服务的 HTTP/MCP/OpenAPI 集成。
@@ -27,7 +28,7 @@
 
 ## 每日行业情报
 
-默认每天北京时间上午收集一次 AI 行业资讯，稳定入口见 [docs/ai-industry-watch.md](docs/ai-industry-watch.md)。
+默认每天北京时间上午收集一次 AI 行业资讯，稳定入口见 [docs/14-ai-industry-watch.md](docs/14-ai-industry-watch.md)。
 
 - 重点只看会影响求职和作品集的内容：Agent/RAG、模型 API、MCP、向量库、评估、企业落地、杭州/国内岗位变化。
 - 每条资讯必须写清来源、日期、可信度、对项目的影响和下一步动作。

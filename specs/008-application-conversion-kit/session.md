@@ -6,7 +6,7 @@
 
 ## 下次会话要做的事
 
-1. 完成 `docs/application-conversion-kit.md`。
+1. 完成 `docs/10-application-conversion-kit.md`。
 2. 更新 README、job-market、interview-kit、BOSS message 模板。
 3. 运行文档检查，提交并推送。
 

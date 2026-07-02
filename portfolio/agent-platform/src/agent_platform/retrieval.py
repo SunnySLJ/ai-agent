@@ -7,7 +7,7 @@ from collections.abc import Iterable
 
 from agent_platform.knowledge_base import DocumentChunk, KnowledgeBase
 from agent_platform.models import RetrievedChunk
-from agent_platform.vector_store import HashingEmbeddingModel
+from agent_platform.embeddings import EmbeddingModel, HashingEmbeddingModel
 
 
 class KeywordRetriever:
@@ -192,7 +192,7 @@ class LocalVectorRetriever:
         self,
         knowledge_base: KnowledgeBase,
         *,
-        embedding_model: HashingEmbeddingModel | None = None,
+        embedding_model: EmbeddingModel | None = None,
     ) -> None:
         self._knowledge_base = knowledge_base
         self._embedding_model = embedding_model or HashingEmbeddingModel()
@@ -237,10 +237,16 @@ class HybridRetriever:
         self._analyzer = TermAnalyzer()
 
     @classmethod
-    def from_knowledge_base(cls, knowledge_base: KnowledgeBase) -> "HybridRetriever":
+    def from_knowledge_base(
+        cls,
+        knowledge_base: KnowledgeBase,
+        *,
+        embedding_model: EmbeddingModel | None = None,
+    ) -> "HybridRetriever":
+        model = embedding_model or HashingEmbeddingModel()
         return cls(
             lexical_retriever=BM25Retriever(knowledge_base),
-            dense_retriever=LocalVectorRetriever(knowledge_base),
+            dense_retriever=LocalVectorRetriever(knowledge_base, embedding_model=model),
         )
 
     def retrieve(self, query: str, limit: int = 3) -> list[RetrievedChunk]:

@@ -36,6 +36,16 @@ class ChatCompletionHandler(BaseHTTPRequestHandler):
             self.wfile.write(encoded)
             return
 
+        if payload.get("stream"):
+            self.send_response(200)
+            self.send_header("Content-Type", "text/event-stream")
+            self.end_headers()
+            for part in self._stream_parts(self.__class__.response_content):
+                chunk = {"choices": [{"delta": {"content": part}}]}
+                self.wfile.write(f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n".encode("utf-8"))
+            self.wfile.write(b"data: [DONE]\n\n")
+            return
+
         body = {
             "choices": [
                 {
@@ -54,6 +64,10 @@ class ChatCompletionHandler(BaseHTTPRequestHandler):
 
     def log_message(self, format, *args):  # noqa: A002
         return
+
+    @staticmethod
+    def _stream_parts(content: str) -> list[str]:
+        return [content[index : index + 4] for index in range(0, len(content), 4)]
 
 
 @contextmanager
@@ -154,6 +168,33 @@ class OpenAICompatibleChatClientTest(unittest.TestCase):
         message = str(raised.exception)
         self.assertIn("[REDACTED_API_KEY]", message)
         self.assertNotIn("sk-testSECRET1234567890", message)
+
+    def test_stream_answer_reads_openai_sse_chunks(self):
+        with chat_completion_service("模型回答：流式输出已接入。") as base_url:
+            client = OpenAICompatibleChatClient(
+                base_url=base_url,
+                api_key="test-key",
+                model="test-model",
+            )
+
+            deltas = list(
+                client.stream_answer(
+                    question="Python 和 Java 怎么分工?",
+                    chunks=[
+                        RetrievedChunk(
+                            chunk_id="chunk-1",
+                            doc_id="doc-1",
+                            title="Hybrid",
+                            snippet="Python handles Agent orchestration.",
+                            score=1.0,
+                        )
+                    ],
+                    tool_calls=[],
+                )
+            )
+
+        self.assertEqual("模型回答：流式输出已接入。", "".join(deltas))
+        self.assertTrue(ChatCompletionHandler.requests[0]["payload"]["stream"])
 
 
 if __name__ == "__main__":

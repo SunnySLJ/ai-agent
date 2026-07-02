@@ -10,7 +10,7 @@ portfolio/agent-eval-dashboard/src/agent_eval_dashboard/retrieval_eval.py
 portfolio/agent-eval-dashboard/tests/test_retrieval_eval.py
 portfolio/agent-platform/data/retrieval_eval_dataset.jsonl
 portfolio/agent-platform/README.md
-docs/project-completion-audit.md
+docs/13-project-completion-audit.md
 logs/daily/2026-06-26.md
 specs/012-hybrid-retrieval-rerank/state.md
 ```

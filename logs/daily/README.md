@@ -1,6 +1,6 @@
 # Daily Logs
 
-每天复制 `docs/templates/daily-log.md` 到本目录，文件名使用 `YYYY-MM-DD.md`。
+每天复制 `docs/templates/T01-daily-log.md` 到本目录，文件名使用 `YYYY-MM-DD.md`。
 
 日志不是日记，只记录对求职有用的证据：
 

@@ -8,7 +8,7 @@ from scripts.completion_gate import evaluate_completion_gate, render_markdown
 
 
 class CompletionGateTest(unittest.TestCase):
-    def test_reports_blockers_when_repo_has_unpushed_commits_and_no_boss_log(self):
+    def test_reports_blockers_when_repo_has_unpushed_commits_and_no_skills_review(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             (root / "logs/applications").mkdir(parents=True)
@@ -29,7 +29,7 @@ class CompletionGateTest(unittest.TestCase):
         self.assertFalse(result["complete"])
         self.assertIn("git_unpushed_commits", blocker_ids)
         self.assertIn("github_workflow_scope_missing", blocker_ids)
-        self.assertIn("boss_screening_missing", blocker_ids)
+        self.assertIn("skills_gap_review_missing", blocker_ids)
         self.assertEqual(["abcd123 feat: local work"], result["unpushed_commits"])
         self.assertIn(
             "gh auth refresh -h github.com -s workflow",
@@ -37,24 +37,24 @@ class CompletionGateTest(unittest.TestCase):
         )
         self.assertIn("git push origin main", result["next_actions"])
         self.assertIn(
-            "在 Chrome 默认 Profile 手动打开 BOSS 搜索结果并确认岗位列表可见后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个登录态岗位",
-            result["next_actions"],
+            "对照 docs/09-job-skills-matrix.md 填写 logs/applications/skills-gap-review.md",
+            result["next_actions"][2],
         )
 
-    def test_accepts_boss_log_with_twenty_reviewed_rows_and_clean_push_state(self):
+    def test_accepts_skills_gap_review_with_enough_p0_rows_and_clean_push_state(self):
         with tempfile.TemporaryDirectory() as tmpdir:
             root = Path(tmpdir)
             logs_dir = root / "logs/applications"
             logs_dir.mkdir(parents=True)
             rows = [
-                "| 序号 | 搜索词 | 公司 | 岗位 | 薪资 | 地点 | 经验 | JD 关键词 | 匹配级别 | 风险点 | 下一步 |",
-                "|---|---|---|---|---|---|---|---|---|---|---|",
+                "| ID | 技能 | 优先级 | 状态 | 证据/笔记 | 下一步 |",
+                "|---|---|---|---|---|---|",
             ]
-            for index in range(1, 21):
+            for index in range(1, 41):
                 rows.append(
-                    f"| {index} | AI Agent | 公司{index} | AI Agent 工程师 | 20K | 杭州 | 3-5年 | RAG,Agent | P0 | 无 | 沟通 |"
+                    f"| L{index:02d} | Skill {index} | P0 | 作品证据 | demo | next |"
                 )
-            (logs_dir / "2026-06-26-boss-screening.md").write_text(
+            (logs_dir / "skills-gap-review.md").write_text(
                 "\n".join(rows),
                 encoding="utf-8",
             )
@@ -68,16 +68,17 @@ class CompletionGateTest(unittest.TestCase):
 
         self.assertTrue(result["complete"])
         self.assertEqual([], result["blockers"])
-        self.assertEqual(20, result["boss_reviewed_rows"])
+        self.assertEqual(40, result["p0_skills_reviewed"])
 
     def test_render_markdown_lists_blockers(self):
         markdown = render_markdown(
             {
                 "complete": False,
                 "blockers": [
-                    {"id": "boss_screening_missing", "message": "缺少 BOSS 复核。"},
+                    {"id": "skills_gap_review_missing", "message": "缺少技能复盘。"},
                 ],
-                "boss_reviewed_rows": 0,
+                "skills_reviewed_rows": 0,
+                "p0_skills_reviewed": 0,
                 "git_ahead": 0,
                 "git_behind": 0,
                 "workflow_scope": False,
@@ -90,8 +91,8 @@ class CompletionGateTest(unittest.TestCase):
         )
 
         self.assertIn("Final Completion Gate", markdown)
-        self.assertIn("boss_screening_missing", markdown)
-        self.assertIn("缺少 BOSS 复核。", markdown)
+        self.assertIn("skills_gap_review_missing", markdown)
+        self.assertIn("缺少技能复盘。", markdown)
         self.assertIn("abcd123 feat: local work", markdown)
         self.assertIn("gh auth refresh -h github.com -s workflow", markdown)
 

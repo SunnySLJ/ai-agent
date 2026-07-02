@@ -10,7 +10,7 @@ portfolio/agent-platform/tests/test_llm.py
 portfolio/agent-platform/tests/test_agent_core.py
 portfolio/agent-platform/tests/test_api.py
 portfolio/agent-platform/README.md
-docs/project-completion-audit.md
+docs/13-project-completion-audit.md
 specs/010-openai-compatible-llm-adapter/
 ```
 

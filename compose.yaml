@@ -27,6 +27,7 @@ services:
       - JAVA_TOOL_BASE_URL=http://java-business-tool-service:8080
       - QDRANT_BASE_URL=http://qdrant:6333
       - QDRANT_COLLECTION=agent_docs
+      - CORS_ALLOW_ORIGINS=http://127.0.0.1:3000,http://localhost:3000
     depends_on:
       java-business-tool-service:
         condition: service_healthy
@@ -38,3 +39,15 @@ services:
       timeout: 3s
       retries: 12
       start_period: 10s
+
+  agent-web:
+    build:
+      context: ./portfolio/agent-web
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE_URL: http://127.0.0.1:8000
+    ports:
+      - "3000:3000"
+    depends_on:
+      agent-platform:
+        condition: service_healthy

@@ -28,4 +28,4 @@ The interview story is:
 - Java business tools: `portfolio/java-business-tool-service/`
 - Tool contract: `portfolio/mcp-tool-server/`
 - Runtime integration: `compose.yaml`
-- Learning and job-search route: `docs/30-day-sprint.md`, `docs/tech-stack-roadmap.md`, `docs/application-conversion-kit.md`
+- Learning and job-search route: `docs/02-30-day-sprint.md`, `docs/05-tech-stack-roadmap.md`, `docs/10-application-conversion-kit.md`

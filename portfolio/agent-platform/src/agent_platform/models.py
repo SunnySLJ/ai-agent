@@ -44,6 +44,10 @@ class AgentTrace:
     model_response: str = ""
     latency_ms: float = 0
     estimated_tokens: int = 0
+    session_id: str | None = None
+    safety_blocked: bool = False
+    approval_required: bool = False
+    approval_id: str | None = None
 
 
 @dataclass(frozen=True)
@@ -53,6 +57,10 @@ class AgentResponse:
     confidence: float
     citations: list[Citation]
     trace: AgentTrace
+    session_id: str | None = None
+    safety_blocked: bool = False
+    approval_required: bool = False
+    approval_id: str | None = None
 
 
 @dataclass(frozen=True)

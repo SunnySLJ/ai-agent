@@ -19,7 +19,7 @@ jobs:
       - name: Collect daily AI industry watch
         run: |
           python scripts/industry_watch.py \
-            --sources docs/industry-watch-sources.json \
+            --sources docs/14-industry-watch-sources.json \
             --out-dir logs/industry \
             --max-items 8
       - name: Commit updated industry watch log

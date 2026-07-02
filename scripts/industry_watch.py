@@ -234,7 +234,7 @@ def fetch_url(url: str) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Collect daily AI industry watch feeds.")
-    parser.add_argument("--sources", default="docs/industry-watch-sources.json")
+    parser.add_argument("--sources", default="docs/14-industry-watch-sources.json")
     parser.add_argument("--out-dir", default="logs/industry")
     parser.add_argument("--date", default=date.today().isoformat())
     parser.add_argument("--max-items", type=int, default=8)
@@ -383,7 +383,7 @@ def _next_action(text: str, impact: list[str]) -> str:
     if any(keyword in lowered for keyword in ["rag", "retrieval", "rerank", "embedding"]):
         return "复核 `portfolio/agent-platform/` 检索 backlog"
     if "求职" in impact:
-        return "更新 `docs/job-market-hangzhou.md` 岗位关键词"
+        return "更新 `docs/08-job-market-hangzhou.md` 岗位关键词"
     return "写入 `logs/daily/` 的学习和面试表达"
 
 

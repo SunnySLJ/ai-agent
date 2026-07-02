@@ -8,10 +8,10 @@
 
 - 默认时间：每天北京时间上午。
 - 输出路径：`logs/industry/YYYY-MM-DD.md`。
-- 模板：`docs/templates/industry-news-log.md`。
-- 手动运行：`python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`。
+- 模板：`docs/templates/T02-industry-news-log.md`。
+- 手动运行：`python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry`。
 - 自动运行：`.github/workflows/industry-watch.yml` 每天 01:00 UTC 触发，对应北京时间 09:00。
-- 周复盘：每周把 7 天资讯压缩成 3-5 条趋势判断，并更新 `docs/30-day-sprint.md`、`docs/portfolio-projects.md` 或面试材料。
+- 周复盘：每周把 7 天资讯压缩成 3-5 条趋势判断，并更新 `docs/02-30-day-sprint.md`、`docs/06-portfolio-projects.md` 或面试材料。
 
 ## 关注范围
 
@@ -45,9 +45,9 @@
 
 ## 转化规则
 
-- 能提升作品集技术深度的，进入 `specs/` 或 `docs/portfolio-projects.md` backlog。
-- 能提升岗位匹配的，更新 `docs/job-market-hangzhou.md` 或 BOSS 话术。
-- 能提升面试表达的，更新 `docs/interview-kit.md`。
+- 能提升作品集技术深度的，进入 `specs/` 或 `docs/06-portfolio-projects.md` backlog。
+- 能提升岗位匹配的，更新 `docs/08-job-market-hangzhou.md` 或 BOSS 话术。
+- 能提升面试表达的，更新 `docs/12-interview-kit.md`。
 - 只是泛新闻、融资、营销口径，默认不进入项目。
 
 ## 完成口径

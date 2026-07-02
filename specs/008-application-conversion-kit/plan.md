@@ -3,10 +3,10 @@
 ## Files
 
 ```text
-docs/application-conversion-kit.md
-docs/job-market-hangzhou.md
-docs/interview-kit.md
-docs/templates/boss-message.md
+docs/10-application-conversion-kit.md
+docs/08-job-market-hangzhou.md
+docs/12-interview-kit.md
+docs/templates/T03-boss-message.md
 README.md
 specs/008-application-conversion-kit/
 ```

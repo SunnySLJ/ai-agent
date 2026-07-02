@@ -70,7 +70,7 @@
 
 ## 辅助资料：AI Industry Watch
 
-路径：`logs/industry/`、`docs/ai-industry-watch.md`
+路径：`logs/industry/`、`docs/14-ai-industry-watch.md`
 
 ### 一句话
 

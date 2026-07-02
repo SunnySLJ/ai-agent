@@ -1,0 +1,41 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install agent-platform dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e portfolio/agent-platform
+
+      - name: Root tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Agent platform tests
+        working-directory: portfolio/agent-platform
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+
+      - name: MCP tool server tests
+        working-directory: portfolio/mcp-tool-server
+        run: python -m unittest discover -s tests -v
+
+      - name: Eval dashboard tests
+        working-directory: portfolio/agent-eval-dashboard
+        run: PYTHONPATH=../agent-platform/src:src python -m unittest discover -s tests -v
+
+      - name: Docker compose config
+        run: docker compose -f compose.yaml config

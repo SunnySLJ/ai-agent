@@ -20,11 +20,11 @@
 每次处理学习或求职任务时：
 
 1. 先读 [README.md](README.md) 和相关主题文档。
-2. 如果涉及学习安排，先查 [docs/source-map.md](docs/source-map.md)，只引用当天需要的 `../../agent/` 资料。
-3. 如果涉及岗位判断，先查 [docs/job-market-hangzhou.md](docs/job-market-hangzhou.md)，再结合最新招聘结果修正。
-4. 如果涉及技术取舍，按 [docs/tech-stack-roadmap.md](docs/tech-stack-roadmap.md) 的优先级执行。
-5. 如果涉及作品集，按 [docs/portfolio-projects.md](docs/portfolio-projects.md) 的交付标准推进。
-6. 每天按 [docs/ai-industry-watch.md](docs/ai-industry-watch.md) 定时收集 AI 行业资讯：自动入口是 `.github/workflows/industry-watch.yml`，手动入口是 `python3 scripts/industry_watch.py --sources docs/industry-watch-sources.json --out-dir logs/industry`；输出写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
+2. 如果涉及学习安排，先查 [docs/07-source-map.md](docs/07-source-map.md)，只引用当天需要的 `../../agent/` 资料。
+3. 如果涉及岗位判断，先查 [docs/08-job-market-hangzhou.md](docs/08-job-market-hangzhou.md)，再结合最新招聘结果修正。
+4. 如果涉及技术取舍，按 [docs/05-tech-stack-roadmap.md](docs/05-tech-stack-roadmap.md) 的优先级执行。
+5. 如果涉及作品集，按 [docs/06-portfolio-projects.md](docs/06-portfolio-projects.md) 的交付标准推进。
+6. 每天按 [docs/14-ai-industry-watch.md](docs/14-ai-industry-watch.md) 定时收集 AI 行业资讯：自动入口是 `.github/workflows/industry-watch.yml`，手动入口是 `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry`；输出写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
 7. 每次学习后更新 `logs/daily/`，沉淀今天学了什么、做了什么、明天要补什么。
 
 ## Agent 可调用的本地资料

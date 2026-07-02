@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Callable
 
 
 CommandRunner = Callable[[list[str]], str]
+
+SKILL_ID_PATTERN = re.compile(r"^[A-Z]\d{2}$")
+VALID_STATUSES = {"作品证据", "已掌握", "学习中", "待补"}
+MIN_P0_SKILLS_REVIEWED = 40
 
 
 def evaluate_completion_gate(
@@ -45,24 +50,29 @@ def evaluate_completion_gate(
             }
         )
 
-    boss_reviewed_rows = _count_boss_screening_rows(project_root)
-    if boss_reviewed_rows < 20:
+    skills_review = _count_skills_gap_review(project_root)
+    p0_reviewed = skills_review["p0_reviewed"]
+    if p0_reviewed < MIN_P0_SKILLS_REVIEWED:
         blockers.append(
             {
-                "id": "boss_screening_missing",
-                "message": f"BOSS 登录态岗位复核只有 {boss_reviewed_rows} 条，需要至少 20 条。",
+                "id": "skills_gap_review_missing",
+                "message": (
+                    f"技能差距复盘只有 {p0_reviewed} 条 P0 技能已评估，"
+                    f"需要至少 {MIN_P0_SKILLS_REVIEWED} 条。"
+                ),
             }
         )
     next_actions = _next_actions(
         git_ahead=git_ahead,
         workflow_scope=workflow_scope,
-        boss_reviewed_rows=boss_reviewed_rows,
+        p0_reviewed=p0_reviewed,
     )
 
     return {
         "complete": not blockers,
         "blockers": blockers,
-        "boss_reviewed_rows": boss_reviewed_rows,
+        "skills_reviewed_rows": skills_review["total_reviewed"],
+        "p0_skills_reviewed": p0_reviewed,
         "git_ahead": git_ahead,
         "git_behind": git_behind,
         "unpushed_commits": unpushed_commits,
@@ -79,7 +89,8 @@ def render_markdown(result: dict[str, object]) -> str:
         f"- Git ahead: {result['git_ahead']}",
         f"- Git behind: {result['git_behind']}",
         f"- GitHub workflow scope: {'yes' if result['workflow_scope'] else 'no'}",
-        f"- BOSS reviewed rows: {result['boss_reviewed_rows']}",
+        f"- Skills reviewed rows: {result['skills_reviewed_rows']}",
+        f"- P0 skills reviewed: {result['p0_skills_reviewed']}",
         "",
         "## Unpushed Commits",
         "",
@@ -165,34 +176,55 @@ def _next_actions(
     *,
     git_ahead: int,
     workflow_scope: bool,
-    boss_reviewed_rows: int,
+    p0_reviewed: int,
 ) -> list[str]:
     actions: list[str] = []
     if not workflow_scope:
         actions.append("gh auth refresh -h github.com -s workflow")
     if git_ahead > 0:
         actions.append("git push origin main")
-    if boss_reviewed_rows < 20:
-        actions.append("在 Chrome 默认 Profile 手动打开 BOSS 搜索结果并确认岗位列表可见后，按 logs/applications/YYYY-MM-DD-boss-screening.md 记录 20 个登录态岗位")
+    if p0_reviewed < MIN_P0_SKILLS_REVIEWED:
+        actions.append(
+            "对照 docs/09-job-skills-matrix.md 填写 logs/applications/skills-gap-review.md，"
+            f"至少评估 {MIN_P0_SKILLS_REVIEWED} 条 P0 技能"
+        )
     return actions
 
 
-def _count_boss_screening_rows(project_root: Path) -> int:
+def _count_skills_gap_review(project_root: Path) -> dict[str, int]:
     logs_dir = project_root / "logs" / "applications"
     if not logs_dir.exists():
-        return 0
-    reviewed = 0
-    for path in logs_dir.glob("*-boss-screening.md"):
+        return {"total_reviewed": 0, "p0_reviewed": 0}
+
+    paths = sorted(logs_dir.glob("*skills-gap-review.md"))
+    if not paths:
+        return {"total_reviewed": 0, "p0_reviewed": 0}
+
+    total_reviewed = 0
+    p0_reviewed = 0
+    for path in paths:
         for line in path.read_text(encoding="utf-8").splitlines():
             columns = [column.strip() for column in line.strip().strip("|").split("|")]
-            if len(columns) < 11:
+            if len(columns) < 4:
                 continue
-            if not columns[0].isdigit():
+            skill_id = columns[0]
+            if not SKILL_ID_PATTERN.match(skill_id):
                 continue
-            required = columns[1:9]
-            if all(required):
-                reviewed += 1
-    return reviewed
+            if len(columns) >= 6:
+                priority = columns[2]
+                status = columns[3]
+            elif len(columns) == 5:
+                priority = ""
+                status = columns[2]
+            else:
+                priority = ""
+                status = columns[2]
+            if status not in VALID_STATUSES:
+                continue
+            total_reviewed += 1
+            if priority == "P0":
+                p0_reviewed += 1
+    return {"total_reviewed": total_reviewed, "p0_reviewed": p0_reviewed}
 
 
 def _run_command(command: list[str]) -> str:

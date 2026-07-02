@@ -1,6 +1,6 @@
 # 杭州 AI Agent 岗位画像
 
-> 快照日期：2026-06-26。招聘信息变化很快，实际投递前必须在 BOSS 直聘登录态下重新搜索和确认。
+> 快照日期：2026-06-28。技能要求以 [09-job-skills-matrix.md](09-job-skills-matrix.md) 为准（公开 JD 多源汇总，不爬取 BOSS）。投递前仍需在招聘平台登录态下核对具体岗位。
 
 ## 结论
 
@@ -16,7 +16,7 @@
 
 你的优势是 5 年 Java 工程经验。正确打法是把 Java 后端、服务化、数据库、接口、权限、日志、部署这些能力迁移到 AI Agent/RAG 系统，而不是和算法硕博拼模型训练。
 
-求职转化材料见 [AI Agent 求职转化包](application-conversion-kit.md)。
+求职转化材料见 [AI Agent 求职转化包](10-application-conversion-kit.md)。
 
 ## BOSS 直聘搜索入口
 
@@ -32,28 +32,45 @@
 - Spring AI 杭州：<https://www.zhipin.com/web/geek/job?query=Spring%20AI&city=101210100>
 - Java 大模型 杭州：<https://www.zhipin.com/web/geek/job?query=Java%20%E5%A4%A7%E6%A8%A1%E5%9E%8B&city=101210100>
 
-## JD 高频能力
+## 技能要求全览
 
-### 必须补齐
+完整技能矩阵（90+ 项，含 JD 频率、项目证据、缺口分析）见 **[09-job-skills-matrix.md](09-job-skills-matrix.md)**。
 
-- LLM API 调用、流式输出、Prompt 模板、结构化输出。
-- Function Calling / Tool Calling：让模型调用后端工具。
-- RAG：文档解析、切分、Embedding、向量库、召回、重排、答案生成。
-- Agent 工作流：计划、工具选择、执行、失败重试、上下文压缩。
-- Memory：短期上下文、长期记忆、用户画像、会话状态。
-- 评估：检索命中率、答案准确率、幻觉检查、日志追踪、回放。
-- Python AI 工程：FastAPI、异步接口、流式输出、RAG 脚本、评估脚本、工具调用编排。
-- Java 服务化：Spring Boot 接口设计、鉴权、限流、异步任务、消息队列；Spring AI 作为 Java 侧补充了解。
-- 部署：Docker、Compose、K8s 入门、日志和监控。
+个人差距复盘见 `logs/applications/skills-gap-review.md`。
 
-### 加分项
+### P0 必须能力（JD 出现率 >60% 或面试必问）
 
-- LangChain / LangGraph / LlamaIndex。
-- MCP 工具服务。
-- 多模态文档解析：PDF、图片、OCR、表格。
-- Agentic RAG / GraphRAG。
-- 企业内部系统集成：CRM、ERP、知识库、工单、数据分析。
-- 成本控制：缓存、模型路由、Token 预算、降级策略。
+| 类别 | 核心技能 |
+|---|---|
+| 语言工程 | Python 3.10+、asyncio、FastAPI、Java Spring Boot、Docker、Git、单元测试 |
+| LLM/Prompt | OpenAI 兼容 API、国内模型 API、Prompt 模板、结构化输出、Token 管理、Prompt 注入防御 |
+| Agent | ReAct、工具调用编排、LangChain、LangGraph、错误恢复、Human-in-the-loop |
+| 工具协议 | Function Calling、MCP、OpenAPI、多工具协作、权限审计幂等 |
+| RAG | 文档解析/切分、Embedding、Qdrant、BM25+混合检索、Rerank、引用溯源、拒答、RAG 评估 |
+| 评估 | Eval Dataset、通过率/拒答率/工具成功率、Trace、失败回放 |
+| Java | Spring Boot API、参数校验、幂等、审计、数据库 |
+| 部署安全 | Docker Compose、健康检查、密钥管理、安全边界防护 |
+| 软技能 | 业务需求拆解、STAR 项目讲解 |
+
+### P1 加分能力（出现率 30-60%）
+
+- LangChain4j / Spring AI 对比、Dify/Coze 平台、LlamaIndex、AutoGen/CrewAI
+- Redis 会话、消息队列、限流熔断、K8s 入门
+- LLM-as-Judge、RAGAS/DeepEval、LangSmith/Langfuse
+- Plan-and-Execute、Router/Supervisor、长期记忆、上下文压缩
+- vLLM/Ollama 本地推理、模型路由与成本优化
+
+### P2 差异化加分（特定公司或高级岗）
+
+- GraphRAG / Agentic RAG、多模态 OCR/VLM、A2A 协议
+- LoRA/QLoRA 微调、SFT/RLHF/DPO 原理
+- 国产化数据库适配、K8s 生产部署、OpenTelemetry
+
+### 你的当前覆盖度（2026-06-28）
+
+- P0 技能 54 项中，43 项已有作品证据（**80%**）
+- 待补 P0：LangGraph、Prompt 注入防御、Human-in-the-loop、多轮会话、MCP Server 实现
+- 详见 [skills-gap-review.md](../logs/applications/skills-gap-review.md)
 
 ## 你的岗位定位话术
 
