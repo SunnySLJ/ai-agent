@@ -8,3 +8,29 @@ __pycache__/
 *.pyc
 *.egg-info/
 target/
+
+# IDE / 本地工具（不提交）
+.cursor/
+.claude/
+.superpowers/
+
+# 环境变量与密钥
+.env
+.env.*
+!.env.example
+portfolio/learn-hub/.env.local
+
+# AI Learn Hub
+data/learn.db
+data/learn.db-*
+
+# shuang-skill 本地配置（不提交）
+.shuang-skill/course-sources.local.json
+.shuang-skill/backups/
+.shuang-skill/hooks/
+.shuang-skill/tmp-*/
+
+# AI Learn Hub
+portfolio/learn-hub/.next/
+portfolio/learn-hub/node_modules/
+portfolio/learn-hub/data/

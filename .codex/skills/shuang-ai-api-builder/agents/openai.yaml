@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang AI API Builder"
+  short_description: "AI API schema, streaming route, and env workflow"
+  default_prompt: "Use shuang-ai-api-builder to design an AI API output schema, streaming route, or environment-variable validation for the current project."

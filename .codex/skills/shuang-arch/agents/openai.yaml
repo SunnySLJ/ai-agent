@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang Arch"
+  short_description: "源码对抗调研与架构决策"
+  default_prompt: "Use $shuang-arch 帮我对 specs/research/03-开源项目.md 做源码对抗调研并产出架构基线决策。"

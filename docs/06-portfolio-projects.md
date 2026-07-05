@@ -47,13 +47,13 @@
 
 多数候选人只会做 Demo。你能讲评估和回放，就更像能做生产系统的人。
 
-## 辅助项目 2：Java Business Tool Service + MCP Tool Server
+## 辅助项目 2：OpenAPI / MCP 契约
 
-路径：`portfolio/java-business-tool-service/`、`portfolio/mcp-tool-server/`
+路径：`portfolio/mcp-tool-server/`
 
 ### 一句话
 
-用 Spring Boot 模拟订单、工单、待办等企业业务接口，再通过 MCP/OpenAPI 包装成 Python Agent 可调用工具。
+为 Agent Platform 的 RAG HTTP 接口（`/health`、`/documents`、`/ask`）提供 OpenAPI 与 MCP manifest，便于联调和后续扩展工具。
 
 ### 必备功能
 

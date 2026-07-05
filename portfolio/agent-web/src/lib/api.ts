@@ -1,4 +1,11 @@
-import type { AgentResponse, EvaluationSummary } from "./types";
+import type {
+  AgentResponse,
+  EvaluationSummary,
+  ForgeStageMeta,
+  ProjectForgeRun,
+  VerificationReport,
+  WechatArticle,
+} from "./types";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
 
@@ -68,6 +75,47 @@ export async function fetchSummary(): Promise<EvaluationSummary> {
 export async function fetchTools(): Promise<string[]> {
   const result = await request<{ tools: string[] }>("/tools");
   return result.tools;
+}
+
+export async function generateWechatArticle(formData: FormData): Promise<WechatArticle> {
+  const response = await fetch(`${API_BASE}/wechat-articles/generate`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    throw new Error(detail || `Request failed: ${response.status}`);
+  }
+  const payload = (await response.json()) as WechatArticle & { accepted?: boolean };
+  return payload;
+}
+
+export async function fetchProjectForgeStages(): Promise<ForgeStageMeta[]> {
+  const result = await request<{ stages: ForgeStageMeta[] }>("/project-forge/stages");
+  return result.stages;
+}
+
+export async function runProjectForgeDemo(
+  idea: string,
+  priorRunId?: string | null,
+): Promise<ProjectForgeRun> {
+  return request<ProjectForgeRun>("/project-forge/demo", {
+    method: "POST",
+    body: JSON.stringify({
+      idea,
+      prior_run_id: priorRunId ?? null,
+    }),
+  });
+}
+
+export async function verifyKnowledgeText(
+  text: string,
+  sourceStage = "general",
+): Promise<VerificationReport> {
+  return request<VerificationReport>("/verified-knowledge/verify", {
+    method: "POST",
+    body: JSON.stringify({ text, source_stage: sourceStage }),
+  });
 }
 
 export type StreamHandlers = {

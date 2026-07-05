@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang Flow"
+  short_description: "文档驱动全链路总调度"
+  default_prompt: "Use $shuang-flow 帮我把这个想法推进到调研、PRD、Spec-kit 文档和实施交接。"

@@ -2,79 +2,87 @@
 
 ## 项目使命
 
-帮助一名 5 年 Java 工程师在 1 个月内完成 AI Agent/RAG 应用工程师求职准备，并在 35 岁前持续成长为能独立设计、落地、评估和维护 AI Agent 系统的工程师。
+帮助一名 5 年 Java 背景的工程师，在 1～2 个月内完成 **Python AI Agent/RAG 应用工程师** 求职准备（杭州，**20K 起步**），并在 35 岁前成长为能独立设计、落地、评估 AI Agent 系统的工程师。
+
+**当前阶段（2026-07-05 起 1 个月）：只学习 + 建设工程，不投简历。** 详见 [shuang-plan.md](shuang-plan.md)。
+
+## 必读：总需求文档
+
+**每次处理任务前，先读 [shuang-plan.md](shuang-plan.md)。** 其中包含：以终为始的目标、BOSS 搜索词、纯 Python 技能 P0、ProjectForge 项目叙事、Agent 执行规则与下一步优先级。
 
 ## 固定约束
 
+- **求职叙事：纯 Python AI 应用**，不主打 Java 混合架构（Java 仅作学习加速器，仓库内 Java 代码可不删但不扩展）。
 - 不移动、不重命名、不改写 `../../agent/` 课程资料。
-- 所有学习计划必须从杭州 AI Agent/RAG/大模型应用岗位倒推。
-- 默认岗位方向是 Python Agent/RAG + Java 后端业务集成工程师，不是纯算法研究岗。
-- 技术路线必须保留 Java 业务工具层；TypeScript 可以作为以后前端展示补充，但不能替代 Java 在本项目里的位置。
-- 最终技术栈决策见 `docs/decisions/0001-python-java-hybrid.md`；后续规划和实现不得绕开这个边界。
-- 文档必须服务求职和作品集，不写空泛鸡血内容。
-- 目标薪资先按杭州 20K 左右设计，能力目标向 20-40K 区间靠近。
-- 所有新增项目资料放在本目录内，不污染父级课程目录。
+- **Harness 工程**在 `../../harness-agent/`（与 `agent/` 同级），不在 `work/ai-agent/portfolio/` 下。
+- 所有学习计划从 **杭州 Python AI Agent / RAG / 大模型应用** 岗位倒推。
+- 不投纯算法研究岗；目标薪资杭州 **20K 左右**（18～25K 可谈）。
+- 简历与 BOSS（⏸ 第 1 个月暂缓）：[logs/applications/resume-李爽-python-ai.md](logs/applications/resume-李爽-python-ai.md)、[docs/11-resume-and-interview-pack.md](docs/11-resume-and-interview-pack.md)。
+- 所有新增资料放在本目录 `work/ai-agent/`，不污染父级课程目录。
+- 不要主动 git commit，除非用户明确要求。
 
 ## 工作方式
 
-每次处理学习或求职任务时：
+1. 读 **[shuang-plan.md](shuang-plan.md)** → [README.md](README.md) → 任务相关文档。
+2. 学习安排查 [docs/07-source-map.md](docs/07-source-map.md)。
+3. 岗位判断查 [docs/08-job-market-hangzhou.md](docs/08-job-market-hangzhou.md)。
+4. 作品集标准 [docs/06-portfolio-projects.md](docs/06-portfolio-projects.md)、[docs/19-project-completion-report.md](docs/19-project-completion-report.md)。
+5. 新 feature **优先 Python** / `portfolio/agent-platform/`。
+6. 更新 `logs/daily/` 复盘。
 
-1. 先读 [README.md](README.md) 和相关主题文档。
-2. 如果涉及学习安排，先查 [docs/07-source-map.md](docs/07-source-map.md)，只引用当天需要的 `../../agent/` 资料。
-3. 如果涉及岗位判断，先查 [docs/08-job-market-hangzhou.md](docs/08-job-market-hangzhou.md)，再结合最新招聘结果修正。
-4. 如果涉及技术取舍，按 [docs/05-tech-stack-roadmap.md](docs/05-tech-stack-roadmap.md) 的优先级执行。
-5. 如果涉及作品集，按 [docs/06-portfolio-projects.md](docs/06-portfolio-projects.md) 的交付标准推进。
-6. 每天按 [docs/14-ai-industry-watch.md](docs/14-ai-industry-watch.md) 定时收集 AI 行业资讯：自动入口是 `.github/workflows/industry-watch.yml`，手动入口是 `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry`；输出写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
-7. 每次学习后更新 `logs/daily/`，沉淀今天学了什么、做了什么、明天要补什么。
+## 作品集核心（对外只讲一个项目）
+
+**ProjectForge 企业级 AI Agent 平台（Python）** — 九阶段编排 + 企业知识库 RAG + 查证型知识库 + DeepResearch + eval + Docker。
 
 ## Agent 可调用的本地资料
 
-核心资料都在父级 `../../agent/`：
+**课程库在 `../../agent/`（25 个 part，只读）。不要试图学完；求职阶段按 [shuang-plan.md](shuang-plan.md) §「agent 资料库怎么用」精读 8 个 part 即可。**
 
-- LLM API 与本地部署：`../../agent/part01-agent-api`、`../../agent/part02-agent-local`
-- Agent 基础：`../../agent/part03-agent-basic`
-- LangChain / DeepAgents：`../../agent/part04-agent-langchain`
-- RAG / LlamaIndex：`../../agent/part05-agent-rag`、`../../agent/part06-agent-llamaindex`
-- Agent Skills：`../../agent/part07-agent-skills`
-- Memory / Context：`../../agent/part08-agent-memory`、`../../agent/part09-agent-context`
-- FastAPI / 部署：`../../agent/part10-agent`、`../../agent/part12-agent-docker`
-- Agent 设计、评估、多智能体：`../../agent/part11-agent-design`、`../../agent/part13-agent-score`、`../../agent/part14-agent-help`
-- OpenClaw / Claude Code / Harness：`../../agent/part20-agent-openclaw` 到 `../../agent/part25-agent-openclaw-special`
-- 综合案例：`../../agent/part22-agent-workspace`
+| 必查 | 路径 |
+|---|---|
+| RAG | `../../agent/part05-agent-rag` |
+| FastAPI | `../../agent/part10-agent` |
+| 评估 | `../../agent/part13-agent-score` |
+| 文档审核 | `../../agent/part22-agent-workspace/【加餐】案例11*`、`案例12*` |
+| DeepResearch | `../../agent/part22-agent-workspace` 案例4 |
+| LangGraph | `../../agent/part04-agent-langchain` |
+| 多 Agent | `../../agent/part14-agent-help` |
 
-## 技术选型边界
-
-- Python 负责 AI 主链路：LLM API、Prompt、Function Calling、Agent 编排、RAG、文档解析、Embedding、向量检索、评估、trace、FastAPI、后续 LangGraph/LlamaIndex。
-- Java 负责企业业务工具层：订单、工单、CRM/ERP 类接口、权限、审计、幂等、事务、限流、日志和稳定部署。
-- MCP/OpenAPI/HTTP tool client 负责工具接入：把 Java 业务能力安全暴露给 Python Agent。
-- 第一个月不把主 RAG/Agent 链路写成全 Java；Spring AI 只作为 Java 侧补充能力和面试对比材料。
-- 新 feature 默认先判断是否属于 AI 链路；属于 AI 链路就优先落在 `portfolio/agent-platform/` 的 Python 侧，只有业务系统能力才落在 Java 服务。
-
-## 每日闭环
-
-每天最少完成：
-
-- 45 分钟岗位相关学习。
-- 20 分钟 AI 行业资讯收集，只记录可影响求职或作品集的内容。
-- 60 分钟作品集编码或文档沉淀。
-- 15 分钟面试表达训练。
-- 10 分钟日志复盘。
-
-每天日志必须回答：
-
-- 今天对应哪个岗位能力？
-- 今天哪条 AI 行业资讯会影响学习、作品集或岗位关键词？
-- 今天读了 `agent/` 哪个资料？
-- 今天产出了什么可展示内容？
-- 今天有哪些概念还讲不清楚？
-- 明天最小下一步是什么？
+完整映射 [docs/07-source-map.md](docs/07-source-map.md)。
 
 ## 质量门槛
 
-不要把“看完课程”当成进度。只有以下内容算进度：
+算进度的只有：能 demo、能写进简历、能面试 2 分钟讲清、有 eval/测试数据。
 
-- 能在面试中 2 分钟讲清楚的概念。
-- 能运行或能展示的项目功能。
-- 能写进简历的项目结果。
-- 能反驳追问的技术取舍理由。
-- 能用数据或日志证明的 Agent/RAG 效果。
+<!-- shuang-skill:start -->
+## Shuang Skill Workflow
+
+This project has local Shuang Vibe Coding skills installed for Codex.
+
+- Codex skills: `.codex/skills/`
+- Claude skills: `.claude/skills/`
+- Workflow map: `docs/vibe-coding-operating-map.md`
+- Evolution inbox: `docs/skill-evolution/inbox/`
+- Course-source ingestion guide: `docs/skill-evolution/course-source-ingestion.md`
+
+Default behavior:
+
+1. Use `shuang-flow` to identify the current phase before large changes.
+2. Use `shuang-prompt` when a copyable handoff prompt is needed.
+3. Before implementation, run `node scripts/spec-kit-handoff-check.mjs --feature <feature-dir>` when spec/plan/tasks exist.
+4. Use `shuang-tdd` for feature implementation after the handoff package is ready.
+5. For API/front-end handoff packages, run `node scripts/api-handoff-artifact-check.mjs --doc <handoff.md> --openapi <openapi.json>` before delivery.
+6. For short one-line requests, use `docs/shuang-skill/short-command-routes.md`; after route edits, run `node scripts/short-command-route-check.mjs` and `node scripts/short-command-route-smoke.mjs`.
+7. Before asking another AI to work in this project, run `node scripts/shuang-skill-manager.mjs context --json` to generate a source-backed project context pack.
+8. For short one-line feature requests, prefer `node scripts/shuang-skill-manager.mjs start --request "<一句话需求>"`; use `node scripts/vibe-request-start.mjs --request "<一句话需求>"` only after the project is already installed. For edited request cards, run `node scripts/shuang-skill-manager.mjs request check`, `node scripts/shuang-skill-manager.mjs request status`, and `node scripts/shuang-skill-manager.mjs request prompt --raw` before handing the queue to another agent. To prove short-command routing still works, run `node scripts/shuang-skill-manager.mjs route-smoke`.
+9. During daily work after an intake card exists, run `node scripts/shuang-skill-manager.mjs next --json` to check the queue, run guard, and get the next copyable prompt in one report.
+10. For a beginner end-to-end rehearsal, run `node scripts/shuang-skill-manager.mjs drill --request "<一句话需求>" --json`; it chains install/readiness/start/request prompt/context/system-audit in one report.
+11. Before push or before enabling a managed Git hook, run `node scripts/shuang-skill-manager.mjs guard --json`; it is the same safe preflight command used by the managed `pre-push` hook.
+12. When changing installed helper scripts or docs, run `node scripts/managed-artifacts-check.mjs` to prevent install/project-doctor/quickstart drift.
+13. For a whole-system check, run `node scripts/shuang-skill-manager.mjs system-audit --json`; add `--with-skill-studio`, `--with-install-smoke`, or `--with-sync-smoke` when validating broader changes from the source repo.
+14. Use `shuang-router` before claiming a feature is ready.
+15. Use `shuang-evolve` after a task if the lesson should improve future workflows; for batch inbox review run `node scripts/evolution-review.mjs`; before promoting a ready note, run `node scripts/evolution-promotion-package.mjs --note <note>`.
+16. When using private learning materials to improve skills, keep source paths in `.shuang-skill/course-sources.local.json`, run `node scripts/course-source-health.mjs`, and only commit distilled workflow rules.
+
+Do not treat this block as full project guidance. Generate or refresh the project-specific rules with `shuang-claude-md` after reading this project's real README, package files, docs, and specs.
+<!-- shuang-skill:end -->

@@ -80,6 +80,45 @@ class OpenAICompatibleChatClient:
             raise LlmClientError("LLM response content was empty")
         return content.strip()
 
+    def complete(self, *, system_prompt: str, user_prompt: str) -> str:
+        payload = {
+            "model": self._model,
+            "messages": [
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+        }
+        request = urllib.request.Request(
+            f"{self._base_url}/chat/completions",
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            headers={
+                "Authorization": f"Bearer {self._api_key}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(
+                request,
+                timeout=max(self._timeout_seconds, 90),
+            ) as response:
+                body = json.loads(response.read().decode("utf-8"))
+        except urllib.error.HTTPError as exc:
+            detail = exc.read().decode("utf-8", errors="replace")
+            raise LlmClientError(
+                f"LLM request failed with HTTP {exc.code}: {self._redact_secrets(detail)}"
+            ) from exc
+        except urllib.error.URLError as exc:
+            raise LlmClientError(f"LLM request failed: {exc.reason}") from exc
+
+        try:
+            content = body["choices"][0]["message"]["content"]
+        except (KeyError, IndexError, TypeError) as exc:
+            raise LlmClientError("LLM response did not contain choices[0].message.content") from exc
+        if not isinstance(content, str) or not content.strip():
+            raise LlmClientError("LLM response content was empty")
+        return content.strip()
+
     def stream_answer(
         self,
         question: str,

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang TDD"
+  short_description: "单 feature 隔离 TDD 实施"
+  default_prompt: "Use $shuang-tdd 按 worktree 隔离和 TDD 实现一个 specs/00X feature。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang Specs"
+  short_description: "PRD Must-have 拆 feature 文档"
+  default_prompt: "Use $shuang-specs 基于 specs/prd.md 拆 Must-have feature，并逐个产出 specify/clarify/plan/tasks 文档。"

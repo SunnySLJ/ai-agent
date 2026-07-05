@@ -18,13 +18,12 @@ from agent_platform.models import (
     ToolCall,
 )
 from agent_platform.retrieval import HybridRetriever, KeywordRetriever
-from agent_platform.java_tools import JavaBusinessToolRegistry
 from agent_platform.approval import ApprovalStore
 from agent_platform.chunking import ChunkingStrategy
 from agent_platform.safety import check_prompt_safety
 from agent_platform.session import SessionStore
 from agent_platform.streaming import format_sse, iter_text_deltas, to_json
-from agent_platform.tools import BusinessToolRegistry
+from agent_platform.tools import NoOpToolRegistry
 from agent_platform.vector_store import QdrantRetriever, QdrantVectorIndex
 
 
@@ -81,33 +80,7 @@ class AgentPlatform:
                 knowledge_base,
                 embedding_model=embedding_model,
             ),
-            tools=BusinessToolRegistry(),
-            recorder=EvaluationRecorder(),
-            answer_generator=answer_generator,
-            session_store=session_store,
-            approval_store=approval_store,
-            human_in_the_loop=human_in_the_loop,
-        )
-
-    @classmethod
-    def with_java_tools(
-        cls,
-        base_url: str,
-        answer_generator: AnswerGenerator | None = None,
-        session_store: SessionStore | None = None,
-        approval_store: ApprovalStore | None = None,
-        human_in_the_loop: bool = True,
-        embedding_model: EmbeddingModel | None = None,
-        chunking_strategy: ChunkingStrategy = ChunkingStrategy.RECURSIVE,
-    ) -> "AgentPlatform":
-        knowledge_base = KnowledgeBase(chunking_strategy=chunking_strategy)
-        return cls(
-            knowledge_base=knowledge_base,
-            retriever=HybridRetriever.from_knowledge_base(
-                knowledge_base,
-                embedding_model=embedding_model,
-            ),
-            tools=JavaBusinessToolRegistry(base_url),
+            tools=NoOpToolRegistry(),
             recorder=EvaluationRecorder(),
             answer_generator=answer_generator,
             session_store=session_store,
@@ -130,7 +103,7 @@ class AgentPlatform:
         return cls(
             knowledge_base=knowledge_base,
             retriever=QdrantRetriever(index),
-            tools=tools or BusinessToolRegistry(),
+            tools=tools or NoOpToolRegistry(),
             recorder=EvaluationRecorder(),
             answer_generator=answer_generator,
             session_store=session_store,
@@ -143,6 +116,10 @@ class AgentPlatform:
         index_chunks = getattr(self._retriever, "index_chunks", None)
         if index_chunks:
             index_chunks(self._knowledge_base.chunks())
+
+    @property
+    def knowledge_base(self) -> KnowledgeBase:
+        return self._knowledge_base
 
     def ask(self, question: str, session_id: str | None = None) -> AgentResponse:
         started = time.perf_counter()
@@ -427,7 +404,7 @@ class AgentPlatform:
                 tool_calls,
                 True,
                 0.0,
-                "没有足够证据回答这个问题。请补充知识库资料或可调用业务工具。",
+                "没有足够证据回答这个问题。请补充知识库资料后重试。",
             )
 
         confidence = max([chunk.score for chunk in chunks] or [0.8])
@@ -460,7 +437,7 @@ class AgentPlatform:
     ) -> tuple[str, bool, float]:
         successful_tools = [call for call in tool_calls if call.success]
         if not chunks and not successful_tools:
-            return "没有足够证据回答这个问题。请补充知识库资料或可调用业务工具。", True, 0
+            return "没有足够证据回答这个问题。请补充知识库资料后重试。", True, 0
 
         confidence = max([chunk.score for chunk in chunks] or [0.8])
         if self._answer_generator:

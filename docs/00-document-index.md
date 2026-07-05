@@ -9,6 +9,7 @@
 | 序号 | 文档 | 用途 |
 |---|---|---|
 | — | [README.md](../README.md) | 项目总览、每日流程、成果标准、运行命令 |
+| — | **[shuang-plan.md](../shuang-plan.md)** | **总需求（Agent 每次必读）** |
 | — | [AGENTS.md](../AGENTS.md) | Codex/Agent 执行规则 |
 | — | [CLAUDE.md](../CLAUDE.md) | Claude 执行规则 |
 | — | [agent.md](../agent.md) | Agent 入口摘要 |
@@ -19,8 +20,8 @@
 
 | 序号 | 文档 | 用途 | 何时读 |
 |---|---|---|---|
-| **02** | [02-30-day-sprint.md](02-30-day-sprint.md) | 30 天每日学习任务 | **每天第一件事** |
-| **03** | [03-architecture-overview.md](03-architecture-overview.md) | 顶层架构定稿（五层 + 数据流） | 理解全局 / 面试前 |
+| **02** | [02-30-day-sprint.md](02-30-day-sprint.md) | 30 天每日学习任务（含求职，**暂跳过投递部分**） | 参考 |
+| **03** | [03-architecture-overview.md](03-architecture-overview.md) | 顶层架构定稿（五层 + 数据流） | 理解全局 |
 | **04** | [decisions/0001-python-java-hybrid.md](decisions/0001-python-java-hybrid.md) | 技术栈决策：Python AI + Java 工具 | 技术取舍时 |
 | **05** | [05-tech-stack-roadmap.md](05-tech-stack-roadmap.md) | 完整技术栈学习路线 | 选技术 / 排优先级 |
 | **06** | [06-portfolio-projects.md](06-portfolio-projects.md) | 作品集交付标准 | 做 feature 前 |
@@ -35,20 +36,25 @@
 | **08** | [08-job-market-hangzhou.md](08-job-market-hangzhou.md) | 杭州岗位画像与关键词 | 筛岗前 |
 | **09** | [09-job-skills-matrix.md](09-job-skills-matrix.md) | 90+ 项技能矩阵 | 对照差距时 |
 | **10** | [10-application-conversion-kit.md](10-application-conversion-kit.md) | JD→项目证据、投递规则 | 写简历 / 投 BOSS |
-| **11** | [11-resume-and-interview-pack.md](11-resume-and-interview-pack.md) | **简历+面试话术（可直接复制）** | 投递 / 面试前 |
+| **11** | [11-resume-and-interview-pack.md](11-resume-and-interview-pack.md) | **简历+面试话术（纯 Python）** | 投递 / 面试前 |
+| **11+** | [../logs/applications/resume-python-ai.md](../logs/applications/resume-python-ai.md) | **可粘贴 BOSS 简历正文** | 投递前 |
 | **12** | [12-interview-kit.md](12-interview-kit.md) | 面试材料精简版 | 快速复习 |
 | **13** | [13-project-completion-audit.md](13-project-completion-audit.md) | 完成度审查与证据 | 复盘 / 门禁前 |
 
 ---
 
-## 四、行业情报与长线（14–16）
+## 四、行业情报、项目计划与长线（14–19）
 
 | 序号 | 文档 | 用途 | 何时读 |
 |---|---|---|---|
-| **14** | [14-ai-industry-watch.md](14-ai-industry-watch.md) | 每日行业资讯规则 | 每天早上 |
+| **14** | [14-ai-industry-watch.md](14-ai-industry-watch.md) | 每日行业资讯规则 | 可选 |
 | **14** | [14-industry-watch-sources.json](14-industry-watch-sources.json) | RSS 来源配置 | 脚本/自动化 |
 | **15** | [15-5-year-growth-map.md](15-5-year-growth-map.md) | 30→35 岁成长路线 | 月度复盘 |
 | **16** | [16-master-implementation-plan.md](16-master-implementation-plan.md) | 主实施计划与 Feature 015+ 路线 | 继续开发前 |
+| **17** | [17-project-forge-master-plan.md](17-project-forge-master-plan.md) | **ProjectForge 四项目主计划** | 理解架构 |
+| **18** | [18-project-first-daily-plan.md](18-project-first-daily-plan.md) | **6 周每日学习与开发计划** | **每天第一件事** |
+| **19** | [19-project-completion-report.md](19-project-completion-report.md) | 四项目完成报告 | 项目封顶时 |
+| **20** | [20-case11-verified-knowledge-interview-map.md](20-case11-verified-knowledge-interview-map.md) | **案例11 ↔ 查证模块面试对照** | 面试前 |
 
 ---
 
@@ -72,9 +78,9 @@
 |---|---|---|
 | Agent Platform | [portfolio/agent-platform/README.md](../portfolio/agent-platform/README.md) | 8000 |
 | Agent Web | [portfolio/agent-web/README.md](../portfolio/agent-web/README.md) | 3000 |
-| Java 工具服务 | [portfolio/java-business-tool-service/README.md](../portfolio/java-business-tool-service/README.md) | 8080 |
 | MCP Tool Server | [portfolio/mcp-tool-server/README.md](../portfolio/mcp-tool-server/README.md) | stdio |
 | Eval Dashboard | [portfolio/agent-eval-dashboard/README.md](../portfolio/agent-eval-dashboard/README.md) | CLI |
+| Harness Agent | [../../../harness-agent/README.md](../../../harness-agent/README.md) | CLI `hstack` |
 
 ### Feature 规格（按编号）
 
@@ -82,8 +88,8 @@
 |---|---|
 | [001](../specs/001-agent-platform/) | Agent 核心 |
 | [002](../specs/002-agent-platform-api/) | FastAPI |
-| [003](../specs/003-java-business-tool-service/) | Java 工具服务 |
-| [004](../specs/004-agent-java-tool-integration/) | Python↔Java 集成 |
+| [003](../specs/003-java-business-tool-service/) | ~~Java 工具服务~~（已删除，演示工具在 Python） |
+| [004](../specs/004-agent-java-tool-integration/) | ~~Python↔Java 集成~~（已删除） |
 | [005](../specs/005-openapi-mcp-tool-contract/) | OpenAPI/MCP 契约 |
 | [006](../specs/006-docker-compose-runtime/) | Docker Compose |
 | [007–009](../specs/007-agent-eval-dashboard/) | 评估 Dashboard |
@@ -95,18 +101,18 @@
 
 ---
 
-## 七、每日执行顺序（推荐）
+## 七、每日执行顺序（项目优先版）
 
 ```text
-1. 读 02-30-day-sprint.md 当天任务
-2. 按 07-source-map.md 学课程
-3. 跑 14 行业资讯 → 写 logs/industry/
-4. 写 T01 每日日志 → logs/daily/
-5. 推作品集代码或文档
-6. 每 3 天：08 刷 BOSS + T04 筛岗表
-7. 投递前：11 简历话术 + 12 面试复习
-8. 周末：13 完成度审查 + T05 技能复盘
+1. 读 18-project-first-daily-plan.md → 今天第几天、学什么、做什么
+2. 按 07-source-map.md 打开 agent/ 课件
+3. 在 portfolio/ 写代码或补文档
+4. 跑 unittest +（周末）completion_gate
+5. 写 T01 每日日志 → logs/daily/
+6. （可选）行业资讯 → logs/industry/ — 只保留能转化为代码/文档的条目
 ```
+
+求职相关（BOSS、简历、模拟面试）等四个项目做完后再启用，见 02 第 4 周任务。
 
 ---
 

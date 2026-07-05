@@ -32,10 +32,10 @@ class AgentEvalDashboardTest(unittest.TestCase):
     def test_load_dataset_reads_current_eval_cases(self):
         cases = load_dataset(DATASET)
 
-        self.assertGreaterEqual(len(cases), 20)
+        self.assertGreaterEqual(len(cases), 30)
         self.assertEqual("eval-001", cases[0].id)
         self.assertEqual("answer_with_citation", cases[0].expected_behavior)
-        self.assertIn("hybrid-stack", cases[0].tags)
+        self.assertIn("python-stack", cases[0].tags)
         self.assertEqual(len(cases), len({case.id for case in cases}))
 
     def test_dataset_covers_core_behavior_classes(self):
@@ -43,19 +43,19 @@ class AgentEvalDashboardTest(unittest.TestCase):
 
         counts = Counter(case.expected_behavior for case in cases)
 
-        self.assertGreaterEqual(counts["answer_with_citation"], 8)
-        self.assertGreaterEqual(counts["tool_call"], 6)
-        self.assertGreaterEqual(counts["refusal"], 4)
+        self.assertGreaterEqual(counts["answer_with_citation"], 14)
+        self.assertGreaterEqual(counts["refusal"], 16)
+        self.assertEqual(counts.get("tool_call", 0), 0)
 
     def test_run_eval_scores_current_dataset(self):
         report = run_eval(DATASET)
 
-        self.assertEqual(20, report["summary"]["total_cases"])
-        self.assertEqual(20, report["summary"]["pass_count"])
+        self.assertEqual(30, report["summary"]["total_cases"])
+        self.assertEqual(30, report["summary"]["pass_count"])
         self.assertEqual(1.0, report["summary"]["pass_rate"])
-        self.assertEqual(0.25, report["summary"]["refusal_rate"])
-        self.assertEqual(1.0, report["summary"]["tool_success_rate"])
-        self.assertEqual({"passed": 20}, report["summary"]["failure_counts"])
+        self.assertAlmostEqual(16 / 30, report["summary"]["refusal_rate"])
+        self.assertEqual(0, report["summary"]["tool_call_count"])
+        self.assertEqual({"passed": 30}, report["summary"]["failure_counts"])
 
     def test_score_response_uses_stable_failure_category(self):
         case = EvalCase(
@@ -85,8 +85,8 @@ class AgentEvalDashboardTest(unittest.TestCase):
         self.assertIn("# Agent Eval Report", markdown)
         self.assertIn("| Pass rate | 100.0% |", markdown)
         self.assertIn("eval-002", markdown)
-        self.assertIn("tool_call", markdown)
-        self.assertIn("get_order_status", markdown)
+        self.assertIn("refusal", markdown)
+        self.assertIn("| Refusal rate | 53.3% |", markdown)
 
     def test_write_report_files_outputs_json_and_markdown(self):
         report = run_eval(DATASET)
@@ -97,7 +97,7 @@ class AgentEvalDashboardTest(unittest.TestCase):
             write_report_files(report, json_out=json_out, md_out=md_out)
 
             parsed = json.loads(json_out.read_text(encoding="utf-8"))
-            self.assertEqual(20, parsed["summary"]["total_cases"])
+            self.assertEqual(30, parsed["summary"]["total_cases"])
             self.assertIn("# Agent Eval Report", md_out.read_text(encoding="utf-8"))
 
     def test_cli_writes_json_and_markdown_reports(self):

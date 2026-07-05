@@ -1,0 +1,4 @@
+interface:
+  display_name: "星耀接口联调交付"
+  short_description: "把新后端接口整理成联调文档和 Apifox JSON"
+  default_prompt: "Use $shuang-api-handoff to整理新开发接口的前后端联调文档、流程图、代码顺序和 Apifox 导入 JSON。"

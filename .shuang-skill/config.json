@@ -1,0 +1,7 @@
+{
+  "sourceRoot": "/Users/mac/Desktop/shuang-kuai/shuang-skill",
+  "installedAt": "2026-07-05T11:04:40.295Z",
+  "codexSkills": ".codex/skills",
+  "claudeSkills": ".claude/skills",
+  "syncBackCommand": "node scripts/shuang-skill-manager.mjs sync-back --apply"
+}

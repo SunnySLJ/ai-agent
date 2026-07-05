@@ -22,6 +22,13 @@
 | POST | `/approvals/{id}/confirm` | HITL 人工确认 |
 | GET | `/summary` | 运行摘要 |
 | GET | `/tools` | 工具列表 |
+| POST | `/wechat-articles/generate` | PDF 书籍 → 公众号文章 |
+| GET | `/project-forge/stages` | 九阶段元数据 + Supervisor 路由 |
+| POST | `/project-forge/demo` | 运行九阶段演示（`prior_run_id` 可选） |
+| GET | `/project-forge/runs` | 历史 run 列表 |
+| GET | `/project-forge/runs/{id}` | 单次 run 详情 |
+| POST | `/verified-knowledge/verify` | Claim-Evidence 查证（可选 `use_llm`） |
+| POST | `/deep-research/run` | DeepResearch 脚注报告（`use_web_search`） |
 
 ## 3. 课程 → 代码对照
 
@@ -67,8 +74,10 @@ PYTHONPATH=src .venv/bin/uvicorn agent_platform.api:create_app --factory --host 
 - FastAPI 做 **AI 网关**：鉴权、限流、trace_id 注入（P1 扩展点）。
 - Pydantic 保证 **工具参数** 与 **文档入库** 结构稳定。
 - `/ask` 与 `/ask/stream` 共用同一 `AgentPlatform.ask()`，避免双份业务逻辑。
+- ProjectForge / 查证 / DeepResearch 三条能力 API 共用 `create_app()` 工厂与种子文档注入。
 
-## 6. 明天继续（Day 8+）
+## 7. 关联文档
 
-- 文档解析策略表（PDF/Word/Markdown）
-- 切分策略与 chunk 元数据设计
+- [verified-knowledge-flow.md](docs/verified-knowledge-flow.md)
+- [rerank-strategy.md](docs/rerank-strategy.md)
+- [capabilities/deep-research/README.md](capabilities/deep-research/README.md)

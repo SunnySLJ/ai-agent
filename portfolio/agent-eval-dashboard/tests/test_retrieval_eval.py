@@ -26,7 +26,7 @@ class RetrievalEvalTest(unittest.TestCase):
     def test_run_retrieval_eval_compares_keyword_and_hybrid_modes(self):
         report = run_retrieval_eval(DATASET)
 
-        self.assertEqual(5, report["summary"]["total_cases"])
+        self.assertEqual(8, report["summary"]["total_cases"])
         self.assertIn("keyword", report["summary"]["modes"])
         self.assertIn("hybrid", report["summary"]["modes"])
         self.assertGreaterEqual(
@@ -54,7 +54,7 @@ class RetrievalEvalTest(unittest.TestCase):
             write_retrieval_report_files(report, json_out=json_out, md_out=md_out)
 
             parsed = json.loads(json_out.read_text(encoding="utf-8"))
-            self.assertEqual(5, parsed["summary"]["total_cases"])
+            self.assertEqual(8, parsed["summary"]["total_cases"])
             self.assertIn("# Retrieval Eval Report", md_out.read_text(encoding="utf-8"))
 
 

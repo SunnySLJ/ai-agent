@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang Prompt"
+  short_description: "按项目阶段生成可复制 AI 提示词"
+  default_prompt: "Use $shuang-prompt 根据当前项目、需求和阶段，生成一段可复制给 AI 的文档驱动开发提示词。"

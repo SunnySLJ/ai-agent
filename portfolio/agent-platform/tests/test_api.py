@@ -5,7 +5,6 @@ from fastapi.testclient import TestClient
 
 from agent_platform.api import create_app
 from test_embeddings import EmbeddingHandler, embedding_service
-from test_java_tools import java_like_tool_service
 from test_llm import chat_completion_service
 from test_streaming import parse_sse_events
 from test_vector_store import FakeQdrantHandler, fake_qdrant_service
@@ -64,42 +63,36 @@ class AgentPlatformApiTest(unittest.TestCase):
         self.assertTrue(body["refused"])
         self.assertIn("没有足够证据", body["answer"])
 
-    def test_calls_order_tool_through_api(self):
+    def test_refuses_order_question_without_knowledge_base(self):
         client = TestClient(create_app())
 
         response = client.post("/ask", json={"question": "查询订单 ORD-1001 的状态"})
 
         body = response.json()
-        self.assertFalse(body["refused"])
-        self.assertIn("已发货", body["answer"])
-        self.assertEqual("get_order_status", body["trace"]["tool_calls"][0]["name"])
-        self.assertTrue(body["trace"]["tool_calls"][0]["success"])
+        self.assertTrue(body["refused"])
+        self.assertIn("没有足够证据", body["answer"])
+        self.assertEqual([], body["trace"]["tool_calls"])
 
     def test_summary_and_tools_are_available(self):
         client = TestClient(create_app())
+        client.post(
+            "/documents",
+            json={
+                "doc_id": "rag",
+                "title": "RAG Evaluation",
+                "content": "RAG evaluation records retrieval hits, citations, refusals, and traces.",
+            },
+        )
+        client.post("/ask", json={"question": "RAG 评估记录什么?"})
         client.post("/ask", json={"question": "查询订单 ORD-1001 的状态"})
-        client.post("/ask", json={"question": "未知问题"})
 
         summary = client.get("/summary").json()
         tools = client.get("/tools").json()
 
         self.assertEqual(2, summary["total_runs"])
-        self.assertEqual(1, summary["tool_call_count"])
-        self.assertIn("get_order_status", tools["tools"])
-        self.assertIn("create_todo", tools["tools"])
-
-    def test_create_app_uses_java_tools_when_env_is_set(self):
-        with java_like_tool_service() as base_url:
-            with mock.patch.dict("os.environ", {"JAVA_TOOL_BASE_URL": base_url}):
-                client = TestClient(create_app())
-
-                response = client.post("/ask", json={"question": "查询订单 ORD-2002 的状态"})
-
-        body = response.json()
-        self.assertFalse(body["refused"])
-        self.assertIn("测试专属订单", body["answer"])
-        self.assertEqual("get_order_status", body["trace"]["tool_calls"][0]["name"])
-        self.assertTrue(body["trace"]["tool_calls"][0]["success"])
+        self.assertEqual(1, summary["refusal_count"])
+        self.assertEqual(0, summary["tool_call_count"])
+        self.assertEqual([], tools["tools"])
 
     def test_create_app_uses_openai_compatible_llm_when_env_is_set(self):
         with chat_completion_service("模型回答：API 环境变量已接入。") as base_url:
@@ -160,11 +153,19 @@ class AgentPlatformApiTest(unittest.TestCase):
 
     def test_ask_supports_session_id_and_session_lookup(self):
         client = TestClient(create_app())
-        first = client.post("/ask", json={"question": "查询订单 ORD-1001 的状态"}).json()
+        client.post(
+            "/documents",
+            json={
+                "doc_id": "rag",
+                "title": "RAG Evaluation",
+                "content": "RAG evaluation records retrieval hits, citations, refusals, and traces.",
+            },
+        )
+        first = client.post("/ask", json={"question": "RAG 评估记录什么?"}).json()
         second = client.post(
             "/ask",
             json={
-                "question": "这个订单发货了吗?",
+                "question": "它还记录拒答吗?",
                 "session_id": first["session_id"],
             },
         ).json()
@@ -172,8 +173,8 @@ class AgentPlatformApiTest(unittest.TestCase):
 
         self.assertEqual(first["session_id"], second["session_id"])
         self.assertEqual(2, len(session["turns"]))
-        self.assertEqual("查询订单 ORD-1001 的状态", session["turns"][0]["question"])
-        self.assertEqual("这个订单发货了吗?", session["turns"][1]["question"])
+        self.assertEqual("RAG 评估记录什么?", session["turns"][0]["question"])
+        self.assertEqual("它还记录拒答吗?", session["turns"][1]["question"])
 
     def test_ask_blocks_prompt_injection_through_api(self):
         client = TestClient(create_app())

@@ -1,0 +1,9 @@
+research
+prototype
+architecture
+solution
+prd
+development
+testing
+deployment
+retrospective

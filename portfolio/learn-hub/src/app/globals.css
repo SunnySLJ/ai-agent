@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ========================================
+ *  AI Learn Hub · 视觉系统
+ *  风格：Linear 暗色 + emerald 品牌色
+ *  参考：Skill-Distiller globals.css
+ * ======================================== */
+
+@theme {
+  --color-bg-base: hsl(240 5% 5%);
+  --color-bg-panel: hsl(240 5% 7.5%);
+  --color-bg-elev: hsl(240 5% 10%);
+  --color-bg-hover: hsl(240 5% 13%);
+  --color-bg-grid: hsl(240 5% 8%);
+  --color-border: hsl(240 5% 14%);
+  --color-border-strong: hsl(240 4% 22%);
+  --color-border-soft: hsl(240 5% 11%);
+
+  --color-text-primary: hsl(0 0% 98%);
+  --color-text-secondary: hsl(240 4% 70%);
+  --color-text-muted: hsl(240 4% 48%);
+  --color-text-subtle: hsl(240 4% 35%);
+
+  --color-brand-50: hsl(155 70% 95%);
+  --color-brand-200: hsl(158 70% 75%);
+  --color-brand-400: hsl(158 75% 55%);
+  --color-brand-500: hsl(158 80% 45%);
+  --color-brand-600: hsl(160 80% 38%);
+  --color-brand-glow: hsl(158 80% 50% / 0.15);
+
+  --color-accent-cyan: hsl(195 85% 55%);
+  --color-accent-violet: hsl(258 75% 62%);
+
+  --color-lint-ok: hsl(158 75% 50%);
+  --color-lint-warn: hsl(38 90% 58%);
+  --color-lint-err: hsl(0 75% 58%);
+
+  --font-sans: "Inter", "Geist", ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: "JetBrains Mono", "Geist Mono", "SF Mono", ui-monospace, Consolas, monospace;
+}
+
+html,
+body {
+  background: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+::selection {
+  background: var(--color-brand-500);
+  color: black;
+}
+
+.card {
+  background: var(--color-bg-panel);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.card:hover {
+  border-color: var(--color-border-strong);
+}
+
+.card-elev {
+  background: var(--color-bg-elev);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.perspective-\[1200px\] {
+  perspective: 1200px;
+}
+
+.\[transform-style\:preserve-3d\] {
+  transform-style: preserve-3d;
+}
+
+.\[backface-visibility\:hidden\] {
+  backface-visibility: hidden;
+}
+
+.\[transform\:rotateY\(180deg\)\] {
+  transform: rotateY(180deg);
+}
+
+.btn-brand {
+  background: var(--color-brand-500);
+  color: black;
+  border: 1px solid var(--color-brand-500);
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+.btn-brand:hover {
+  background: var(--color-brand-400);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  transition: all 0.15s ease;
+}
+.btn-ghost:hover {
+  background: var(--color-bg-hover);
+  color: var(--color-text-primary);
+  border-color: var(--color-border-strong);
+}
+
+.section-pad {
+  padding-top: clamp(3rem, 8vw, 6rem);
+  padding-bottom: clamp(3rem, 8vw, 6rem);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-border-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border-soft) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+}

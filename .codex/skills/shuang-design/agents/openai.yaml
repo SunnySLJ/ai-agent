@@ -1,0 +1,4 @@
+interface:
+  display_name: "Shuang Design"
+  short_description: "PRD 生成 UI 与 DESIGN.md"
+  default_prompt: "Use $shuang-design 基于 PRD 生成 UI 页面规范、DESIGN.md 和前端 constitution 约束。"

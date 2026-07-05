@@ -17,16 +17,13 @@ class OpenApiContractTest(unittest.TestCase):
 
     def test_declares_openapi_303(self):
         self.assertEqual("3.0.3", self.openapi["openapi"])
-        self.assertEqual("Java Business Tool Service", self.openapi["info"]["title"])
+        self.assertEqual("Agent Platform RAG API", self.openapi["info"]["title"])
 
-    def test_covers_real_java_routes(self):
+    def test_covers_rag_routes(self):
         expected = {
             ("/health", "get", "health"),
-            ("/tools", "get", "listTools"),
-            ("/orders/{orderId}", "get", "getOrderStatus"),
-            ("/tickets/{ticketId}", "get", "getTicketStatus"),
-            ("/todos", "post", "createTodo"),
-            ("/audit-events", "get", "listAuditEvents"),
+            ("/documents", "post", "ingestDocument"),
+            ("/ask", "post", "askQuestion"),
         }
 
         actual = {
@@ -46,11 +43,6 @@ class OpenApiContractTest(unittest.TestCase):
                     self.assertIn("description", property_schema)
                     self.assertIn("example", property_schema)
 
-    def test_create_todo_request_marks_required_fields(self):
-        schema = self.openapi["components"]["schemas"]["CreateTodoRequest"]
-
-        self.assertEqual(["title", "idempotencyKey"], schema["required"])
-
 
 class McpToolsContractTest(unittest.TestCase):
     def setUp(self):
@@ -63,36 +55,8 @@ class McpToolsContractTest(unittest.TestCase):
             self.manifest["protocolReference"],
         )
 
-    def test_exposes_expected_tools_with_input_schemas(self):
-        tools = {tool["name"]: tool for tool in self.manifest["tools"]}
-
-        self.assertEqual(
-            {"get_order_status", "get_ticket_status", "create_todo"},
-            set(tools),
-        )
-        self.assertEqual(
-            ["orderId"],
-            tools["get_order_status"]["inputSchema"]["required"],
-        )
-        self.assertEqual(
-            ["ticketId"],
-            tools["get_ticket_status"]["inputSchema"]["required"],
-        )
-        self.assertEqual(
-            ["title", "idempotencyKey"],
-            tools["create_todo"]["inputSchema"]["required"],
-        )
-
-    def test_mcp_tools_map_to_existing_openapi_operations(self):
-        operations = {
-            operation["operationId"]
-            for methods in self.openapi["paths"].values()
-            for operation in methods.values()
-        }
-
-        for tool in self.manifest["tools"]:
-            with self.subTest(tool=tool["name"]):
-                self.assertIn(tool["http"]["operationId"], operations)
+    def test_exposes_no_business_tools_in_rag_only_mode(self):
+        self.assertEqual([], self.manifest["tools"])
 
 
 if __name__ == "__main__":

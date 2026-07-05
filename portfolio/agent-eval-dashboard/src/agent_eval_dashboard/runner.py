@@ -69,11 +69,11 @@ def run_eval(dataset_path: str | Path, platform: AgentPlatform | None = None) ->
 def seed_demo_documents(platform: AgentPlatform) -> None:
     platform.ingest(
         Document(
-            doc_id="hybrid-agent-architecture",
-            title="Hybrid Agent Architecture",
+            doc_id="agent-platform-architecture",
+            title="Agent Platform Architecture",
             content=(
-                "Python 负责 Agent、RAG、检索、引用、评估和工具编排；"
-                "Java 负责订单、工单、权限、审计、幂等和稳定业务 API。"
+                "Python Agent 平台专注企业知识库 RAG：文档入库、混合检索、"
+                "带 citation 的回答、低证据拒答和 trace 评估。"
             ),
         )
     )
@@ -113,9 +113,8 @@ def seed_demo_documents(platform: AgentPlatform) -> None:
             doc_id="tool-contract-runtime",
             title="Tool Contract Runtime",
             content=(
-                "MCP 和 OpenAPI 定义工具名称、参数 schema、错误码和 HTTP 映射。"
-                "Docker Compose 负责一键启动 Python Agent API 和 Java Business Tool Service，"
-                "并通过 JAVA_TOOL_BASE_URL 接入业务工具。"
+                "MCP 和 OpenAPI 可描述 Agent Platform 的 HTTP 契约。"
+                "Docker Compose 负责一键启动 Python Agent API 和 Qdrant。"
             ),
         )
     )
@@ -126,6 +125,56 @@ def seed_demo_documents(platform: AgentPlatform) -> None:
             content=(
                 "Agent 项目通过 token 预算、检索上下文压缩、缓存、模型路由、"
                 "降级策略和 eval dataset 控制成本。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="document-parsing",
+            title="Document Parsing Pipeline",
+            content=(
+                "PDF 和 Markdown 文档通过 document_parser 解析为纯文本，"
+                "再由 knowledge_base 递归切分后入库，供 RAG 检索引用。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="hybrid-retrieval",
+            title="Hybrid Retrieval Strategy",
+            content=(
+                "混合检索融合 BM25 关键词分数与向量相似度，"
+                "比纯关键词检索更稳，能覆盖同义表达并提升 citation 命中率。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="streaming-and-sse",
+            title="Streaming and SSE",
+            content=(
+                "SSE 流式问答通过 POST /ask/stream 返回 meta、token、done 事件，"
+                "前端可逐字显示 Agent 回答并保留 citation 与 tool trace。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="project-forge",
+            title="ProjectForge Workflow",
+            content=(
+                "ProjectForge 九阶段流水线包含需求调研、画面原型、架构选项、"
+                "解决方案、PRD 书写、代码开发、测试、上线部署和复盘。"
+            ),
+        )
+    )
+    platform.ingest(
+        Document(
+            doc_id="verified-knowledge",
+            title="Verified Knowledge Base",
+            content=(
+                "查证型知识库通过 Claim-Evidence 对齐核验架构和 PRD 断言，"
+                "降低幻觉并在低置信时建议拒答或人工复核。"
             ),
         )
     )

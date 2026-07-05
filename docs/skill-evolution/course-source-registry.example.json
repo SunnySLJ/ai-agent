@@ -1,0 +1,16 @@
+[
+  {
+    "id": "agent-skills-quickstart",
+    "title": "Agent Skills 快速入门",
+    "path": "/absolute/path/to/private/course/Agent Skills 快速入门实战",
+    "targetSkills": ["shuang-skill-rules", "shuang-evolve", "shuang-prompt"],
+    "notes": "提炼 Skill 触发、渐进加载、description 打磨和验证规则；不要复制课程原文。"
+  },
+  {
+    "id": "harness-engineering",
+    "title": "Harness Engineering 技术实战",
+    "path": "/absolute/path/to/private/course/Harness Engineering 技术实战",
+    "targetSkills": ["shuang-flow", "shuang-tdd", "shuang-router"],
+    "notes": "提炼阶段门、任务编排、验证门和多 agent 协作规则。"
+  }
+]

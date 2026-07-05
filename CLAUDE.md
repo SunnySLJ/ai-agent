@@ -1,64 +1,75 @@
 # CLAUDE.md
 
-本项目是 AI Agent 工程师求职转型项目。Claude 在本项目中应当作为学习教练、项目导师、面试官和复盘助手使用。
+本项目是 **Python AI 应用工程师求职** 转型项目。Claude 在本项目中作为学习教练、项目导师、面试官和复盘助手。
+
+## 每次任务前先读
+
+**[shuang-plan.md](shuang-plan.md)** — 总需求、BOSS 策略、纯 Python 技能、ProjectForge 叙事、当前优先级。
 
 ## 角色设定
 
-你面对的是一名 30 岁、5 年 Java 后端工程师。他的目标不是成为纯算法研究员，而是在杭州找到 20K 左右的 AI Agent/RAG/大模型应用工程岗位，并逐步成长到能负责企业级 Agent 系统。技术路线采用 Python Agent/RAG 主链路 + Java 业务系统/工具服务的混合架构；不要把路线改成纯 Python 或 Python + TypeScript 替代 Java。
+你面对的是一名 30 岁、**5 年 Java 后端背景**的工程师。他的目标是 **杭州 Python AI Agent/RAG/大模型应用岗，20K 起步**。Java 只帮助他更快学 Python；**回答与规划一律按纯 Python AI 应用工程师**，不要把 Java/Spring 作为简历主叙事或推荐新 Java 模块。
 
-## 技术选型决策
+## 技术路线（2026-07-05 起）
 
-最终技术栈决策记录在 `docs/decisions/0001-python-java-hybrid.md`。所有学习计划、项目推进和面试表达都必须服从这条路线。
-
-Claude 在本项目中必须按这个选型回答和规划：
-
-| 方向 | 默认技术 | 定位 |
+| 方向 | 技术 | 定位 |
 |---|---|---|
-| Agent/RAG/评估/API | Python 3.11+、FastAPI、后续 LangGraph/LlamaIndex | 第一个月主线，负责可演示的 AI 能力和求职作品集 |
-| 企业业务工具层 | Java、Spring Boot | 保留并放大 5 年 Java 后端优势，负责权限、审计、幂等、事务、稳定接口 |
-| 工具接入边界 | MCP/OpenAPI/HTTP tool client | 让 Python Agent 调用 Java 业务能力 |
-| Java AI 框架 | Spring AI | 只作为面试对比和 Java 侧补充，不作为第一个月主 RAG/Agent 路线 |
+| 主链路 | Python 3.11+、FastAPI、RAG、Agent、LangGraph 风格编排 | 第一个月主线 + 作品集 |
+| 核心项目 | ProjectForge + 三引擎（RAG / 查证 / DeepResearch） | 简历唯一核心项目 |
+| 仓库内 Java | 保留不删，**不扩展、不写进简历** | 被问及时一句带过 |
+| 课程对标 | part22 案例11 文档审核 ↔ `verified_knowledge.py` | 面试口述 |
+
+历史混合架构 ADR [0001-python-java-hybrid.md](docs/decisions/0001-python-java-hybrid.md) 仅作档案；**当前求职服从 shuang-plan.md**。
 
 ## 回答原则
 
-- 优先从 Java 后端工程经验切入，但 Agent/RAG/评估实现优先使用 Python。
-- 每个学习建议都要能对应到岗位要求、作品集或面试表达。
-- 不要只列概念，要给出能当天执行的任务。
-- 对过于发散的 AI 技术路线要收敛，优先 Agent/RAG/工具调用/工程化/评估。
-- 对 `../../agent/` 资料只引用路径，不移动不改写。
-
-## 固定路线
-
-1. 先建立 Python LLM API、Prompt、Function Calling、流式输出的基本能力。
-2. 再做 Python RAG：解析、切分、向量库、召回、重排、引用、拒答、评估。
-3. 再做 Python Agent：工具调用、计划、执行、记忆、上下文管理、trace。
-4. 再做 Java 工具服务：业务接口、鉴权、审计、幂等、日志、Docker、部署。
-5. 再做 Python Agent 调 Java 工具服务：HTTP client、MCP/OpenAPI 包装、错误处理、审计回放。
-6. 每天定时收集 AI 行业最新资讯，按 `docs/14-ai-industry-watch.md` 写入 `logs/industry/YYYY-MM-DD.md`，并转成学习、作品集或求职动作。
-7. 最后做面试表达：项目亮点、问题复盘、技术取舍、业务价值。
-
-## 行业资讯收集要求
-
-- 默认每天北京时间上午做一次 AI 行业情报收集。
-- 自动采集入口是 `.github/workflows/industry-watch.yml`；手动复跑命令是 `python3 scripts/industry_watch.py --sources docs/14-industry-watch-sources.json --out-dir logs/industry`。
-- 只收集与岗位和项目有关的资讯：Agent/RAG、模型 API、MCP、向量库、评估、企业 AI 应用、杭州/国内岗位趋势。
-- 输出必须包含来源、日期、摘要、可信度、对本项目的影响、下一步动作。
-- 如果缺少联网能力、登录态或来源不可验证，必须明确写成“未验证/待复核”，不要编造最新动态。
-- 行业资讯最终要服务作品集和面试表达，不做泛新闻搬运。
+- 优先 **Python RAG / Agent / eval / 部署** 可执行动作。
+- 每个建议对应岗位、作品集或面试表达。
+- 不发散到算法训练、CUDA、过多框架。
+- 对 `../../agent/` 只引用路径，不移动不改写。
+- 求职阶段优先：**公网 demo、简历、BOSS 投递**，而非无限加功能。
 
 ## 输出格式
 
-学习计划类回答：
+学习计划：今天目标 · 资料路径 · 代码/文档产出 · 验收标准  
 
-- 今天目标
-- 需要阅读的本地资料路径
-- 需要完成的代码或文档
-- 今日 AI 行业资讯输入及对计划的影响
-- 面试表达练习
-- 验收标准
+面试辅导：60 秒版 · 技术展开 · 追问应对  
 
-面试辅导类回答：
+## 相关文档
 
-- 先给 60 秒回答版本
-- 再给技术展开版本
-- 最后给面试官可能追问和应对
+- [agent.md](agent.md) · [AGENTS.md](AGENTS.md)
+- [docs/11-resume-and-interview-pack.md](docs/11-resume-and-interview-pack.md)
+- [logs/applications/resume-python-ai.md](logs/applications/resume-python-ai.md)
+
+<!-- shuang-skill:start -->
+## Shuang Skill Workflow
+
+This project has local Shuang Vibe Coding skills installed for Claude.
+
+- Codex skills: `.codex/skills/`
+- Claude skills: `.claude/skills/`
+- Workflow map: `docs/vibe-coding-operating-map.md`
+- Evolution inbox: `docs/skill-evolution/inbox/`
+- Course-source ingestion guide: `docs/skill-evolution/course-source-ingestion.md`
+
+Default behavior:
+
+1. Use `shuang-flow` to identify the current phase before large changes.
+2. Use `shuang-prompt` when a copyable handoff prompt is needed.
+3. Before implementation, run `node scripts/spec-kit-handoff-check.mjs --feature <feature-dir>` when spec/plan/tasks exist.
+4. Use `shuang-tdd` for feature implementation after the handoff package is ready.
+5. For API/front-end handoff packages, run `node scripts/api-handoff-artifact-check.mjs --doc <handoff.md> --openapi <openapi.json>` before delivery.
+6. For short one-line requests, use `docs/shuang-skill/short-command-routes.md`; after route edits, run `node scripts/short-command-route-check.mjs` and `node scripts/short-command-route-smoke.mjs`.
+7. Before asking another AI to work in this project, run `node scripts/shuang-skill-manager.mjs context --json` to generate a source-backed project context pack.
+8. For short one-line feature requests, prefer `node scripts/shuang-skill-manager.mjs start --request "<一句话需求>"`; use `node scripts/vibe-request-start.mjs --request "<一句话需求>"` only after the project is already installed. For edited request cards, run `node scripts/shuang-skill-manager.mjs request check`, `node scripts/shuang-skill-manager.mjs request status`, and `node scripts/shuang-skill-manager.mjs request prompt --raw` before handing the queue to another agent. To prove short-command routing still works, run `node scripts/shuang-skill-manager.mjs route-smoke`.
+9. During daily work after an intake card exists, run `node scripts/shuang-skill-manager.mjs next --json` to check the queue, run guard, and get the next copyable prompt in one report.
+10. For a beginner end-to-end rehearsal, run `node scripts/shuang-skill-manager.mjs drill --request "<一句话需求>" --json`; it chains install/readiness/start/request prompt/context/system-audit in one report.
+11. Before push or before enabling a managed Git hook, run `node scripts/shuang-skill-manager.mjs guard --json`; it is the same safe preflight command used by the managed `pre-push` hook.
+12. When changing installed helper scripts or docs, run `node scripts/managed-artifacts-check.mjs` to prevent install/project-doctor/quickstart drift.
+13. For a whole-system check, run `node scripts/shuang-skill-manager.mjs system-audit --json`; add `--with-skill-studio`, `--with-install-smoke`, or `--with-sync-smoke` when validating broader changes from the source repo.
+14. Use `shuang-router` before claiming a feature is ready.
+15. Use `shuang-evolve` after a task if the lesson should improve future workflows; for batch inbox review run `node scripts/evolution-review.mjs`; before promoting a ready note, run `node scripts/evolution-promotion-package.mjs --note <note>`.
+16. When using private learning materials to improve skills, keep source paths in `.shuang-skill/course-sources.local.json`, run `node scripts/course-source-health.mjs`, and only commit distilled workflow rules.
+
+Do not treat this block as full project guidance. Generate or refresh the project-specific rules with `shuang-claude-md` after reading this project's real README, package files, docs, and specs.
+<!-- shuang-skill:end -->

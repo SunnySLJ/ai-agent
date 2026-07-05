@@ -1,0 +1,2154 @@
+{
+  "125308bf-9f22-4496-bb05-603b374a4d79": {
+    "run_id": "125308bf-9f22-4496-bb05-603b374a4d79",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条内部来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够内部资料，建议补充外部检索。\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `125308bf-9f22-4496-bb05-603b374a4d79`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "b59d9d81-1261-4c09-954b-e1fc779b95d2": {
+    "run_id": "b59d9d81-1261-4c09-954b-e1fc779b95d2",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条内部来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n\n## 脚注\n\n[^1]: 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `b59d9d81-1261-4c09-954b-e1fc779b95d2`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "097d9ee1-c004-4395-8965-730c78c6be1f": {
+    "run_id": "097d9ee1-c004-4395-8965-730c78c6be1f",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条内部来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n\n## 脚注\n\n[^1]: 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `097d9ee1-c004-4395-8965-730c78c6be1f`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "f416beb6-4931-41be-ba72-4de1486b0f34": {
+    "run_id": "f416beb6-4931-41be-ba72-4de1486b0f34",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条内部来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够内部资料，建议补充外部检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够内部资料，建议补充外部检索。\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `f416beb6-4931-41be-ba72-4de1486b0f34`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "69b756d5-a83d-40dc-87af-cd54704fd0bf": {
+    "run_id": "69b756d5-a83d-40dc-87af-cd54704fd0bf",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条内部来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n\n## 脚注\n\n[^1]: 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `69b756d5-a83d-40dc-87af-cd54704fd0bf`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "0147cb60-3e98-43d1-af59-6ca11c7df349": {
+    "run_id": "0147cb60-3e98-43d1-af59-6ca11c7df349",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条内部来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 内部知识库命中较少，结论主要基于模板推断，需外网检索补强。\n- 当前为离线调研模式；配置 OPENAI_API_KEY 后可增强子问题规划。\n\n## 脚注\n\n[^1]: 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `0147cb60-3e98-43d1-af59-6ca11c7df349`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "b0c2b41c-3bd5-47fb-90ae-6ee2567fcaa1": {
+    "run_id": "b0c2b41c-3bd5-47fb-90ae-6ee2567fcaa1",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `b0c2b41c-3bd5-47fb-90ae-6ee2567fcaa1`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "a18a0350-59b1-4674-8728-624456be0cd9": {
+    "run_id": "a18a0350-59b1-4674-8728-624456be0cd9",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `a18a0350-59b1-4674-8728-624456be0cd9`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "5b3d2004-ae08-446f-a4f0-ca0c1cff12d5": {
+    "run_id": "5b3d2004-ae08-446f-a4f0-ca0c1cff12d5",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `5b3d2004-ae08-446f-a4f0-ca0c1cff12d5`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9": {
+    "run_id": "39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9",
+    "idea": "第一轮 Forge 演示",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：第一轮 Forge 演示\n\n## 子问题\n\n1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第一轮 Forge 演示\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第一轮 Forge 演示\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "6f7385eb-a8bc-4211-92dc-2f60b308ab90": {
+    "run_id": "6f7385eb-a8bc-4211-92dc-2f60b308ab90",
+    "idea": "第二轮迭代",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": "39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n\n## 子问题\n\n1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第二轮迭代\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `39f2e74b-8acf-4a2e-a454-7d7ae9bfebd9`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第二轮迭代\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `6f7385eb-a8bc-4211-92dc-2f60b308ab90`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "972249f4-45f0-48cb-9400-f27dcecaf736": {
+    "run_id": "972249f4-45f0-48cb-9400-f27dcecaf736",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `972249f4-45f0-48cb-9400-f27dcecaf736`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "543143a8-861e-491b-a95e-47d9f452f5ff": {
+    "run_id": "543143a8-861e-491b-a95e-47d9f452f5ff",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `543143a8-861e-491b-a95e-47d9f452f5ff`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "bdd2f8e6-7348-48d9-ab1d-e72372c2f6b4": {
+    "run_id": "bdd2f8e6-7348-48d9-ab1d-e72372c2f6b4",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `bdd2f8e6-7348-48d9-ab1d-e72372c2f6b4`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "0cab252b-96fc-46d3-b872-5539841a5009": {
+    "run_id": "0cab252b-96fc-46d3-b872-5539841a5009",
+    "idea": "第一轮 Forge 演示",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：第一轮 Forge 演示\n\n## 子问题\n\n1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第一轮 Forge 演示\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第一轮 Forge 演示\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "1450d719-1ac6-41c9-9b6d-35098dff98f0": {
+    "run_id": "1450d719-1ac6-41c9-9b6d-35098dff98f0",
+    "idea": "第二轮迭代",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": "0cab252b-96fc-46d3-b872-5539841a5009",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n\n## 子问题\n\n1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第二轮迭代\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `0cab252b-96fc-46d3-b872-5539841a5009`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第二轮迭代\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `1450d719-1ac6-41c9-9b6d-35098dff98f0`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "fdf0d2b8-d245-4f76-9f52-7cd1609f9eca": {
+    "run_id": "fdf0d2b8-d245-4f76-9f52-7cd1609f9eca",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `fdf0d2b8-d245-4f76-9f52-7cd1609f9eca`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "1ab1d3b4-021d-44e9-bf60-5ee60ccc7b7f": {
+    "run_id": "1ab1d3b4-021d-44e9-bf60-5ee60ccc7b7f",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `1ab1d3b4-021d-44e9-bf60-5ee60ccc7b7f`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "46af2d63-63b4-4650-ab62-15959bb6fc20": {
+    "run_id": "46af2d63-63b4-4650-ab62-15959bb6fc20",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `46af2d63-63b4-4650-ab62-15959bb6fc20`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "6effee98-e3e6-4d44-8fc4-8e2e22c640fa": {
+    "run_id": "6effee98-e3e6-4d44-8fc4-8e2e22c640fa",
+    "idea": "第一轮 Forge 演示",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：第一轮 Forge 演示\n\n## 子问题\n\n1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第一轮 Forge 演示\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第一轮 Forge 演示\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "c6e54a8b-e5c3-4edb-9f87-7a7405e89d2c": {
+    "run_id": "c6e54a8b-e5c3-4edb-9f87-7a7405e89d2c",
+    "idea": "第二轮迭代",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": "6effee98-e3e6-4d44-8fc4-8e2e22c640fa",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n\n## 子问题\n\n1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第二轮迭代\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `6effee98-e3e6-4d44-8fc4-8e2e22c640fa`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第二轮迭代\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `c6e54a8b-e5c3-4edb-9f87-7a7405e89d2c`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "7a514f40-5697-4345-9f85-4240eff24559": {
+    "run_id": "7a514f40-5697-4345-9f85-4240eff24559",
+    "idea": "增加 DeepResearch 与查证联动",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：增加 DeepResearch 与查证联动\n\n## 子问题\n\n1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 增加 DeepResearch 与查证联动：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 增加 DeepResearch 与查证联动：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 增加 DeepResearch 与查证联动：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 增加 DeepResearch 与查证联动：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n增加 DeepResearch 与查证联动\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n增加 DeepResearch 与查证联动\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n增加 DeepResearch 与查证联动\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n增加 DeepResearch 与查证联动\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `7a514f40-5697-4345-9f85-4240eff24559`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "4ddfa3bb-0164-4e49-bae2-ae919507d71b": {
+    "run_id": "4ddfa3bb-0164-4e49-bae2-ae919507d71b",
+    "idea": "调研 Agent 平台能力",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：调研 Agent 平台能力\n\n## 子问题\n\n1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 调研 Agent 平台能力：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 调研 Agent 平台能力：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 调研 Agent 平台能力：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 调研 Agent 平台能力：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n调研 Agent 平台能力\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n调研 Agent 平台能力\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n调研 Agent 平台能力\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n调研 Agent 平台能力\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `4ddfa3bb-0164-4e49-bae2-ae919507d71b`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "8ffb712a-3202-4358-851b-d456870016cd": {
+    "run_id": "8ffb712a-3202-4358-851b-d456870016cd",
+    "idea": "为 agent-platform 增加查证型知识库与工作台",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：为 agent-platform 增加查证型知识库与工作台\n\n## 子问题\n\n1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 为 agent-platform 增加查证型知识库与工作台：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 为 agent-platform 增加查证型知识库与工作台：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 为 agent-platform 增加查证型知识库与工作台：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 为 agent-platform 增加查证型知识库与工作台：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n为 agent-platform 增加查证型知识库与工作台\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `8ffb712a-3202-4358-851b-d456870016cd`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "05460843-9271-4cd6-88f2-e0e31bd45948": {
+    "run_id": "05460843-9271-4cd6-88f2-e0e31bd45948",
+    "idea": "第一轮 Forge 演示",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": null,
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 0 条来源。",
+        "markdown": "# Deep Research 报告：第一轮 Forge 演示\n\n## 子问题\n\n1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第一轮 Forge 演示：这个主题的核心问题是什么？\n\n暂无足够资料，建议补充检索。\n\n### 2. 第一轮 Forge 演示：现有方案或竞品有哪些？\n\n暂无足够资料，建议补充检索。\n\n### 3. 第一轮 Forge 演示：技术实现的关键约束是什么？\n\n暂无足够资料，建议补充检索。\n\n### 4. 第一轮 Forge 演示：风险与不确定性在哪里？\n\n暂无足够资料，建议补充检索。\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第一轮 Forge 演示\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第一轮 Forge 演示\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  },
+  "17a48190-00be-4327-a70c-bb49d6109c20": {
+    "run_id": "17a48190-00be-4327-a70c-bb49d6109c20",
+    "idea": "第二轮迭代",
+    "overall_status": "completed",
+    "current_stage": "retrospective",
+    "deploy_url": "http://127.0.0.1:3000",
+    "repository": "github.com/SunnySLJ/ai-agent",
+    "parent_run_id": "05460843-9271-4cd6-88f2-e0e31bd45948",
+    "stages": [
+      {
+        "stage_id": "research",
+        "title": "需求调研报告",
+        "summary": "DeepResearch 完成 4 个子问题，引用 1 条来源。",
+        "markdown": "# Deep Research 报告：第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n\n## 子问题\n\n1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\n## 综合结论\n\n### 1. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：这个主题的核心问题是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^1]\n\n### 2. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：现有方案或竞品有哪些？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^2]\n\n### 3. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：技术实现的关键约束是什么？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^3]\n\n### 4. 第二轮迭代\n\n参考上一轮决策：\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示：风险与不确定性在哪里？\n\nProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG 支持 Markdown 与 PDF 入库，回答必须带 citation，低置信度需要拒答。\n\nDeepResea...[^4]\n\n## 不确定性说明\n\n- 未配置外网搜索（TAVILY_API_KEY 或 SERPER_API_KEY），当前仅使用内部知识库。\n- 可用来源较少，结论置信度有限，建议人工复核。\n- 当前为离线子问题规划；配置 OPENAI_API_KEY 后可增强拆解质量。\n\n## 脚注\n\n[^1]: [内部] 《ProjectForge Master Plan》(kb://project-forge-plan/project-forge-plan#chunk-1) — ProjectForge Agent 是全链路造物智能体，覆盖需求调研、原型、架构、PRD、开发、测试与部署。\n\n查证型知识库通过 Claim-Evidence 对齐降低幻觉，架构阶段与 PRD 阶段必须经过查证门控。\n\n企业知识库 RAG\n",
+        "engine": "deep_research",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prototype",
+        "title": "工作台原型",
+        "summary": "九阶段进度 + 产物预览 + 查证侧栏。",
+        "markdown": "# 画面原型说明\n\n## 核心页面\n1. **ProjectForge 工作台**：左侧九阶段进度，中间阶段产物，右侧查证面板。\n2. **能力 Tab**：企业知识库 / 查证型知识库 / DeepResearch / 书籍公众号。\n\n## 关键交互\n- 输入产品想法 → 一键「运行演示链路」\n- 架构/PRD 阶段展示 Claim-Evidence 对照表\n- 部署阶段给出 docker compose 与健康检查地址\n\n## 想法锚点\n第二轮迭代\n",
+        "engine": "ux_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "architecture",
+        "title": "架构选型 ADR",
+        "summary": "选定内嵌查证模块 + ProjectForge 编排器。",
+        "markdown": "# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "enterprise_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "solution",
+        "title": "解决方案与数据流",
+        "summary": "查证模块 + 编排器 + API + Web 工作台。",
+        "markdown": "# 解决方案定稿\n\n## 模块边界\n- **verified_knowledge**：Claim / Evidence / VerificationReport\n- **project_forge**：九阶段 artifact 生成\n- **api.py**：`/verified-knowledge/verify`、`/project-forge/demo`\n- **agent-web**：`ProjectForgeWorkbench.tsx`\n\n## 数据流\n想法 → 阶段产物 →（架构/PRD）查证门 → 开发任务 → 测试 → compose 部署\n\n## 目标\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "prd",
+        "title": "前后端 PRD",
+        "summary": "两条 API + 工作台 UI + 验收清单。",
+        "markdown": "# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第二轮迭代\n\n---\n\n## 继承上一轮决策\n\n# 上一轮 Forge 上下文\n\n- 来源 run_id: `05460843-9271-4cd6-88f2-e0e31bd45948`\n- 上一轮想法: 第一轮 Forge 演示\n\n## 架构 ADR\n\n# 架构选项对比\n\n| 方案 | 优点 | 风险 | 结论 |\n|---|---|---|---|\n| A. 内嵌模块 | 复用现有 RAG/测试/部署 | 单体变复杂 | **推荐** |\n| B. 独立微服务 | 边界清晰 | 运维成本高 | 二期 |\n| C. 纯 Prompt 工作流 | 上线快 | 难保证代码质量 | 不选 |\n\n## 推荐架构\n- `verified_knowledge.py` 内嵌到 agent-platform\n- `project_forge.py` 编排九阶段演示\n- Next.js 工作台消费 REST API\n\n## 想法\n第一轮 Forge 演示\n\n## PRD\n\n# PRD（Phase A）\n\n## 后端\n- `POST /verified-knowledge/verify`：输入 text + source_stage，返回 VerificationReport\n- `POST /project-forge/demo`：输入 idea，返回九阶段 ProjectForgeRun\n\n## 前端\n- Tab「ProjectForge 工作台」\n- 阶段卡片 + markdown 预览 + 查证结果表\n\n## 验收标准\n- [ ] 能抽取 claim 并返回 evidence 对齐\n- [ ] 九阶段演示可一键跑通\n- [ ] unittest 覆盖 verify 与 demo API\n\n## 需求\n第一轮 Forge 演示\n",
+        "engine": "verified_kb",
+        "status": "completed"
+      },
+      {
+        "stage_id": "development",
+        "title": "开发交付说明",
+        "summary": "查证模块、编排器、API、Web 与文档已落地。",
+        "markdown": "# 开发任务包\n\n## 已实现文件\n- `verified_knowledge.py` — Claim-Evidence 数据结构 + 核验\n- `project_forge.py` — 九阶段演示编排\n- `ProjectForgeWorkbench.tsx` — 工作台 UI\n- `docs/17-project-forge-master-plan.md` — 主计划\n\n## 代码规范\n- 复用现有 dataclass / FastAPI / unittest 风格\n- 不引入无关依赖\n- 每个模块配套测试\n\n## 上下文\n第二轮迭代\n",
+        "engine": "dev_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "testing",
+        "title": "测试与门禁",
+        "summary": "verified + project_forge 单测，API 集成测。",
+        "markdown": "# 测试计划\n\n## 单测\n- `test_verified_knowledge.py`：claim 抽取、对齐分、拒答门控\n- `test_project_forge.py`：九阶段产物、demo API\n\n## 集成\n- `POST /project-forge/demo` 返回 9 个 stage\n- `POST /verified-knowledge/verify` 在已入库文档上返回 citation\n\n## 门禁\n`python -m unittest discover -s tests -v`\n",
+        "engine": "qa_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "deployment",
+        "title": "部署与访问地址",
+        "summary": "docker compose 一键启动，Web 3000 / API 8000。",
+        "markdown": "# 部署说明\n\n```bash\ncd work/ai-agent\ndocker compose up --build\n```\n\n- Web: http://127.0.0.1:3000 → ProjectForge 工作台\n- API: http://127.0.0.1:8000/docs\n\n## 健康检查\n`GET /health` → `{\"status\":\"ok\"}`\n",
+        "engine": "devops_agent",
+        "status": "completed"
+      },
+      {
+        "stage_id": "retrospective",
+        "title": "复盘与下一步",
+        "summary": "Phase A 演示链路完成，进入部署与求职转化。",
+        "markdown": "# 复盘\n\n## 本次运行\n- run_id: `17a48190-00be-4327-a70c-bb49d6109c20`\n- 阶段数: 8\n- 查证阶段: 3\n\n## 亮点\n- 用 meta 场景演示「项目造项目」\n- 查证型知识库与九阶段编排已打通\n\n## 下一步\n1. 公网部署 + 演示录屏\n2. DeepResearch 接入调研阶段\n3. Dev Agent 与 Skill 打通真实代码生成\n",
+        "engine": "supervisor",
+        "status": "completed"
+      }
+    ]
+  }
+}

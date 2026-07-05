@@ -90,7 +90,7 @@ class McpToolServer:
         except error.HTTPError as exc:
             return exc.code, self._decode_json(exc.read())
         except (error.URLError, TimeoutError, OSError) as exc:
-            return 599, {"code": "JAVA_TOOL_SERVICE_UNAVAILABLE", "message": str(exc)}
+            return 599, {"code": "BUSINESS_TOOL_SERVICE_UNAVAILABLE", "message": str(exc)}
 
     def _tool_by_name(self, name: str) -> dict[str, Any] | None:
         for tool in self._manifest["tools"]:
@@ -120,7 +120,7 @@ class McpToolServer:
 
 
 def default_server() -> McpToolServer:
-    base_url = os.environ.get("JAVA_TOOL_BASE_URL", "http://127.0.0.1:8080")
+    base_url = os.environ.get("AGENT_PLATFORM_BASE_URL", "http://127.0.0.1:8000")
     return McpToolServer(base_url=base_url)
 
 

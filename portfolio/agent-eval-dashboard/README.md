@@ -13,7 +13,9 @@ Python-only evaluation runner for the AI Agent portfolio.
 - 按 `answer_with_citation`、`tool_call`、`refusal` 三类预期行为打分。
 - 输出 JSON 和 Markdown 报告，方便复盘失败分类。
 
-当前数据集包含 20 条离线确定性 eval case，覆盖引用回答、工具调用和拒答三类行为。
+当前数据集包含 **30** 条离线确定性 eval case 与 **8** 条 retrieval case，覆盖引用回答、工具调用、安全拒答和检索命中。
+
+完整说明见 [eval-dataset.md](eval-dataset.md)（格式、打分规则、用例目录、运行方式）。
 
 ## 运行
 

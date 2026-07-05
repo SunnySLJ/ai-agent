@@ -9,7 +9,7 @@
 
 **链接：** https://www.zhipin.com/job_detail/7479d8f2e0fc791e0nZ82Ni4FVdV.html
 
-您好，我有 5 年 Java 后端经验，近期专注 AI Agent 应用工程。独立做了企业知识库 Agent Platform：Python 侧负责任务编排、BM25+向量混合检索、工具调用和 SSE 流式；Java 侧 Spring Boot 承接订单/工单/待办，写操作走人工确认。20 条 eval pass_rate 100%，Docker Compose 可演示。看到贵司岗位强调 AI Agent 任务编排与方案落地，和项目方向很接近，想沟通一下匹配度。
+您好，我有 5 年后端经验，近期专注 **Python AI Agent/RAG 应用工程**。开源 **ProjectForge 平台**：混合检索、Claim-Evidence 查证（文档审核）、DeepResearch 外网调研、九阶段编排，FastAPI + eval 30 条 pass 100% + 93 单测，Docker 可演示。看到贵司强调 AI Agent 落地，和项目方向接近，想沟通匹配度。
 
 ---
 
@@ -17,7 +17,7 @@
 
 **链接：** https://www.zhipin.com/job_detail/4312d6947c3b3edd0nR73N-0FlVZ.html
 
-您好，Java 后端 5 年，最近在补 AI Agent 工程化。作品集是 Python Agent 主链路 + Java 业务工具层：Plan/工具调度、RAG 检索带引用、trace 可回放，和岗位里的动态工作流、工具并发调度比较契合。GitHub 开源可演示，想了解贵司 Agent 业务场景和技术栈。
+您好，5 年后端背景，近期做 **Python AI Agent 工程化**。开源 ProjectForge：RAG 混合检索、查证型知识库、DeepResearch、九阶段编排与 eval 闭环，和岗位里的 Agent 工作流、工具调度比较契合。GitHub 可演示，想了解贵司 Agent 场景。
 
 ---
 
@@ -25,7 +25,7 @@
 
 **链接：** https://www.zhipin.com/job_detail/007131bea27eac540nd82t-4EldU.html
 
-您好，5 年 Java 后端，转向 Python AI Agent 应用。做了企业级 Agent Platform：Prompt 安全、多轮会话、Function Calling、Human-in-the-loop 审批、评估报告齐全，偏工程落地而非模型训练。金融场景对稳定和安全要求高，我在 Java 工具层做了幂等和审计，Agent 侧有注入拦截和写操作确认。想了解一下岗位具体方向。
+您好，5 年后端，转向 **Python 大模型应用**。ProjectForge 平台：Prompt 安全、多轮会话、Function Calling、HITL 审批、Claim-Evidence 查证、评估报告齐全，偏工程落地。金融场景对稳定要求高，项目在拒答、查证门控和 trace 上有专门设计。想了解一下岗位方向。
 
 ---
 

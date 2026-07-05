@@ -3,3 +3,6 @@
 {"id":"retrieval-003","query":"Agent trace 里记录哪些工具调用信息?","expected_doc_id":"agent-trace-observability","tags":["trace","tool-calling"]}
 {"id":"retrieval-004","query":"MCP 和 OpenAPI 怎么定义工具契约?","expected_doc_id":"tool-contract-runtime","tags":["mcp","openapi"]}
 {"id":"retrieval-005","query":"企业知识库为什么要拒答低证据问题?","expected_doc_id":"citation-and-refusal","tags":["refusal","safety"]}
+{"id":"retrieval-006","query":"Docker Compose 如何一键启动 Agent 和 Java 服务?","expected_doc_id":"tool-contract-runtime","tags":["deployment","compose"]}
+{"id":"retrieval-007","query":"Agent 项目如何通过 token 预算控制成本?","expected_doc_id":"cost-control","tags":["cost","evaluation"]}
+{"id":"retrieval-008","query":"SSE 流式问答接口如何返回 token 事件?","expected_doc_id":"streaming-and-sse","tags":["streaming","sse"]}

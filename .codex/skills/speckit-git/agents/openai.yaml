@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Kit Git"
+  short_description: "Spec Kit branch, validation, remote, init, and commit helpers"
+  default_prompt: "Use speckit-git to perform a Spec Kit Git helper action safely in the current repository."

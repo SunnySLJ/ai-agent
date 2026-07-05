@@ -1,0 +1,4 @@
+interface:
+  display_name: "代码链路交付"
+  short_description: "生成可跳转的方法级代码链路文档"
+  default_prompt: "Use $shuang-code-handoff 把这次需求整理成可跳转的代码链路文档，包含文件、方法、行号、数据流和验证证据。"

@@ -76,16 +76,14 @@ class AgentPlatformTest(unittest.TestCase):
         self.assertIn("没有足够证据", response.answer)
         self.assertEqual([], response.citations)
 
-    def test_calls_order_tool_for_known_order(self):
+    def test_refuses_order_question_without_knowledge_base(self):
         platform = AgentPlatform.offline_demo()
 
         response = platform.ask("帮我查询订单 ORD-1001 的状态")
 
-        self.assertFalse(response.refused)
-        self.assertIn("ORD-1001", response.answer)
-        self.assertIn("已发货", response.answer)
-        self.assertEqual("get_order_status", response.trace.tool_calls[0].name)
-        self.assertTrue(response.trace.tool_calls[0].success)
+        self.assertTrue(response.refused)
+        self.assertIn("没有足够证据", response.answer)
+        self.assertEqual([], response.trace.tool_calls)
 
     def test_records_evaluation_summary(self):
         platform = AgentPlatform.offline_demo()
@@ -104,9 +102,9 @@ class AgentPlatformTest(unittest.TestCase):
         summary = platform.summary()
 
         self.assertEqual(3, summary.total_runs)
-        self.assertEqual(1, summary.refusal_count)
-        self.assertEqual(1, summary.tool_call_count)
-        self.assertEqual(1, summary.tool_success_count)
+        self.assertEqual(2, summary.refusal_count)
+        self.assertEqual(0, summary.tool_call_count)
+        self.assertEqual(0, summary.tool_success_count)
         self.assertGreaterEqual(summary.average_latency_ms, 0)
 
 

@@ -1,0 +1,8 @@
+{"id":"v-eval-01","text":"查证型知识库通过 Claim-Evidence 对齐降低幻觉。","source_stage":"architecture","expect_status":"verified","expect_refuse":false}
+{"id":"v-eval-02","text":"企业知识库 RAG 支持 citation 与低置信拒答。","source_stage":"prd","expect_status":"verified","expect_refuse":false}
+{"id":"v-eval-03","text":"量子咖啡机可以自动修复所有生产事故。","source_stage":"architecture","expect_status":"unverified","expect_refuse":true}
+{"id":"v-eval-04","text":"DeepResearch 用于多步外网调研与脚注报告。","source_stage":"research","expect_status":"verified","expect_refuse":false}
+{"id":"v-eval-05","text":"ProjectForge 覆盖需求调研到部署复盘九阶段。","source_stage":"solution","expect_status":"verified","expect_refuse":false}
+{"id":"v-eval-06","text":"查证型知识库并非用于降低幻觉。","source_stage":"architecture","expect_status":"contradicted","expect_refuse":true}
+{"id":"v-eval-07","text":"推荐将 verified_knowledge 内嵌到 agent-platform。","source_stage":"solution","expect_status":"verified","expect_refuse":false}
+{"id":"v-eval-08","text":"架构阶段必须经过查证门控才能进入开发。","source_stage":"architecture","expect_status":"pending_review","expect_refuse":false}
